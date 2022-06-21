@@ -13,18 +13,18 @@ te_1209 = pd.read_csv("data/1209_TraceMetals.csv")
 psu_1208 = pd.read_csv("data/PSU_Solver/PSU_data_1208.csv")
 psu_1209 = pd.read_csv("data/PSU_Solver/PSU_data_1209.csv")
 
-min_age, max_age = 2500, 3200
-colour_1208, colour_1209 = "#2D7DD2", "#FF8C42"
+min_age, max_age = 2400, 3200
+colour_1209, colour_1208 = "#F2545B", "#30C5FF"
 
-fig, axs = plt.subplots(4, 1, sharex=True)
+fig, axs = plt.subplots(5, 1, sharex=True, figsize=(8.25, 11.75))
 # Remove horizontal space between axes
 fig.subplots_adjust(hspace=0)
 
-fig.suptitle("Comparison of {} and Mg/Ca".format(r'$\delta^{18}$O'))
+fig.suptitle("Comparison of Sites 1208/09")
 
 axs[0].plot(ox_1208.age_ka, ox_1208.d18Oadj, marker='+', color=colour_1208, label='ODP 1208')
 axs[0].plot(ox_1209.age_ka, ox_1209.d18Oadj, marker='+', color=colour_1209, label="ODP 1209")
-axs[0].legend(loc='upper left', shadow=False, frameon=False, bbox_to_anchor=(0.90, 1.05))
+axs[0].legend(loc='upper left', shadow=False, frameon=False, bbox_to_anchor=(0.90, 1.12))
 axs[0].set(xlim=[min_age, max_age], ylabel='{} ({})'.format(r'$\delta^{18}$O', u"\u2030"), xlabel='Age (ka)')
 axs[0].invert_yaxis()
 axs[0].spines['right'].set_visible(False)
@@ -50,13 +50,21 @@ axs[3].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030")
 axs[3].yaxis.set(ticks_position="right", label_position='right')
 axs[3].spines['left'].set_visible(False)
 
+# axs[4].plot(te_1208.age_ka, te_1208.BCa, marker='+', color=colour_1208, label="ODP 1208")
+axs[4].plot(te_1209.age_ka, te_1209.Bca, marker='+', color=colour_1209, label="ODP 1209")
+axs[4].set(ylabel='{} ({})'.format('B/Ca', r'$\mu$mol/mol'))
+axs[4].yaxis.set(ticks_position="left", label_position='left')
+axs[4].spines['right'].set_visible(False)
+
+
 for ax in axs:
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-axs[3].spines['bottom'].set_visible(True)
-axs[3].set(xlabel='Age (ka)', xlim=[min_age, max_age])
+axs[4].spines['bottom'].set_visible(True)
+axs[4].set(xlabel='Age (ka)', xlim=[min_age, max_age])
 
+plt.savefig("Side_03.pdf", format="pdf")
 
 # Comparison Plot of Temperature against d18O
 fig, axs = plt.subplots(2, 1, sharex=True)

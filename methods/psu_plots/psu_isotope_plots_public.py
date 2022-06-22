@@ -1,15 +1,19 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import statsmodels.api as sm
 import os
 
 # Settings
 min_age, max_age = 2450, 2850
 display = True
 saveFig = False
+figure_name = "Full"
 
 # Features
 MgCa = True
-BCa = False
+MgCa_smooth = False
+BCa = True
+BCa_smooth = True
 modelled_Temp = True
 modelled_d18O = False
 d13C = True
@@ -19,6 +23,7 @@ d18O = True
 colour_1209, colour_1208 = "#1b9e77", "#d95f02"
 
 # ----------------------------------- IMPLEMENTATION ---------------------------------------------
+
 # Change to the relevant directory
 os.chdir("../..")
 
@@ -48,41 +53,71 @@ else:
 # Remove horizontal space between axes
 fig.subplots_adjust(hspace=0)
 
+# Name the Plots
 fig.suptitle("Comparison of Sites 1208/09\n ({} - {} ka)".format(min_age, max_age))
 
 
 plot_num = 0
 if d18O:
-    axs[plot_num].plot(ox_1208.age_ka, ox_1208.d18Oadj, marker='+', color=colour_1208, label='ODP 1208')
-    axs[plot_num].plot(ox_1209.age_ka, ox_1209.d18Oadj, marker='+', color=colour_1209, label="ODP 1209")
+    # Plot the d18O (Cibicidoides) for Sites 1208 and 1209.
+    axs[plot_num].plot(ox_1208.age_ka, ox_1208.d18O, marker='+', color=colour_1208, label='ODP 1208')
+    axs[plot_num].plot(ox_1209.age_ka, ox_1209.d18O, marker='+', color=colour_1209, label="ODP 1209")
+    # Label the y-axis
     axs[plot_num].set(xlim=[min_age, max_age], ylabel='{} ({})'.format(r'$\delta^{18}$O', u"\u2030"))
+    # Inver the y-axis
     axs[plot_num].invert_yaxis()
     plot_num += 1
 
 if d13C:
+    # Plot the d13C (C. Wuellerstorfi) for Sites 1208 and 1209
     axs[plot_num].plot(ox_1208.age_ka, ox_1208.d13C, marker='+', color=colour_1208, label='ODP 1208')
     axs[plot_num].plot(ox_1209.age_ka, ox_1209.d13C, marker='+', color=colour_1209, label="ODP 1209")
+    # Label the y-axis
     axs[plot_num].set(xlim=[min_age, max_age], ylabel='{} ({})'.format(r'$\delta^{13}$C', u"\u2030"))
     plot_num += 1
 
 if MgCa:
-    axs[plot_num].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colour_1208, label="ODP 1208")
-    axs[plot_num].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colour_1209, label="ODP 1209")
+    # If smooth - add a LOWESS curve through the data points which are scattered
+    if MgCa_smooth:
+        # Run the smoothing function
+        smoothed_1209 = sm.nonparametric.lowess(exog=te_1209.age_ka, endog=te_1209.MgCa, frac=0.2)
+        smoothed_1208 = sm.nonparametric.lowess(exog=te_1208.age_ka, endog=te_1208.MgCa, frac=0.2)
+        # plot the smoothing function
+        axs[plot_num].plot(smoothed_1209[:, 0], smoothed_1209[:, 1], color=colour_1209)
+        axs[plot_num].plot(smoothed_1208[:, 0], smoothed_1208[:, 1], color=colour_1208)
+        # Plot the raw data
+        axs[plot_num].scatter(te_1208.age_ka, te_1208.MgCa, marker='+', color=colour_1208, label="ODP 1208")
+        axs[plot_num].scatter(te_1209.age_ka, te_1209.MgCa, marker='+', color=colour_1209, label="ODP 1209")
+    # Else, plot a line connecting all the points
+    else:
+        axs[plot_num].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colour_1208, label="ODP 1208")
+        axs[plot_num].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colour_1209, label="ODP 1209")
+    # Label the y-axis
     axs[plot_num].set(ylabel='{} ({})'.format('Mg/Ca', "mmol/mol"))
     plot_num += 1
 
 if BCa:
+    # Plot the B/Ca ratio for 1208 and 1209
     axs[plot_num].scatter(te_1209.age_ka, te_1209.Bca, marker='+', color=colour_1209, label="ODP 1209")
+    # Label the y-axis
     axs[plot_num].set(ylabel='{} ({})'.format('B/Ca', r'$\mu$mol/mol'))
+    if BCa_smooth:
+        # Compute a lowess smoothing of the data
+        smoothed = sm.nonparametric.lowess(exog=te_1209.age_ka, endog=te_1209.Bca, frac=0.2)
+        # Plot this smoothed data
+        axs[plot_num].plot(smoothed[:, 0], smoothed[:, 1], color=colour_1209)
     plot_num += 1
 
 if modelled_Temp:
+    # Plot the modelled temperature from the PSU_Solver
     axs[plot_num].plot(psu_1208.age_ka, psu_1208.temp, color=colour_1208, linestyle='-', label="ODP 1208")
+    # Fill in the confidence intervals (1 sigma)
     axs[plot_num].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_add1, alpha=0.1,
                                facecolor=colour_1208)
     axs[plot_num].plot(psu_1209.age_ka, psu_1209.temp, color=colour_1209, linestyle='-', label="ODP 1209")
     axs[plot_num].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_add1, alpha=0.1,
                                facecolor=colour_1209)
+    # Label the y-axis
     axs[plot_num].set(ylabel='Modelled {} ({})'.format('Temperature', u'\N{DEGREE SIGN}C'))
     plot_num += 1
 
@@ -97,24 +132,26 @@ if modelled_d18O:
     plot_num += 1
 
 for q in range(num_plots):
+    # Remove the left/right axes to make the plot look cleaner
     if q % 2 == 1:
         axs[q].yaxis.set(ticks_position="right", label_position='right')
         axs[q].spines['left'].set_visible(False)
     else:
         axs[q].spines['right'].set_visible(False)
+    axs[q].spines['top'].set_visible(False)
+    axs[q].spines['bottom'].set_visible(False)
 
-for ax in axs:
-    ax.spines['top'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-
+# Set the bottom axis on and label it with the age.
 axs[(num_plots - 1)].spines['bottom'].set_visible(True)
 axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[min_age, max_age])
 
-
+# Add a legend to the first plot
 axs[0].legend(loc='upper left', shadow=False, frameon=False)
 
+# Save the figure if required
 if saveFig:
-    plt.savefig("figure_01.pdf", format="pdf")
+    plt.savefig("figures/TE_and_PSU_data/{}_{}-{}.pdf".format(figure_name, min_age, max_age), format="pdf")
 
+# Display the figure if required
 if display:
     plt.show()

@@ -4,7 +4,7 @@ import statsmodels.api as sm
 import os
 
 # Settings
-min_age, max_age = 2450, 2850
+min_age, max_age = 2400, 2900
 display = True
 saveFig = False
 figure_name = "Full"
@@ -16,7 +16,7 @@ BCa = True
 BCa_smooth = True
 modelled_Temp = True
 modelled_d18O = False
-d13C = True
+d13C = False
 d18O = True
 
 # Decide on the colours for 1208 and 1209

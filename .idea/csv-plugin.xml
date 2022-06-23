@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/1209_TE_Full.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/1209_TraceMetals.csv">
           <value>
             <Attribute>
@@ -81,6 +88,27 @@
           </value>
         </entry>
         <entry key="/data/PSU_Solver/PSU_data_1209.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1208_te.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_te.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/607_te.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

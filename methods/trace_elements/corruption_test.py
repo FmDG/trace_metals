@@ -8,11 +8,12 @@ os.chdir("../..")
 te_1209 = pd.read_csv("data/1209_TE_Full.csv")
 
 # Load the colour palette
-colours = ['#1b9e77', '#d95f02', '#7570b3', '#e7298a']
+colours = ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e']
 
 # Define the number of plots
-num_plots = 4
-fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
+#  figsize=(8.25, 11.75)
+num_plots = 5
+fig, axs = plt.subplots(num_plots, 1, sharex=True)
 # Remove horizontal space between axes
 fig.subplots_adjust(hspace=0)
 # Name the Plots
@@ -36,6 +37,10 @@ axs[i].plot(te_1209.mcd, te_1209.AlCa, marker="+", color=colours[i])
 axs[i].set(ylabel="Al/Ca ({}/mol)".format(r'$\mu$mol'))
 i += 1
 
+axs[i].plot(te_1209.mcd, te_1209.FeCa, marker="+", color=colours[i])
+axs[i].set(ylabel="Fe/Ca ({}/mol)".format(r'$\mu$mol'))
+i += 1
+
 for q in range(num_plots):
     # Remove the left/right axes to make the plot look cleaner
     if q % 2 == 1:
@@ -50,5 +55,5 @@ for q in range(num_plots):
 axs[(num_plots - 1)].spines['bottom'].set_visible(True)
 axs[(num_plots - 1)].set(xlabel='Depth (mcd)')
 
-
-plt.savefig("figures/TE_and_PSU_data/corruption_test.pdf", format="pdf")
+plt.show()
+# plt.savefig("figures/TE_and_PSU_data/corruption_test.pdf", format="pdf")

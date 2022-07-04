@@ -6,7 +6,6 @@ import os
 
 # ----------------------------------- IMPLEMENTATION ---------------------------------------------
 
-
 def implement_psu_plots(min_age, max_age, display=True, save_fig=False, figure_name="Full", mg_ca=True,
                         mg_ca_smooth=False, b_ca=True, b_ca_smooth=True, modelled_temp=True, modelled_d18o=False,
                         d13c=False, d18o=True):

@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 import os
 
 
-def compare_607_1209_1208(display=True):
+def compare_607_1209_1208(display: object = True, u1313: object = False) -> bool:
+    """
 
+    :rtype: bool
+    """
     # Load the colour palette
-    colours = ['#1b9e77', '#d95f02', '#7570b3']
+    colours = ['#1b9e77', '#d95f02', '#7570b3', '#e7298a']
 
     # Set the age limits
     age_min, age_max = 2400, 2900
@@ -43,6 +46,13 @@ def compare_607_1209_1208(display=True):
     axs[2].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colours[1], label="1208")
     axs[2].plot(temp_607.age_ka, temp_607.MgCa, marker='+', color=colours[2], label="607")
 
+    # plot U1313 if required
+    if u1313:
+        temp_u1313 = pd.read_csv("data/comparisons/U1313_te.csv")
+        axs[0].plot(temp_u1313.age_ka, temp_u1313.BWT, marker='+', color=colours[3], label="U1313")
+        axs[1].plot(temp_u1313.age_ka, temp_u1313.d18O_sw, marker='+', color=colours[3], label="U1313")
+        axs[2].plot(temp_u1313.age_ka, temp_u1313.MgCa, marker='+', color=colours[3], label="U1313")
+
     # Label the y-axes for the various plots
     axs[0].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
     axs[1].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
@@ -64,13 +74,16 @@ def compare_607_1209_1208(display=True):
     axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[age_min, age_max])
 
     # Add a legend to the first plot
-    axs[0].legend(loc='upper left', shadow=False, frameon=False)
+    axs[0].legend(loc='upper right', shadow=False, frameon=False)
 
     if display:
         plt.show()
     else:
         # Save the figure the figures folder
         plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format("NWPacific_607_comp", age_min, age_max), format="pdf")
+
+    # if all goes well - return True
+    return True
 
 
 # Run the plotting function

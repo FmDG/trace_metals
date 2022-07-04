@@ -13,7 +13,6 @@ def implement_psu_plots(min_age, max_age, display=True, save_fig=False, figure_n
     # Decide on the colours for 1208 and 1209
     colour_1209, colour_1208 = "#1b9e77", "#d95f02"
 
-
     # Load the isotope data
     ox_1208 = pd.read_csv("data/ODP1208_cibs.csv")
     ox_1209 = pd.read_csv("data/ODP1209_cibs.csv")

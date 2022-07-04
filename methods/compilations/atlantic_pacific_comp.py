@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def compare_607_1209_1208(display: object = True, u1313: object = False) -> bool:
+def compare_607_1209_1208(display: object = True, u1313: object = False, save_name="File") -> bool:
     """
 
     :rtype: bool
@@ -80,7 +80,7 @@ def compare_607_1209_1208(display: object = True, u1313: object = False) -> bool
         plt.show()
     else:
         # Save the figure the figures folder
-        plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format("NWPacific_607_comp", age_min, age_max), format="pdf")
+        plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format(save_name, age_min, age_max), format="pdf")
 
     # if all goes well - return True
     return True

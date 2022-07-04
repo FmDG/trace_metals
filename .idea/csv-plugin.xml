@@ -59,6 +59,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/607_together.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/ODP1208_cibs.csv">
           <value>
             <Attribute>
@@ -87,6 +94,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/PSU_Solver/PSU_data_1208.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/PSU_Solver/PSU_data_1209.csv">
           <value>
             <Attribute>
@@ -108,7 +122,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/607_d18O.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/607_te.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/U1313_te.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

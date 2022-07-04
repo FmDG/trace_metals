@@ -5,8 +5,6 @@ import seaborn as sns
 
 
 def solve_approximations():
-    # Change to the relevant directory
-    os.chdir("../..")
 
     # Load the modelling data
     t_1209 = pd.read_csv("data/1209_together_cib.csv")
@@ -30,4 +28,6 @@ def solve_approximations():
 
 
 if __name__ == "__main__":
+    # Change to the relevant directory
+    os.chdir("../..")
     solve_approximations()

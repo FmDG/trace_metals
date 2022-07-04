@@ -5,8 +5,6 @@ import os
 
 def corruption_test(save_fig=False):
 
-    os.chdir("../..")
-
     # Load the trace element data
     te_1209 = pd.read_csv("data/1209_TE_Full.csv")
 
@@ -69,4 +67,7 @@ def corruption_test(save_fig=False):
 
 
 if __name__ == "__main__":
+    # Change to the relevant directory
+    os.chdir("../..")
+
     corruption_test(save_fig=False)

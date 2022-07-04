@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def compare_607_1209_1208():
-    # Change to the correct directory
-    os.chdir("../..")
+def compare_607_1209_1208(display=True):
 
     # Load the colour palette
     colours = ['#1b9e77', '#d95f02', '#7570b3']
@@ -23,7 +21,10 @@ def compare_607_1209_1208():
     # Set up the figure
     num_plots = 3
 
-    fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
+    if display:
+        fig, axs = plt.subplots(num_plots, 1, sharex=True)
+    else:
+        fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
     # Name the Plots
     fig.suptitle("Comparison of Sites 1208/1209/607\n ({} - {} ka)".format(age_min, age_max))
 
@@ -65,10 +66,15 @@ def compare_607_1209_1208():
     # Add a legend to the first plot
     axs[0].legend(loc='upper left', shadow=False, frameon=False)
 
-    # Save the figure the figures folder
-    plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format("NWPacific_607_comp", age_min, age_max), format="pdf")
+    if display:
+        plt.show()
+    else:
+        # Save the figure the figures folder
+        plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format("NWPacific_607_comp", age_min, age_max), format="pdf")
 
 
 # Run the plotting function
 if __name__ == "__main__":
+    # Change to the correct directory
+    os.chdir("../..")
     compare_607_1209_1208()

@@ -27,24 +27,27 @@ def compare_607_1209_1208():
     # Name the Plots
     fig.suptitle("Comparison of Sites 1208/1209/607\n ({} - {} ka)".format(age_min, age_max))
 
+    # Plot the temperature of the three sites
     axs[0].plot(temp_1209.age_ka, temp_1209.temp, marker='+', color=colours[0], label="1209")
     axs[0].plot(temp_1208.age_ka, temp_1208.temp, marker='+', color=colours[1], label="1208")
     axs[0].plot(temp_607.age_ka, temp_607.BWT, marker='+', color=colours[2], label="607")
 
+    # Plot the d18O of the seawater of the three sites
     axs[1].plot(temp_1209.age_ka, temp_1209.d18O_sw, marker='+', color=colours[0], label="1209")
     axs[1].plot(temp_1208.age_ka, temp_1208.d18O_sw, marker='+', color=colours[1], label="1208")
     axs[1].plot(temp_607.age_ka, temp_607.d18O_sw, marker='+', color=colours[2], label="607")
 
+    # Plot the raw Mg/ca ratios of the three sites
     axs[2].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colours[0], label="1209")
     axs[2].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colours[1], label="1208")
     axs[2].plot(temp_607.age_ka, temp_607.MgCa, marker='+', color=colours[2], label="607")
 
+    # Label the y-axes for the various plots
     axs[0].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
-
     axs[1].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
-
     axs[2].set(ylabel="Mg/Ca ({})".format('mol/mol'))
 
+    # Remove the various axes to clean up the plot
     for q in range(num_plots):
         # Remove the left/right axes to make the plot look cleaner
         if q % 2 == 1:
@@ -62,8 +65,10 @@ def compare_607_1209_1208():
     # Add a legend to the first plot
     axs[0].legend(loc='upper left', shadow=False, frameon=False)
 
+    # Save the figure the figures folder
     plt.savefig("figures/607_comparison/{}_{}-{}.pdf".format("NWPacific_607_comp", age_min, age_max), format="pdf")
 
 
+# Run the plotting function
 if __name__ == "__main__":
     compare_607_1209_1208()

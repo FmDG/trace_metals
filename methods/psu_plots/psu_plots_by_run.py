@@ -16,9 +16,9 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
     datasets = []
     for x in range(num_runs):
         # Load the datasets
-        data_607 = pd.read_csv("data/PSU_Solver/RUN_{}/607_run.csv".format((x + 1)))
-        data_1208 = pd.read_csv("data/PSU_Solver/RUN_{}/1208_run.csv".format(x + 1))
-        data_1209 = pd.read_csv("data/PSU_Solver/RUN_{}/1209_run.csv".format((x + 1)))
+        data_607 = pd.read_csv("data/PSU_Solver/RUN_{}/run_607.csv".format((x + 1)))
+        data_1208 = pd.read_csv("data/PSU_Solver/RUN_{}/run_1208.csv".format(x + 1))
+        data_1209 = pd.read_csv("data/PSU_Solver/RUN_{}/run_1209.csv".format((x + 1)))
         datasets.append([[data_1209, "1209"], [data_1208, "1208"], [data_607, "607"]])
 
     # Set up figure
@@ -83,4 +83,4 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
 if __name__ == "__main__":
     # Change to the relevant directory
     os.chdir("../..")
-    psu_plots_by_run(fill=False, save_fig=False)
+    psu_plots_by_run(fill=False, save_fig=True, num_runs=4, figure_name="Multi_Runs")

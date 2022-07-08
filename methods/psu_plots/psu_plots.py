@@ -29,6 +29,8 @@ def implement_psu_plots(min_age, max_age, display=True, save_fig=False, figure_n
     num_plots = (mg_ca + b_ca + modelled_d18o + modelled_temp + d13c + d18o)
     if num_plots == 0:
         raise ValueError("At least one kind of plot must be selected")
+    elif num_plots == 1:
+        raise ValueError("Can not select just one plot for comparative plotting")
 
     # Define figure
     if save_fig:

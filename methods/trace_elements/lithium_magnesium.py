@@ -1,6 +1,7 @@
-import pandas as pd
 import os
+
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def lithium_plots():
@@ -60,6 +61,5 @@ def lithium_plots():
 
 
 if __name__ == "__main__":
-
     os.chdir("../..")
     lithium_plots()

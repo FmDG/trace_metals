@@ -1,9 +1,9 @@
-import pandas as pd
 import os
+
+import pandas as pd
 
 
 def compile_for_psu():
-
     trace_data = pd.read_csv("data/1209_TraceMetals.csv")
     isotope_data = pd.read_csv('data/ODP1209_cibs.csv')
 
@@ -17,4 +17,3 @@ if __name__ == "__main__":
     os.chdir("../..")
 
     compile_for_psu()
-

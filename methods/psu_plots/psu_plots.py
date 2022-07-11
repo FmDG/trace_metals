@@ -1,15 +1,15 @@
+import os
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import statsmodels.api as sm
-import os
 
 
 # ----------------------------------- IMPLEMENTATION ---------------------------------------------
 
-def implement_psu_plots(min_age, max_age, display=True, save_fig=False, figure_name="Full", mg_ca=True,
+def implement_psu_plots(min_age, max_age, save_fig=False, figure_name="Full", mg_ca=True,
                         mg_ca_smooth=False, b_ca=True, b_ca_smooth=True, modelled_temp=True, modelled_d18o=False,
                         d13c=False, d18o=True):
-
     # Decide on the colours for 1208 and 1209
     colour_1209, colour_1208 = "#1b9e77", "#d95f02"
 
@@ -138,9 +138,7 @@ def implement_psu_plots(min_age, max_age, display=True, save_fig=False, figure_n
     # Save the figure if required
     if save_fig:
         plt.savefig("figures/TE_and_PSU_data/{}_{}-{}.pdf".format(figure_name, min_age, max_age), format="pdf")
-
-    # Display the figure if required
-    if display:
+    else:
         plt.show()
 
 
@@ -151,7 +149,6 @@ if __name__ == "__main__":
     implement_psu_plots(
         min_age=2400,
         max_age=2900,
-        display=True,
         save_fig=False,
         figure_name="Full",
         mg_ca=True,

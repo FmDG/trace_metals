@@ -1,11 +1,11 @@
-import pandas as pd
 import os
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 
 def solve_approximations():
-
     # Load the modelling data
     t_1209 = pd.read_csv("data/1209_together_cib.csv")
     t_1208 = pd.read_csv("data/1208_together_uvi.csv")

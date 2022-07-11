@@ -1,10 +1,10 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def corruption_test(save_fig=False):
-
     # Load the trace element data
     te_1209 = pd.read_csv("data/1209_TE_Full.csv")
 

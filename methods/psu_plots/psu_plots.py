@@ -14,12 +14,12 @@ def implement_psu_plots(min_age, max_age, save_fig=False, figure_name="Full", mg
     colour_1209, colour_1208 = "#1b9e77", "#d95f02"
 
     # Load the isotope data
-    ox_1208 = pd.read_csv("data/ODP1208_cibs.csv")
-    ox_1209 = pd.read_csv("data/ODP1209_cibs.csv")
+    ox_1208 = pd.read_csv("data/stacks/ODP1208_cibs.csv")
+    ox_1209 = pd.read_csv("data/stacks/ODP1209_cibs.csv")
 
     # Load the trace element data
-    te_1208 = pd.read_csv("data/1208_TraceMetals.csv")
-    te_1209 = pd.read_csv("data/1209_TraceMetals.csv")
+    te_1208 = pd.read_csv("data/stacks/1208_TraceMetals.csv")
+    te_1209 = pd.read_csv("data/stacks/1209_TraceMetals.csv")
 
     # Load the modelling data
     psu_1208 = pd.read_csv("data/PSU_Solver/PSU_data_1208.csv")

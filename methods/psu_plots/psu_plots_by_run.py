@@ -37,7 +37,7 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
         # and each dataset...
         for y in range(len(datasets[x])):
             # plot the temperature against age,
-            axs[0].plot(datasets[x][y][0]["age_ka"], datasets[x][y][0]["temp"], color=colours[y], linestyle=lines[y],
+            axs[0].plot(datasets[x][y][0]["age_ka"], datasets[x][y][0]["temp"], color=colours[y], linestyle=lines[x],
                         label="{} Run {}".format(datasets[x][y][1], (x + 1)))
             # and if desired, fill in the error bars
             if fill:
@@ -52,7 +52,7 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
     # Repeat the above for the modelled d18Osw
     for x in range(num_runs):
         for y in range(len(datasets[x])):
-            axs[1].plot(datasets[x][y][0]["age_ka"], datasets[x][y][0]["d18O_sw"], color=colours[y], linestyle=lines[y],
+            axs[1].plot(datasets[x][y][0]["age_ka"], datasets[x][y][0]["d18O_sw"], color=colours[y], linestyle=lines[x],
                         label="{} Run {}".format(datasets[x][y][1], (x + 1)))
             if fill:
                 axs[1].fill_between(datasets[x][y][0]["age_ka"], datasets[x][y][0]["d18O_min1"],
@@ -79,7 +79,7 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
 
     # Either save or display the figure
     if save_fig:
-        plt.savefig("figures/TE_and_PSU_data/{}_{}-{}.pdf".format(figure_name, min_age, max_age), format="pdf")
+        plt.savefig("figures/PSU_runs/{}_{}-{}.pdf".format(figure_name, min_age, max_age), format="pdf")
     else:
         plt.show()
 
@@ -87,4 +87,4 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
 if __name__ == "__main__":
     # Change to the relevant directory
     os.chdir("../..")
-    psu_plots_by_run(fill=False, save_fig=True, num_runs=4, figure_name="Multi_Runs")
+    psu_plots_by_run(fill=False, save_fig=True, num_runs=2, figure_name="runs_01-02")

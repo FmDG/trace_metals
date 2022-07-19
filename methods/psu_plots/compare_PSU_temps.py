@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def compare_psu_temp(save_fig=False):
+def compare_psu_temp(save_fig=False, figure_name="PLOT"):
     psu_607 = pd.read_csv("data/PSU_Solver/RUN_1/run_607.csv")
     other_607 = pd.read_csv("data/comparisons/607_te.csv")
     num_plots = 2
@@ -57,7 +57,11 @@ def compare_psu_temp(save_fig=False):
     axs[(num_plots - 1)].spines['bottom'].set_visible(True)
     axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[min_age, max_age])
 
-    plt.show()
+    # Save the figure if required
+    if save_fig:
+        plt.savefig("figures/TE_and_PSU_data/{}_{}-{}.pdf".format(figure_name, min_age, max_age), format="pdf")
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":

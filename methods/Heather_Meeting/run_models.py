@@ -11,6 +11,7 @@ os.chdir('../..')
 data_607 = pd.read_csv("data/PSU_Solver/RUN_5/607_run.csv")
 data_1209 = pd.read_csv("data/PSU_Solver/RUN_5/1209_run.csv")
 data_1208 = pd.read_csv("data/PSU_Solver/RUN_5/1208_run.csv")
+data_849 = pd.read_csv("data/PSU_Solver/RUN_5/849_run.csv")
 
 # Load the trace metal data
 te_607 = pd.read_csv("data/PSU_Solver/sets/607_MgCa.csv")
@@ -24,7 +25,7 @@ max_inhg = [1000, 1000]
 
 
 # colours = ['#1b9e77', '#d95f02', '#7570b3']
-colours = ['r', 'b', 'g']
+colours = ['r', 'b', 'g', 'm']
 
 
 num_plots = 3
@@ -58,6 +59,8 @@ axs[1].plot(data_1209.age_ka, data_1209.temp, marker='+', color=colours[1], labe
 axs[1].fill_between(data_1209.age_ka, data_1209.temp_min1, data_1209.temp_plus1, alpha=alpha, facecolor=colours[1])
 axs[1].plot(data_607.age_ka, data_607.temp, marker='+', color=colours[2], label="ODP 607")
 axs[1].fill_between(data_607.age_ka, data_607.temp_min1, data_607.temp_plus1, alpha=alpha, facecolor=colours[2])
+axs[1].plot(data_849.age_ka, data_849.temp, marker='+', color=colours[3], label="ODP 849")
+axs[1].fill_between(data_849.age_ka, data_849.temp_min1, data_849.temp_plus1, alpha=alpha, facecolor=colours[3])
 # Label the y-axis
 axs[1].set(ylabel='Modelled {} ({})'.format('Temperature', u'\N{DEGREE SIGN}C'), ylim=[-4.2, 6.5])
 
@@ -68,6 +71,8 @@ axs[2].plot(data_1209.age_ka, data_1209.d18O_sw, marker='+', color=colours[1], l
 axs[2].fill_between(data_1209.age_ka, data_1209.d18O_min1, data_1209.d18O_plus1, alpha=alpha, facecolor=colours[1])
 axs[2].plot(data_607.age_ka, data_607.d18O_sw, marker='+', color=colours[2], label="ODP 607")
 axs[2].fill_between(data_607.age_ka, data_607.d18O_min1, data_607.d18O_plus1, alpha=alpha, facecolor=colours[2])
+axs[2].plot(data_849.age_ka, data_849.d18O_sw, marker='+', color=colours[3], label="ODP 607")
+axs[2].fill_between(data_849.age_ka, data_849.d18O_min1, data_849.d18O_plus1, alpha=alpha, facecolor=colours[3])
 # Label the y-axis
 axs[2].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"), ylim=[-1.1, 1.9])
 
@@ -88,6 +93,6 @@ axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[min_age, max_age])
 # Add a legend to the first plot
 axs[1].legend(loc='upper left', shadow=False, frameon=False)
 
-plt.savefig("figures/PSU_runs/run_05.png", format='png')
+plt.savefig("figures/PSU_runs/run_05_849.png", format='png')
 # plt.show()
 

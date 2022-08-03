@@ -6,8 +6,8 @@ import pandas as pd
 
 def simple_calibrations():
     data_607 = pd.read_csv("data/comparisons/607_te.csv")
-    data_1209 = pd.read_csv("data/1209_TraceMetals.csv")
-    data_1208 = pd.read_csv("data/1208_TraceMetals.csv")
+    # data_1209 = pd.read_csv("data/1209_TraceMetals.csv")
+    # data_1208 = pd.read_csv("data/1208_TraceMetals.csv")
     data_1313 = pd.read_csv("data/comparisons/U1313_te.csv")
 
     # Equations
@@ -32,8 +32,6 @@ def simple_calibrations():
     # Plot the modelled temperature
     axs[0].plot(data_607.age_ka, data_607.BWT, color=colours[0], linestyle='-', label="607")
     axs[0].plot(data_1313.age_ka, data_1313.BWT, color=colours[1], linestyle='-', label="U1313")
-    axs[0].plot(data_1208.age_ka, (data_1208.MgCa * 14.925), color=colours[2], linestyle='-', label="1208")
-    axs[0].plot(data_1209.age_ka, (data_1209.MgCa * 14.925), color=colours[3], linestyle='-', label="1208")
     axs[0].set(ylabel='Inferred {} ({})'.format('Temperatures', u'\N{DEGREE SIGN}C'))
     axs[0].legend()
 

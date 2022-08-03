@@ -104,8 +104,8 @@ def plot_all_cores(save_fig=False, is607=True, is1208=True, is1209=True, is1014=
 if __name__ == "__main__":
     os.chdir("../..")
     plot_all_cores(
-        is1014=True,
-        is1018=True,
+        is1014=False,
+        is1018=False,
         is1208=True,
         is1209=True,
         is1313=False,
@@ -114,5 +114,5 @@ if __name__ == "__main__":
         min_age=2400,
         max_age=2900,
         figure_name="comp_607_1014-18",
-        save_fig=True
+        save_fig=False
     )

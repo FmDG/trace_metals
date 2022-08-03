@@ -17,6 +17,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/PSU_Solver/RUN_5/raw_data/849_ages.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_6/1208_run.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_6/1209_run.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/PSU_Solver/sets/607_MgCa.csv">
           <value>
             <Attribute>
@@ -137,6 +158,13 @@
           </value>
         </entry>
         <entry key="/data/cores/1209_psu.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/cores/1209_te.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

@@ -1,4 +1,6 @@
-from methods.simple_calibrations.simple_calibrations import simple_calibrations
+from methods.compilations.poster_compilations import poster_plot
 
 if __name__ == "__main__":
-    simple_calibrations()
+    # Print Name
+    print("Poster Plot Attempt\n-----------\n")
+    poster_plot()

@@ -33,7 +33,7 @@ def poster_plot(save_fig=False):
 
     # 3 plots; Mg/Ca, d18O_sw, and BWT
     num_plots = 3
-    pos_mg_ca, pos_d18O, pos_bwt = 2, 1, 0
+    pos_mg_ca, pos_d18o, pos_bwt = 2, 1, 0
     age_min, age_max = 2400, 2900
 
     fig, axs = plt.subplots(nrows=num_plots, ncols=1, figsize=(19.6, 16.7), sharex=True)
@@ -65,19 +65,19 @@ def poster_plot(save_fig=False):
     axs[pos_bwt].legend()
 
     # The d18O_sw plot
-    axs[pos_d18O].plot(psu_1209.age_ka, psu_1209.d18O_sw, **dict_1209)
-    axs[pos_d18O].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, alpha=0.1,
+    axs[pos_d18o].plot(psu_1209.age_ka, psu_1209.d18O_sw, **dict_1209)
+    axs[pos_d18o].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, alpha=0.1,
                                facecolor=colour_1209)
-    axs[pos_d18O].plot(psu_1208.age_ka, psu_1208.d18O_sw, **dict_1208)
-    axs[pos_d18O].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, alpha=0.1,
+    axs[pos_d18o].plot(psu_1208.age_ka, psu_1208.d18O_sw, **dict_1208)
+    axs[pos_d18o].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, alpha=0.1,
                                facecolor=colour_1208)
-    axs[pos_d18O].plot(te_1313.age_ka, te_1313.d18O_sw, **dict_1313)
-    axs[pos_d18O].legend()
-    axs[pos_d18O].invert_yaxis()
+    axs[pos_d18o].plot(te_1313.age_ka, te_1313.d18O_sw, **dict_1313)
+    axs[pos_d18o].legend()
+    axs[pos_d18o].invert_yaxis()
 
     # Label the y-axes for the various plots
     axs[pos_bwt].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
-    axs[pos_d18O].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
+    axs[pos_d18o].set(ylabel='Modelled {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
     axs[pos_mg_ca].set(ylabel="Mg/Ca ({})".format('mol/mol'))
 
     # Remove the various axes to clean up the plot
@@ -101,8 +101,35 @@ def poster_plot(save_fig=False):
         plt.show()
 
 
+def meeting_plot(save_fig=True):
+    # Load the isotope datasets
+    iso_1209 = clean_and_sort(pd.read_csv("data/cores/1209_cibs.csv"), "d18O")
+    iso_1208 = clean_and_sort(pd.read_csv("data/cores/1208_cibs.csv"), "d18O")
+    iso_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_cibs_adj.csv"), "d18O")
+    iso_849 = clean_and_sort(pd.read_csv("data/cores/849_cibs_adj.csv"), "d18O")
+    iso_607 = clean_and_sort(pd.read_csv("data/cores/607_cibs_adj.csv"), "d18O")
+
+    # Load the Trace Metal datasets
+    te_1209 = clean_and_sort(pd.read_csv("data/cores/1209_te.csv"), "MgCa")
+    te_1208 = clean_and_sort(pd.read_csv("data/cores/1208_te.csv"), "MgCa")
+    te_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_te.csv"), "MgCa")
+    te_849 = clean_and_sort(pd.read_csv("data/cores/849_te.csv"), "MgCa")
+    te_607 = clean_and_sort(pd.read_csv("data/cores/607_te.csv"), "MgCa")
+
+    # Load the PSU datasets
+    psu_1208 = clean_and_sort(pd.read_csv("data/cores/1208_psu.csv"), "temp")
+    psu_1209 = clean_and_sort(pd.read_csv("data/cores/1209_psu.csv"), 'temp')
+    psu_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_psu.csv"), 'temp')
+
+    # Load the colours
+    colour_1208 = '#66c2a5'
+    colour_1209 = '#fc8d62'
+    colour_1313 = '#8da0cb'
+    colour_849 = '#e78ac3'
+
+
 if __name__ == "__main__":
     # Change to parent directory
     os.chdir("../..")
     # Plot the relevant graphs
-    poster_plot(save_fig=True)
+    meeting_plot(save_fig=False)

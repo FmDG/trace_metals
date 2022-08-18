@@ -107,7 +107,7 @@ def meeting_plot(save_fig=False, save_title="Figure"):
     iso_1208 = clean_and_sort(pd.read_csv("data/cores/1208_cibs.csv"), "d18O")
     iso_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_cibs_adj.csv"), "d18O")
     iso_849 = clean_and_sort(pd.read_csv("data/cores/849_cibs_adj.csv"), "d18O")
-    iso_607 = clean_and_sort(pd.read_csv("data/cores/607_cibs_adj.csv"), "d18O")
+    iso_607 = clean_and_sort(pd.read_csv("data/cores/607_cibs.csv"), "d18O")
     iso_981 = clean_and_sort(pd.read_csv("data/cores/981_cibs_adj.csv"), "d18O")
     iso_982 = clean_and_sort(pd.read_csv("data/cores/981_cibs_adj.csv"), "d18O")
 
@@ -165,24 +165,24 @@ def meeting_plot(save_fig=False, save_title="Figure"):
     axs[pos_d18o].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **dict_1209)
 
     # U1313 data
-    '''# axs[pos_mg_ca].plot(te_1313.age_ka, te_1313.MgCa, **dict_1313)
+    # axs[pos_mg_ca].plot(te_1313.age_ka, te_1313.MgCa, **dict_1313)
     axs[pos_bwt].plot(psu_1313.age_ka, psu_1313.temp, **dict_1313)
     axs[pos_bwt].fill_between(psu_1313.age_ka, psu_1313.temp_min1, psu_1313.temp_plus1, alpha=0.1,
                               facecolor=colour_1313)
     axs[pos_sw].plot(psu_1313.age_ka, psu_1313.d18O_sw, **dict_1313)
     axs[pos_sw].fill_between(psu_1313.age_ka, psu_1313.d18O_min1, psu_1313.d18O_plus1, alpha=0.1, facecolor=colour_1313)
-    axs[pos_d18o].plot(iso_1313.age_ka, (iso_1313.d18O - 0.64), **dict_1313)'''
+    axs[pos_d18o].plot(iso_1313.age_ka, (iso_1313.d18O - 0.64), **dict_1313)
 
     '''# 849 data
     axs[pos_mg_ca].plot(te_849.age_ka, te_849.MgCa, **dict_849)
     axs[pos_bwt].plot(te_849.age_ka, te_849.BWT, **dict_849)
     axs[pos_d18o].plot(iso_849.age_ka, (iso_849.d18O - 0.64), **dict_849)'''
 
-    '''# 607 data
+    # 607 data
     axs[pos_mg_ca].plot(te_607.age_ka, te_607.MgCa, **dict_607)
     axs[pos_bwt].plot(te_607.age_ka, te_607.BWT, **dict_607)
     axs[pos_sw].plot(te_607.age_ka, te_607.d18O_sw, **dict_607)
-    axs[pos_d18o].plot(iso_607.age_ka, (iso_607.d18O - 0.64), **dict_607)'''
+    axs[pos_d18o].plot(iso_607.age_ka, iso_607.d18O, **dict_607)
 
     # Add legends
     for ax in axs:
@@ -223,31 +223,27 @@ if __name__ == "__main__":
     # Change to parent directory
     os.chdir("../..")
     # Plot the relevant graphs
-    meeting_plot(save_fig=False, save_title='Figure_01')
+    # meeting_plot(save_fig=False, save_title='Figure_01')
 
+    iso_607 = clean_and_sort(pd.read_csv("data/cores/607_cibs.csv"), "d18O")
     iso_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_cibs_adj.csv"), "d18O")
-    iso_607 = clean_and_sort(pd.read_csv("data/cores/607_cibs_adj.csv"), "d18O")
-    te_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_te.csv"), "MgCa")
-    te_607 = clean_and_sort(pd.read_csv("data/cores/607_te.csv"), "MgCa")
+    iso_849 = clean_and_sort(pd.read_csv("data/cores/849_cibs_adj.csv"), "d18O")
+    iso_981 = clean_and_sort(pd.read_csv("data/cores/981_cibs_adj.csv"), "d18O")
+    iso_982 = clean_and_sort(pd.read_csv("data/cores/981_cibs_adj.csv"), "d18O")
 
-    fig, axs = plt.subplots(nrows=3, sharex=True)
-    fig.subplots_adjust(hspace=0)
+    fig, ax = plt.subplots()
 
-    axs[0].plot(iso_1313.age_ka, (iso_1313.d18O - 0.64), marker='+', label='U1313')
-    axs[0].plot(iso_607.age_ka, (iso_607.d18O - 0.64), marker='+', label='607')
-    axs[0].set(ylabel='Cibicidoides {} ({})'.format(r'$\delta^{18}$O', u"\u2030"), xlabel="Age (ka)", xlim=[2400, 3200])
-    axs[0].legend(frameon=False)
-    axs[0].invert_yaxis()
+    ax.plot(iso_1313.age_ka, (iso_1313.d18O - 0.64), label="U1313")
+    ax.plot(iso_981.age_ka, (iso_981.d18O - 0.64), label="981")
+    # ax.plot(iso_849.age_ka, (iso_849.d18O - 0.54), label="849")
+    ax.plot(iso_607.age_ka, iso_607.d18O, label="607 (on LR04 age model)")
 
-    axs[1].plot(te_1313.age_ka, te_1313.MgCa, marker='+', label='U1313')
-    axs[1].plot(te_607.age_ka, te_607.MgCa, marker='+', label='607')
-    axs[1].set(ylabel='Mg/Ca (mmol/mol)', xlabel="Age (ka)", xlim=[2400, 3200])
-    axs[1].legend(frameon=False)
-
-    axs[2].plot(te_1313.age_ka, te_1313.BWT, marker='+', label='U1313')
-    axs[2].plot(te_607.age_ka, te_607.BWT, marker='+', label='607')
-    axs[2].set(ylabel='BWT', xlabel="Age (ka)", xlim=[2400, 3200])
-    axs[2].legend(frameon=False)
+    ax.invert_yaxis()
+    ax.set(xlim=[2000, 3200], xlabel="Age (ka)", ylabel="d18O")
+    ax.legend(frameon=False, shadow=False)
 
     plt.show()
+
+
+
 

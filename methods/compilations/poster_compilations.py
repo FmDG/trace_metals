@@ -22,8 +22,8 @@ def poster_plot(save_fig=False):
     te_607 = clean_and_sort(pd.read_csv("data/cores/607_te.csv"), "MgCa")
 
     # Load the PSU datasets
-    psu_1208 = clean_and_sort(pd.read_csv("data/cores/1208_psu.csv"), "temp")
-    psu_1209 = clean_and_sort(pd.read_csv("data/cores/1209_psu.csv"), 'temp')
+    psu_1208 = clean_and_sort(pd.read_csv("data/cores/1208_psu_02.csv"), "temp")
+    psu_1209 = clean_and_sort(pd.read_csv("data/cores/1209_psu_02.csv"), 'temp')
     psu_1313 = clean_and_sort(pd.read_csv("data/cores/U1313_psu.csv"), 'temp')
 
     # Load the d18O datasets
@@ -52,15 +52,15 @@ def poster_plot(save_fig=False):
     fig.subplots_adjust(hspace=0)
 
     # Dictionaries of axis markings
-    dict_1209 = {"marker": None, 'mfc': [0, 0, 0, 0], "color": colour_1209, "mec": colour_1209, "label": '1209'}
-    dict_1208 = {"marker": None, 'mfc': [0, 0, 0, 0], "color": colour_1208, "mec": colour_1208, "label": '1208'}
+    dict_1209 = {"marker": "o", 'mfc': [0, 0, 0, 0], "color": colour_1209, "mec": colour_1209, "label": '1209'}
+    dict_1208 = {"marker": "D", 'mfc': [0, 0, 0, 0], "color": colour_1208, "mec": colour_1208, "label": '1208'}
     dict_1313 = {"marker": None, 'mfc': [0, 0, 0, 0], "color": colour_1313, "mec": colour_1313, "label": 'U1313'}
-    dict_607 = {"marker": None, 'mfc': [0, 0, 0, 0], "color": colour_607, "mec": colour_607, "label": '607'}
+    dict_607 = {"marker": "^", 'mfc': [0, 0, 0, 0], "color": colour_607, "mec": colour_607, "label": '607'}
 
     # The Mg/Ca plot
     axs[pos_mg_ca].plot(te_1209.age_ka, te_1209.MgCa, **dict_1209)
     axs[pos_mg_ca].plot(te_1208.age_ka, te_1208.MgCa, **dict_1208)
-    axs[pos_mg_ca].plot(te_607.age_ka, te_607.MgCa, **dict_607)
+    # axs[pos_mg_ca].plot(te_607.age_ka, te_607.MgCa, **dict_607)
 
     # The BWT plot
     axs[pos_bwt].plot(psu_1209.age_ka, psu_1209.temp, **dict_1209)
@@ -123,7 +123,7 @@ def poster_plot(save_fig=False):
     axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[age_min, age_max])
 
     if save_fig:
-        plt.savefig("figures/meeting/trace_metals_fill.png", format='png')
+        plt.savefig("figures/meeting/Figure_04.svg", format='svg')
     else:
         plt.show()
 

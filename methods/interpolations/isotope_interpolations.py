@@ -4,39 +4,49 @@ import pandas as pd
 import scipy.interpolate as interpol
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import savgol_filter
+from scipy.signal import savgol_filter, periodogram
+
+# Colours
+colours = ['#fbb4ae', '#b3cde3', '#ccebc5']
+
+
+def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False):
+    # Define the age array
+    age_array = np.arange(start, end, fs)
+
+    # Drop any N/A values
+    dataseries = dataseries.dropna(subset=["d18O_unadj", "age_ka"])
+
+    # Drop any duplicate values and sort the dataset in ascending order
+    dataseries = dataseries.sort_values(by="age_ka")
+    dataseries = dataseries.drop_duplicates(subset='age_ka')
+
+    if pchip:
+        # Interpolate across the dataset using the pChip interpolator
+        interpolated_dataset = interpol.pchip_interpolate(xi=dataseries.age_ka, yi=dataseries.d18O_unadj, x=age_array)
+    else:
+        function_int = interpol.interp1d(x=dataseries.age_ka, y=dataseries.d18O_unadj, fill_value="extrapolate")
+        # Interpolate across this age array
+        interpolated_dataset = function_int(age_array)
+
+    return interpolated_dataset, age_array
+
 
 def interpolate_isotopes(plot_interpol=False):
+
+    # Age limits
+    start = 2400
+    stop = 3400
+
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
 
-    # Age array
-    start = 2400
-    stop = 3600
-    age_array = np.arange(start, stop, 0.1)
-
     # We can use two different interpolation techniques - the first is a simple 1D interpolation, the second is a
     # PChip interpolation
 
-    function_1208 = interpol.interp1d(x=site_1208.age_ka, y=site_1208.d18O_unadj, fill_value="extrapolate")
-    function_1209 = interpol.interp1d(x=site_1209.age_ka, y=site_1209.d18O_unadj, fill_value="extrapolate")
-
-    site_1208 = site_1208.dropna(subset=["d18O_unadj", "age_ka"])
-    site_1209 = site_1209.dropna(subset=["d18O_unadj", "age_ka"])
-
-    site_1208 = site_1208.sort_values(by="age_ka")
-    site_1208 = site_1208.drop_duplicates(subset='age_ka')
-
-    site_1209 = site_1209.sort_values(by="age_ka")
-    site_1209 = site_1209.drop_duplicates(subset='age_ka')
-
-    pchip_1208 = interpol.pchip_interpolate(xi=site_1208.age_ka, yi=site_1208.d18O_unadj, x=age_array)
-    pchip_1209 = interpol.pchip_interpolate(xi=site_1209.age_ka, yi=site_1209.d18O_unadj, x=age_array)
-
-    # Interpolate across this age array
-    interpolated_1208 = function_1208(age_array)
-    interpolated_1209 = function_1209(age_array)
+    pchip_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=True)
+    pchip_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=True)
 
     # Filter pchip function
     filtered_diff = savgol_filter((pchip_1208-pchip_1209), 301, 3)
@@ -86,32 +96,15 @@ def show_interpolation(num_interpolation=1.0):
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
 
-    # Age array
     start = 2400
-    stop = 3600
-    age_array = np.arange(start, stop, num_interpolation)
+    stop = 3400
 
-    # We can use two different interpolation techniques - the first is a simple 1D interpolation, the second is a
-    # PChip interpolation
-
-    function_1208 = interpol.interp1d(x=site_1208.age_ka, y=site_1208.d18O_unadj, fill_value="extrapolate")
-    function_1209 = interpol.interp1d(x=site_1209.age_ka, y=site_1209.d18O_unadj, fill_value="extrapolate")
-
-    site_1208 = site_1208.dropna(subset=["d18O_unadj", "age_ka"])
-    site_1209 = site_1209.dropna(subset=["d18O_unadj", "age_ka"])
-
-    site_1208 = site_1208.sort_values(by="age_ka")
-    site_1208 = site_1208.drop_duplicates(subset='age_ka')
-
-    site_1209 = site_1209.sort_values(by="age_ka")
-    site_1209 = site_1209.drop_duplicates(subset='age_ka')
-
-    pchip_1208 = interpol.pchip_interpolate(xi=site_1208.age_ka, yi=site_1208.d18O_unadj, x=age_array)
-    pchip_1209 = interpol.pchip_interpolate(xi=site_1209.age_ka, yi=site_1209.d18O_unadj, x=age_array)
+    pchip_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=True)
+    pchip_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=True)
 
     # Interpolate across this age array
-    interpolated_1208 = function_1208(age_array)
-    interpolated_1209 = function_1209(age_array)
+    interpolated_1208, _ = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=False)
+    interpolated_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=False)
 
     fig, axs = plt.subplots(2, sharex="all")
     # Remove horizontal space between axes
@@ -135,6 +128,7 @@ def show_interpolation(num_interpolation=1.0):
 
 
 def time_series_analysis():
+
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
@@ -142,34 +136,27 @@ def time_series_analysis():
     # Define the age array
     start = 2400
     stop = 3600
-    age_array = np.arange(start, stop, 0.1)
+    ts = 0.1
 
-    # Drop any N/A values
-    site_1208 = site_1208.dropna(subset=["d18O_unadj", "age_ka"])
-    site_1209 = site_1209.dropna(subset=["d18O_unadj", "age_ka"])
+    interpolated_1208, age_array = generate_interpolation(site_1208, fs=ts, start=start, end=stop)
+    interpolated_1209, _ = generate_interpolation(site_1209, fs=ts, start=start, end=stop)
 
-    # Drop any duplicate values and sort the dataset in ascending order
-    site_1208 = site_1208.sort_values(by="age_ka")
-    site_1208 = site_1208.drop_duplicates(subset='age_ka')
+    freq_1208, psd_1208 = periodogram(interpolated_1208, fs=1)
+    freq_1209, psd_1209 = periodogram(interpolated_1209, fs=1)
+    freq_diff, psd_diff = periodogram((interpolated_1208 - interpolated_1209), fs=1)
 
-    site_1209 = site_1209.sort_values(by="age_ka")
-    site_1209 = site_1209.drop_duplicates(subset='age_ka')
+    fig, axs = plt.subplots(nrows=1, ncols=2)
 
-    # Interpolate across the dataset using the pChip interpolator
-    pchip_1208 = interpol.pchip_interpolate(xi=site_1208.age_ka, yi=site_1208.d18O_unadj, x=age_array)
-    pchip_1209 = interpol.pchip_interpolate(xi=site_1209.age_ka, yi=site_1209.d18O_unadj, x=age_array)
+    axs[0].semilogy(freq_1208, psd_1208, color=colours[0])
+    axs[0].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1208")
+    axs[1].semilogy(freq_1209, psd_1209, color=colours[1])
+    axs[1].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1209")
 
-    '''periods = np.logspace(0, 7, 1000, base=2)
-    wps = WPS(periods)
+    fig, ax = plt.subplots(nrows=1, ncols=1)
+    ax.semilogy(freq_diff, psd_diff, color=colours[2])
+    ax.set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="Difference")
+    plt.show()
 
-    sig = TSeries(age_array, pchip_1208)
-
-    spectrum = wps(sig)
-
-    spectrum.contourf(y="period", extend="min", levels=10)
-    wps.plot_coi(hatch="x", color="grey", alpha=0.5)
-    plt.yscale("log")
-    '''
 
 if __name__ == "__main__":
     os.chdir('../..')

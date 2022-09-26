@@ -42,10 +42,15 @@ def te_changepoints(age_limit=False):
         after_mean, after_error, before_mean, before_error = age_split(te_1209, split_age)
 
         axs[i, j].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colours[0])
-        axs[i, j].plot([te_1209.age_ka.min(), split_age], [after_mean, after_mean], label=f'Post-{split_age} kyr = {after_mean:.2} ± {after_error:.1}', color=colours[1])
-        axs[i, j].fill_between([te_1209.age_ka.min(), split_age], [after_mean - after_error, after_mean - after_error], [after_mean + after_error, after_mean + after_error], alpha=0.1, color=colours[1])
-        axs[i, j].plot([split_age, te_1209.age_ka.max()], [before_mean, before_mean], label=f'Pre-{split_age} kyr = {before_mean:.2} ± {before_error:.1}', color=colours[2])
-        axs[i, j].fill_between([split_age, te_1209.age_ka.max()], [before_mean - before_error, before_mean - before_error], [before_mean + before_error, before_mean + before_error], alpha=0.1, color=colours[2])
+        axs[i, j].plot([te_1209.age_ka.min(), split_age], [after_mean, after_mean],
+                       label=f'Post-{split_age} kyr = {after_mean:.2} ± {after_error:.1}', color=colours[1])
+        axs[i, j].fill_between([te_1209.age_ka.min(), split_age], [after_mean - after_error, after_mean - after_error],
+                               [after_mean + after_error, after_mean + after_error], alpha=0.1, color=colours[1])
+        axs[i, j].plot([split_age, te_1209.age_ka.max()], [before_mean, before_mean],
+                       label=f'Pre-{split_age} kyr = {before_mean:.2} ± {before_error:.1}', color=colours[2])
+        axs[i, j].fill_between([split_age, te_1209.age_ka.max()],
+                               [before_mean - before_error, before_mean - before_error],
+                               [before_mean + before_error, before_mean + before_error], alpha=0.1, color=colours[2])
 
         axs[i, j].axvline(split_age, color='r', ls='--')
         axs[i, j].legend()

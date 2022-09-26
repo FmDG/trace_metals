@@ -1,9 +1,9 @@
 import os
 
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import scipy.interpolate as interpol
-import numpy as np
-import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter, periodogram
 
 # Colours
@@ -33,7 +33,6 @@ def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False
 
 
 def interpolate_isotopes(plot_interpol=False):
-
     # Age limits
     start = 2400
     stop = 3400
@@ -49,7 +48,7 @@ def interpolate_isotopes(plot_interpol=False):
     interp_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=False)
 
     # Filter pchip function
-    filtered_diff = savgol_filter((interp_1208-interp_1209), 301, 3)
+    filtered_diff = savgol_filter((interp_1208 - interp_1209), 301, 3)
 
     fig, axs = plt.subplots(2, sharex="all")
     # Remove horizontal space between axes
@@ -66,7 +65,8 @@ def interpolate_isotopes(plot_interpol=False):
 
     axs[1].plot(age_array, (interp_1208 - interp_1209), label="Difference", c='m')
     axs[1].plot(age_array, filtered_diff, label="Filtered Difference", c='k')
-    axs[1].set(xlabel="Age (ka)", ylabel="Difference in {} ({})".format(r'$\delta^{18}$O', u"\u2030"), xlim=[start, stop])
+    axs[1].set(xlabel="Age (ka)", ylabel="Difference in {} ({})".format(r'$\delta^{18}$O', u"\u2030"),
+               xlim=[start, stop])
 
     # Adds horizontal 0 line
     # axs[1].axhline(0, ls='--', color='m')
@@ -126,7 +126,6 @@ def show_interpolation(num_interpolation=1.0):
 
 
 def time_series_analysis():
-
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
@@ -154,8 +153,6 @@ def time_series_analysis():
     ax.semilogy(freq_diff, psd_diff, color=colours[2])
     ax.set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="Difference")
     plt.show()
-
-
 
 
 if __name__ == "__main__":

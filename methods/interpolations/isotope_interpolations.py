@@ -10,12 +10,11 @@ from scipy.signal import savgol_filter, periodogram
 colours = ['#fbb4ae', '#b3cde3', '#ccebc5']
 
 
-def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False):
+def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False, value="d18O_unadj"):
     # Define the age array
     age_array = np.arange(start, end, fs)
-
     # Drop any N/A values
-    dataseries = dataseries.dropna(subset=["d18O_unadj", "age_ka"])
+    dataseries = dataseries.dropna(subset=[value, "age_ka"])
 
     # Drop any duplicate values and sort the dataset in ascending order
     dataseries = dataseries.sort_values(by="age_ka")
@@ -23,9 +22,9 @@ def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False
 
     if pchip:
         # Interpolate across the dataset using the pChip interpolator
-        interpolated_dataset = interpol.pchip_interpolate(xi=dataseries.age_ka, yi=dataseries.d18O_unadj, x=age_array)
+        interpolated_dataset = interpol.pchip_interpolate(xi=dataseries.age_ka, yi=dataseries[value], x=age_array)
     else:
-        function_int = interpol.interp1d(x=dataseries.age_ka, y=dataseries.d18O_unadj, fill_value="extrapolate")
+        function_int = interpol.interp1d(x=dataseries.age_ka, y=dataseries[value], fill_value="extrapolate")
         # Interpolate across this age array
         interpolated_dataset = function_int(age_array)
 

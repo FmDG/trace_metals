@@ -45,28 +45,26 @@ def interpolate_isotopes(plot_interpol=False):
     # We can use two different interpolation techniques - the first is a simple 1D interpolation, the second is a
     # PChip interpolation
 
-    pchip_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=True)
-    pchip_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=True)
+    interp_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=False)
+    interp_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=False)
 
     # Filter pchip function
-    filtered_diff = savgol_filter((pchip_1208-pchip_1209), 301, 3)
+    filtered_diff = savgol_filter((interp_1208-interp_1209), 301, 3)
 
     fig, axs = plt.subplots(2, sharex="all")
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
-    axs[0].plot(age_array, pchip_1208)
-    axs[0].plot(age_array, pchip_1209)
-    axs[0].scatter(site_1208.age_ka, site_1208.d18O_unadj, label="ODP 1208", marker='+')
-    axs[0].scatter(site_1209.age_ka, site_1209.d18O_unadj, label="ODP 1209", marker='+')
-    axs[0].set(ylabel='Interpolated {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    axs[0].plot(site_1208.age_ka, site_1208.d18O_unadj, label="ODP 1208", marker='+')
+    axs[0].plot(site_1209.age_ka, site_1209.d18O_unadj, label="ODP 1209", marker='+')
+    axs[0].set(ylabel='Benthic {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     axs[0].invert_yaxis()
     axs[0].spines['right'].set_visible(False)
     axs[0].spines['top'].set_visible(False)
     axs[0].spines['bottom'].set_visible(False)
     axs[0].legend()
 
-    axs[1].plot(age_array, (pchip_1208 - pchip_1209), label="Difference", c='m')
+    axs[1].plot(age_array, (interp_1208 - interp_1209), label="Difference", c='m')
     axs[1].plot(age_array, filtered_diff, label="Filtered Difference", c='k')
     axs[1].set(xlabel="Age (ka)", ylabel="Difference in {} ({})".format(r'$\delta^{18}$O', u"\u2030"), xlim=[start, stop])
 
@@ -158,6 +156,8 @@ def time_series_analysis():
     plt.show()
 
 
+
+
 if __name__ == "__main__":
     os.chdir('../..')
-    time_series_analysis()
+    interpolate_isotopes()

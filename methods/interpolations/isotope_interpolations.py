@@ -6,8 +6,7 @@ import pandas as pd
 import scipy.interpolate as interpol
 from scipy.signal import savgol_filter, periodogram
 
-# Colours
-colours = ['#fbb4ae', '#b3cde3', '#ccebc5']
+from objects.colours import pastels
 
 
 def generate_interpolation(dataseries, fs=1.0, start=2400, end=3400, pchip=False, value="d18O_unadj"):
@@ -143,13 +142,13 @@ def time_series_analysis():
 
     fig, axs = plt.subplots(nrows=1, ncols=2)
 
-    axs[0].semilogy(freq_1208, psd_1208, color=colours[0])
+    axs[0].semilogy(freq_1208, psd_1208, color=pastels[0])
     axs[0].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1208")
-    axs[1].semilogy(freq_1209, psd_1209, color=colours[1])
+    axs[1].semilogy(freq_1209, psd_1209, color=pastels[1])
     axs[1].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1209")
 
     fig, ax = plt.subplots(nrows=1, ncols=1)
-    ax.semilogy(freq_diff, psd_diff, color=colours[2])
+    ax.semilogy(freq_diff, psd_diff, color=pastels[2])
     ax.set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="Difference")
     plt.show()
 

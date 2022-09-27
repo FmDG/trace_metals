@@ -5,7 +5,6 @@ import pandas as pd
 
 
 def compare_psu_temp(save_fig=False, figure_name="PLOT"):
-
     # Load the PSU data
     psu_1209 = pd.read_csv("data/PSU_Solver/RUN_6/1209_run.csv")
     psu_1208 = pd.read_csv("data/PSU_Solver/RUN_6/1208_run.csv")

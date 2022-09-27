@@ -2,7 +2,6 @@ import os
 
 import pandas as pd
 
-
 os.chdir('../..')
 cores = [607, 1208, 1209]
 for core in cores:

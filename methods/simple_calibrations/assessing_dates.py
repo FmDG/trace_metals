@@ -1,7 +1,7 @@
-import pandas as pd
-import scipy.interpolate as interpol
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def check_dates():
@@ -23,7 +23,6 @@ def check_dates():
     ax.spines['top'].set_visible(False)
 
     plt.show()
-
 
 
 if __name__ == "__main__":

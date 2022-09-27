@@ -1,7 +1,7 @@
 import os
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def plot_mg_li(save_fig=False, figure_name="Mg_Li"):
@@ -41,7 +41,8 @@ def plot_mg_li(save_fig=False, figure_name="Mg_Li"):
     # Plot the MgLi
     # axs[1].plot(te_1018.age_ka, (te_1018.MgCa/te_1018.LiCa), color=colours[0], linestyle="-", marker="+", label="1018")
     # axs[1].plot(te_1014.age_ka, (te_1014.MgCa/te_1014.LiCa), color=colours[1], linestyle="-", marker="+", label="1014")
-    axs[1].plot(te_1209.age_ka, (te_1209.MgCa/te_1209.LiCa), color=colours[3], linestyle="-", marker="+", label="1209")
+    axs[1].plot(te_1209.age_ka, (te_1209.MgCa / te_1209.LiCa), color=colours[3], linestyle="-", marker="+",
+                label="1209")
     # Label the y-axis
     axs[1].set(ylabel='{} ({})'.format('Mg/Li', r'mmol/$\mu$mol'))
 

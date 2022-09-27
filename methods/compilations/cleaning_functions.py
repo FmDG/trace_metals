@@ -1,5 +1,3 @@
-
-
 def clean(dataset, subset):
     return dataset.dropna(subset=[subset])
 

@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 
 
 def basic_plot(datasets, age_min=2400, age_max=3400, save_fig=False, figure_name='Figure_1', colours=None):
-
     # load the colours
     if colours is None:
         colours = ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e']
@@ -51,4 +50,3 @@ def basic_plot(datasets, age_min=2400, age_max=3400, save_fig=False, figure_name
         plt.savefig("figures/basic_plots/{}.png".format(figure_name), format='png')
     else:
         plt.show()
-

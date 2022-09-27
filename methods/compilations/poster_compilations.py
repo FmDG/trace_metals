@@ -3,9 +3,11 @@
 # which is to generate a plot for the meeting with Heather and David on the week of the 6th August which summaries
 # where I am so far with my results.
 
-import pandas as pd
 import os
+
 import matplotlib.pyplot as plt
+import pandas as pd
+
 from cleaning_functions import clean_and_sort
 
 
@@ -248,7 +250,3 @@ if __name__ == "__main__":
     os.chdir("../..")
     # Plot the relevant graphs
     poster_plot(save_fig=True)
-
-
-
-

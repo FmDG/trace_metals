@@ -123,14 +123,14 @@ def display_changepoint(age_limit=True):
     # Plot up results
     axs[0].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colours[0])
     axs[0].plot([te_1209.age_ka.min(), split_age], [after_mean, after_mean],
-                       label=f'Post-{split_age} kyr = {after_mean:.3} ± {after_error:.2}', color=colours[1])
+                label=f'Post-{split_age} kyr = {after_mean:.3} ± {after_error:.2}', color=colours[1])
     axs[0].fill_between([te_1209.age_ka.min(), split_age], [after_mean - after_error, after_mean - after_error],
-                               [after_mean + after_error, after_mean + after_error], alpha=0.1, color=colours[1])
+                        [after_mean + after_error, after_mean + after_error], alpha=0.1, color=colours[1])
     axs[0].plot([split_age, te_1209.age_ka.max()], [before_mean, before_mean],
-                       label=f'Pre-{split_age} kyr = {before_mean:.3} ± {before_error:.2}', color=colours[2])
+                label=f'Pre-{split_age} kyr = {before_mean:.3} ± {before_error:.2}', color=colours[2])
     axs[0].fill_between([split_age, te_1209.age_ka.max()],
-                               [before_mean - before_error, before_mean - before_error],
-                               [before_mean + before_error, before_mean + before_error], alpha=0.1, color=colours[2])
+                        [before_mean - before_error, before_mean - before_error],
+                        [before_mean + before_error, before_mean + before_error], alpha=0.1, color=colours[2])
 
     axs[0].axvline(split_age, color='r', ls='--')
     axs[0].legend()
@@ -138,14 +138,16 @@ def display_changepoint(age_limit=True):
 
     axs[1].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colours[0])
     axs[1].plot([te_1208.age_ka.min(), split_age], [after_mean_08, after_mean_08],
-                       label=f'Post-{split_age} kyr = {after_mean_08:.3} ± {after_error_08:.2}', color=colours[1])
-    axs[1].fill_between([te_1208.age_ka.min(), split_age], [after_mean_08 - after_error_08, after_mean_08 - after_error_08],
-                               [after_mean_08 + after_error_08, after_mean_08 + after_error_08], alpha=0.1, color=colours[1])
+                label=f'Post-{split_age} kyr = {after_mean_08:.3} ± {after_error_08:.2}', color=colours[1])
+    axs[1].fill_between([te_1208.age_ka.min(), split_age],
+                        [after_mean_08 - after_error_08, after_mean_08 - after_error_08],
+                        [after_mean_08 + after_error_08, after_mean_08 + after_error_08], alpha=0.1, color=colours[1])
     axs[1].plot([split_age, te_1208.age_ka.max()], [before_mean_08, before_mean_08],
-                       label=f'Pre-{split_age} kyr = {before_mean_08:.3} ± {before_error_08:.2}', color=colours[2])
+                label=f'Pre-{split_age} kyr = {before_mean_08:.3} ± {before_error_08:.2}', color=colours[2])
     axs[1].fill_between([split_age, te_1208.age_ka.max()],
-                               [before_mean_08 - before_error_08, before_mean_08 - before_error_08],
-                               [before_mean_08 + before_error_08, before_mean_08 + before_error_08], alpha=0.1, color=colours[2])
+                        [before_mean_08 - before_error_08, before_mean_08 - before_error_08],
+                        [before_mean_08 + before_error_08, before_mean_08 + before_error_08], alpha=0.1,
+                        color=colours[2])
 
     axs[1].axvline(split_age, color='r', ls='--')
     axs[1].legend()

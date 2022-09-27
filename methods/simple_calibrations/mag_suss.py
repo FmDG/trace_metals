@@ -1,6 +1,7 @@
-import pandas as pd
 import os
+
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def mag_suss():

@@ -15,9 +15,9 @@ def corruption_test(save_fig=False):
     num_plots = 5
 
     if save_fig:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
+        fig, axs = plt.subplots(num_plots, 1, sharex="all", figsize=(8.25, 11.75))
     else:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True)
+        fig, axs = plt.subplots(num_plots, 1, sharex="all")
 
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)

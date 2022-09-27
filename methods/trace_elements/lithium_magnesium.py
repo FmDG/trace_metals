@@ -17,7 +17,7 @@ def lithium_plots():
 
     # Set up the plots
     num_plots = 3
-    fig, axs = plt.subplots(num_plots, 1, sharex=True)
+    fig, axs = plt.subplots(num_plots, 1, sharex="all")
 
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)

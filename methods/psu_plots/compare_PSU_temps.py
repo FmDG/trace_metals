@@ -3,6 +3,8 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from objects.colours import dark_02
+
 
 def compare_psu_temp(save_fig=False, figure_name="PLOT"):
     # Load the PSU data
@@ -38,9 +40,9 @@ def compare_psu_temp(save_fig=False, figure_name="PLOT"):
 
     # Set up figure
     if save_fig:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
+        fig, axs = plt.subplots(num_plots, 1, sharex="all", figsize=(8.25, 11.75))
     else:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True)
+        fig, axs = plt.subplots(num_plots, 1, sharex="all")
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
@@ -123,4 +125,4 @@ def compare_psu_temp(save_fig=False, figure_name="PLOT"):
 if __name__ == "__main__":
     # Change to the relevant directory
     os.chdir("../..")
-    compare_psu_temp(save_fig=False, figure_name="607_U1313")
+    compare_psu_temp(save_fig=False)

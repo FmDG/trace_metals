@@ -8,12 +8,12 @@ import pandas as pd
 colours = ['#1b9e77', '#d95f02', '#7570b3']
 
 
-def age_split(dataseries, split_point):
+def age_split(dataseries, split_point, value="MgCa"):
     # Split the dataframe into two parts
     before = dataseries[dataseries.age_ka > split_point]
     after = dataseries[dataseries.age_ka < split_point]
     # Return the means
-    return after.MgCa.mean(), after.MgCa.std(), before.MgCa.mean(), before.MgCa.std()
+    return after[value].mean(), after[value].std(), before[value].mean(), before[value].std()
 
 
 def te_changepoints(age_limit=False):

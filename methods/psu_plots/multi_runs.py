@@ -21,9 +21,9 @@ def psu_plots_by_run(min_age=2400, max_age=2900, num_runs=2, save_fig=False, fig
 
     # Set up figure
     if save_fig:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True, figsize=(8.25, 11.75))
+        fig, axs = plt.subplots(num_plots, 1, sharex="all", figsize=(8.25, 11.75))
     else:
-        fig, axs = plt.subplots(num_plots, 1, sharex=True)
+        fig, axs = plt.subplots(num_plots, 1, sharex="all")
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 

@@ -7,26 +7,18 @@ from scipy.signal import savgol_filter
 from methods.interpolations.isotope_interpolations import generate_interpolation
 
 
-def interpolations_glacials(age_min=2400, age_max=3400, window=40, compare_lr04=True, save_fig=False):
+def interpolations_glacials(age_min=2400, age_max=3400, window=40, save_fig=False):
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
-    # Load LR04
-    lr04 = pd.read_csv("data/stacks/LR04.csv")
 
     # We use a simple 1D interpolation, with a density of "freq"
     freq = 0.1
     interp_1208, age_array = generate_interpolation(site_1208, fs=freq, start=age_min, end=age_max, pchip=False)
     interp_1209, _ = generate_interpolation(site_1209, fs=freq, start=age_min, end=age_max, pchip=False)
-    interp_lr04, _ = generate_interpolation(lr04, fs=freq, start=age_min, end=age_max, pchip=False, value='d18O')
 
-    # Define glacials
-    if compare_lr04:
-        threshold = 3.6
-        glacials = (interp_lr04 > threshold)
-    else:
-        threshold = 3.0
-        glacials = (interp_1208 > threshold)
+    threshold = 3.0
+    glacials = (interp_1208 > threshold)
 
     # Filter interpolation function over "window" ka, with a polynomial function of order "n"
     n = 3
@@ -39,12 +31,8 @@ def interpolations_glacials(age_min=2400, age_max=3400, window=40, compare_lr04=
     fig.subplots_adjust(hspace=0)
 
     # Plot the oxygen isotope records from 1208 and 1209
-    if compare_lr04:
-        axs[0].plot(lr04.age_ka, lr04.d18O, label="LR04", c='k')
-        axs[0].fill_between(lr04.age_ka, lr04.d18O, threshold, fc='b', ec=None, alpha=0.2)
-    else:
-        axs[0].plot(age_array, interp_1208, label="1208", c='k')
-        axs[0].fill_between(age_array, interp_1208, threshold, fc='b', ec=None, alpha=0.2)
+    axs[0].plot(age_array, interp_1208, label="1208", c='k')
+    axs[0].fill_between(age_array, interp_1208, threshold, fc='b', ec=None, alpha=0.2)
     axs[0].set(ylabel='Benthic {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     axs[0].plot([age_min, age_max], [threshold, threshold], '--', color='k', linewidth=1.0,
                 label='Threshold = {} {}'.format(threshold, u"\u2030"))
@@ -87,7 +75,7 @@ def interpolations_glacials(age_min=2400, age_max=3400, window=40, compare_lr04=
 
     # Show the plot
     if save_fig:
-        plt.savefig("figures/interpolations/figure_01.png", format='png')
+        plt.savefig("figures/interpolations/figure_01.png", format='png', dpi=300)
     else:
         plt.show()
 
@@ -223,4 +211,4 @@ def interpolations_te(age_min=2400, age_max=3400, window=40, save_fig=False):
 
 if __name__ == "__main__":
     os.chdir('../..')
-    interpolations_te(save_fig=True, age_max=2900)
+    interpolations_glacials(save_fig=True)

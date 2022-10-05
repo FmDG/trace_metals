@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from methods.interpolations.te_changepoints import age_split
+from methods.changepoints.age_split import age_split
 from objects.colours import colours, colours_04
 
 

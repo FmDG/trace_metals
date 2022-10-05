@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
-from methods.interpolations.isotope_interpolations import generate_interpolation
+from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.colours import colours_extra as clr
 
 
@@ -384,7 +384,7 @@ if __name__ == "__main__":
     # Load the datasets
     # Load the PSU datasets
     psu_1208 = pd.read_csv("data/cores/1208_psu.csv").dropna()
-    psu_1209 = pd.read_csv("data/cores/1209_psu.csv").dropna()
+    psu_1209 = pd.read_csv("data/cores/1209_psu_02.csv").dropna()
     psu_607 = pd.read_csv("data/cores/607_psu.csv").dropna()
     psu_1313 = pd.read_csv("data/cores/U1313_psu.csv").dropna()
 
@@ -394,7 +394,7 @@ if __name__ == "__main__":
     iso_607 = pd.read_csv("data/cores/607_cibs.csv")
     iso_1313 = pd.read_csv("data/cores/U1313_cibs_adj.csv")
 
-    # figure_one(save_fig=False)
-    # figure_two(save_fig=False)
-    # figure_three(save_fig=False)
+    figure_one(save_fig=False)
+    figure_two(save_fig=False)
+    figure_three(save_fig=False)
     figure_s1(save_fig=False)

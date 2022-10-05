@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import ruptures as rpt
 
-from methods.interpolations.isotope_interpolations import generate_interpolation
+from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.colours import dark_02
 
 

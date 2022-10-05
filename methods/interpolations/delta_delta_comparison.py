@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.signal import savgol_filter
 
-from methods.interpolations.isotope_interpolations import generate_interpolation
+from methods.interpolations.generate_interpolations import generate_interpolation
 
 
 def interpolations_glacials(age_min=2400, age_max=3400, window=40, save_fig=False):

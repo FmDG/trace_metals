@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.signal import savgol_filter
 
-from methods.interpolations.isotope_interpolations import generate_interpolation
+from methods.interpolations.generate_interpolations import generate_interpolation
 # import colours from colours file
 from objects.colours import colours
 

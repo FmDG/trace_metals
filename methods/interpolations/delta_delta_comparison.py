@@ -7,7 +7,7 @@ from scipy.signal import savgol_filter
 from methods.interpolations.generate_interpolations import generate_interpolation
 
 
-def interpolations_glacials(age_min=2400, age_max=3400, window=40, save_fig=False):
+def interpolations_glacials(age_min: int = 2400, age_max: int = 3400, window: int = 40, save_fig: bool = False):
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
     site_1209 = pd.read_csv('data/cores/1209_cibs.csv')

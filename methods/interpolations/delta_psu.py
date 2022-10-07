@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
 from generate_interpolations import generate_interpolation
+from objects.core_data.psu import psu_1208, psu_1209
+from objects.core_data.isotopes import iso_1209, iso_1208
+import objects.figure_arguments as args
 from objects.colours import colours
 
 
@@ -14,19 +17,9 @@ def delta_psu(save_fig: bool = False) -> int:
     if not isinstance(save_fig, bool):
         raise ValueError("save_fig must be of type bool")
 
-    # ------------------- LOAD DATA -------------------
-    # PSU Data from 1209 and 1208
-    psu_1209 = pd.read_csv("data/cores/1209_psu_02.csv").dropna()
-    psu_1208 = pd.read_csv("data/cores/1208_psu.csv").dropna()
-    # Oxygen isotope data from 1209 and 1208
-    iso_1208 = pd.read_csv('data/cores/1208_cibs.csv')
-    iso_1209 = pd.read_csv('data/cores/1209_cibs.csv')
-
     window_size = 100  # window size in ka
 
     # Define the colour schemes
-    c_1208 = {'color': colours[0], 'label': '1208', 'marker': '+'}
-    c_1209 = {'color': colours[1], 'label': '1209', 'marker': '+'}
     c_diff = {'color': colours[2], 'label': '1208 - 1209'}
     c_filt = {'color': 'k', 'label': "Rolling mean ({} ka)".format(window_size)}
 
@@ -66,14 +59,14 @@ def delta_psu(save_fig: bool = False) -> int:
     fig.subplots_adjust(hspace=0)
 
     # Plot up the 1208 data
-    axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **c_1208)
-    axs[2].plot(psu_1208.age_ka, psu_1208.temp, **c_1208)
-    axs[4].plot(psu_1208.age_ka, psu_1208.d18O_sw, **c_1208)
+    axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
+    axs[2].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
+    axs[4].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args.args_1208)
 
     # Plot up the 1209 data
-    axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **c_1209)
-    axs[2].plot(psu_1209.age_ka, psu_1209.temp, **c_1209)
-    axs[4].plot(psu_1209.age_ka, psu_1209.d18O_sw, **c_1209)
+    axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args.args_1209)
+    axs[2].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
+    axs[4].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args.args_1209)
 
     # Plot up the difference data
     axs[1].plot(age_array, diff_iso, **c_diff)

@@ -239,6 +239,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 if __name__ == "__main__":
 
-    figure_one(save_fig=False)
-    figure_two(save_fig=False)
-    figure_three(save_fig=False)
+    figure_one(save_fig=True)
+    figure_two(save_fig=True)
+    figure_three(save_fig=True)

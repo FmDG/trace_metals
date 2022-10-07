@@ -171,13 +171,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/data/cores/607_cibs_adj.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/data/cores/607_te.csv">
           <value>
             <Attribute>

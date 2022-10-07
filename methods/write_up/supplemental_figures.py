@@ -7,6 +7,14 @@ from objects.colours import colours_04
 from methods.figures.tick_dirs import tick_dirs
 
 
+def processing_thresholds(data_set, threshold):
+    excess_mn = data_set.MnCa > threshold
+    excess_al = data_set.AlCa > threshold
+    excess_fe = data_set.FeCa > threshold
+    total_excess = excess_mn + excess_fe + excess_al
+    return total_excess
+
+
 def figure_s1(save_fig: bool = False, figure_ratio: float = 1.0) -> int:
     """
     Supplemental figure showing the raw data of the d18O and Mg/Ca values.
@@ -72,8 +80,8 @@ def figure_s1(save_fig: bool = False, figure_ratio: float = 1.0) -> int:
 
 def figure_s2(save_fig: bool = False, figure_ratio: float = 1.0):
     """
-    Supplemental figure 2. A set of cross-plots showing Mg/Ca against Mn/Ca, Fe/Ca etc... to show that there is no
-    correlation between contaminants and measured values.
+    Supplemental figure 2.     - [ ] A set of plots showing Mg/Ca and Mn/Ca against depth to show that there is no
+    contamination of specific values - repeat this for a bunch of contaminant indicators.
     :param save_fig: boolean to describe if we want to save this figure as Figure_S2.png
     :param figure_ratio: the ratio of x to y in the final displayed/saved figure
     :return: no return
@@ -81,11 +89,13 @@ def figure_s2(save_fig: bool = False, figure_ratio: float = 1.0):
     # Mg/Ca against B/Ca, Mn/Ca, Fe/Ca, and Al/Ca
     num_plots = 4
 
+    te_1209['excess'] = processing_thresholds(te_1209, 120)
+
     fig, axs = plt.subplots(
         nrows=num_plots,
         ncols=1,
         sharex="all",
-        figsize=(8, 8*figure_ratio)
+        figsize=(10, 10 * figure_ratio)
     )
 
     # Remove horizontal space between axes
@@ -94,38 +104,36 @@ def figure_s2(save_fig: bool = False, figure_ratio: float = 1.0):
     fig.suptitle("Raw Data - ODP 1209")
 
     # Mg/Ca
-    axs[0].plot(te_1209.mcd, te_1209.MgCa, label='Mg/Ca', color=colours_04[0], marker='+')
-
-    # Fe/Ca
-    axs[1].plot(te_1209.mcd, te_1209.FeCa, label='Fe/Ca', color=colours_04[1], marker='+')
-    axs[1].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
+    axs[0].scatter(te_1209.mcd, te_1209.MgCa, label='Included', color=colours_04[0], marker='+')
+    axs[0].scatter(te_1209[te_1209['excess']].mcd, te_1209[te_1209['excess']].MgCa, label='Excluded', color='r', marker='+')
+    axs[0].legend(shadow=False, frameon=True)
 
     # Al/Ca
-    axs[2].plot(te_1209.mcd, te_1209.AlCa, label='Al/Ca', color=colours_04[2], marker='+')
-    axs[2].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
+    axs[1].scatter(te_1209.mcd, te_1209.AlCa, label='Al/Ca', color=colours_04[1], marker='+')
+    axs[1].scatter(te_1209[te_1209.AlCa > 120].mcd, te_1209[te_1209.AlCa > 120].AlCa, color='r', marker='+')
+    axs[1].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
 
     # Mn/Ca
-    axs[3].plot(te_1209.mcd, te_1209.MnCa, label='Mn/Ca', color=colours_04[3], marker='+')
+    axs[2].scatter(te_1209.mcd, te_1209.MnCa, label='Mn/Ca', color=colours_04[2], marker='+')
+    axs[2].scatter(te_1209[te_1209.MnCa > 120].mcd, te_1209[te_1209.MnCa > 120].MnCa, color='r', marker='+')
+    axs[2].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
+
+    # Fe/Ca
+    axs[3].scatter(te_1209.mcd, te_1209.FeCa, label='Fe/Ca', color=colours_04[3], marker='+')
+    axs[3].scatter(te_1209[te_1209.FeCa > 120].mcd, te_1209[te_1209.FeCa > 120].FeCa, color='r', marker='+')
     axs[3].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
 
     # Define the axes
     axs[0].set(ylabel='Mg/Ca ({})'.format('mmol/mol'))
-    axs[1].set(ylabel='Fe/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
-    axs[2].set(ylabel='Al/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
-    axs[3].set(ylabel='Mn/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
+    axs[1].set(ylabel='Al/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
+    axs[2].set(ylabel='Mn/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
+    axs[3].set(ylabel='Fe/Ca ({})'.format(r'$\mu$mol/mol'), ylim=[0, 250])
 
     for q in range(num_plots):
         # Remove the left/right axes to make the plot look cleaner
         if q % 2 == 1:
             axs[q].yaxis.set(ticks_position="right", label_position='right')
-            axs[q].spines['left'].set_visible(False)
-        else:
-            axs[q].spines['right'].set_visible(False)
-        axs[q].spines['top'].set_visible(False)
-        axs[q].spines['bottom'].set_visible(False)
 
-    # Set the bottom axis on and label it with the age.
-    axs[(num_plots - 1)].spines['bottom'].set_visible(True)
     axs[(num_plots - 1)].set(xlabel="MCD")
 
     # Save the figure if required
@@ -135,5 +143,60 @@ def figure_s2(save_fig: bool = False, figure_ratio: float = 1.0):
         plt.show()
 
 
+def figure_s3(save_fig: bool = False, figure_ratio: float = 1.0):
+    """
+    Generates figure S1. A set of cross-plots showing Mg/Ca against Mn/Ca, Fe/Ca etc... to show that there is no
+    correlation between contaminants and measured values.
+    :param save_fig: boolean to describe if we want to save this figure as Figure_S3.png
+    :param figure_ratio: the ratio of x to y in the final displayed/saved figure
+    :return: no return
+    """
+    # Mg/Ca against B/Ca, Mn/Ca, Fe/Ca, and Al/Ca
+
+    fig, axs = plt.subplots(
+        nrows=2,
+        ncols=2,
+        sharex="all",
+        sharey='all',
+        figsize=(8, 8 * figure_ratio)
+    )
+
+    # Reduce space between axes
+    fig.subplots_adjust(hspace=0.1, wspace=0.1)
+    # Name the Plot
+    fig.suptitle("Cross Plots - ODP 1209")
+
+    # Mn/Ca
+    axs[0, 0].scatter(te_1209.MgCa, te_1209.MnCa, marker='+', label='Mn/Ca', color=colours_04[0])
+    axs[0, 0].scatter(te_1209[te_1209.MnCa > 120].MgCa, te_1209[te_1209.MnCa > 120].MnCa, marker='+', color='r')
+    axs[0, 0].set(title='Mn/Ca')
+
+    # Fe/Ca
+    axs[0, 1].scatter(te_1209.MgCa, te_1209.FeCa, marker='+', label='Fe/Ca', color=colours_04[1])
+    axs[0, 1].scatter(te_1209[te_1209.FeCa > 120].MgCa, te_1209[te_1209.FeCa > 120].FeCa, marker='+', color='r')
+    axs[0, 1].set(title='Fe/Ca')
+
+    # Al/Ca
+    axs[1, 0].scatter(te_1209.MgCa, te_1209.AlCa, marker='+', label='Al/Ca', color=colours_04[2])
+    axs[1, 0].scatter(te_1209[te_1209.AlCa > 120].MgCa, te_1209[te_1209.AlCa > 120].AlCa, marker='+', color='r')
+    axs[1, 0].set(title='Al/Ca')
+
+    for ax in axs.flat:
+        ax.set(xlabel='Mg/Ca (mmol/mol)', ylabel='Contaminants ({})'.format(r'$\mu$mol/mol'), ylim=[0, 270])
+        ax.label_outer()
+
+    # Save the figure if required
+    if save_fig:
+        plt.savefig("figures/paper/Figure_S3.png", format="png", dpi=300)
+    else:
+        plt.show()
+
+
+def figure_s4(save_fig: bool = False, figure_ratio: float = 1.0):
+    pass
+
+
 if __name__ == "__main__":
-    figure_s1()
+    # figure_s1(save_fig=True)
+    # figure_s2(save_fig=True, figure_ratio=0.8)
+    figure_s3(save_fig=True)

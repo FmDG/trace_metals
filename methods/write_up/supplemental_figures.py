@@ -154,11 +154,11 @@ def figure_s3(save_fig: bool = False, figure_ratio: float = 1.0):
     # Mg/Ca against B/Ca, Mn/Ca, Fe/Ca, and Al/Ca
 
     fig, axs = plt.subplots(
-        nrows=2,
-        ncols=2,
+        nrows=1,
+        ncols=3,
         sharex="all",
         sharey='all',
-        figsize=(8, 8 * figure_ratio)
+        figsize=(15, 5)
     )
 
     # Reduce space between axes
@@ -167,22 +167,22 @@ def figure_s3(save_fig: bool = False, figure_ratio: float = 1.0):
     fig.suptitle("Cross Plots - ODP 1209")
 
     # Mn/Ca
-    axs[0, 0].scatter(te_1209.MgCa, te_1209.MnCa, marker='+', label='Mn/Ca', color=colours_04[0])
-    axs[0, 0].scatter(te_1209[te_1209.MnCa > 120].MgCa, te_1209[te_1209.MnCa > 120].MnCa, marker='+', color='r')
-    axs[0, 0].set(title='Mn/Ca')
+    axs[0].scatter(te_1209.MnCa, te_1209.MgCa, marker='+', label='Mn/Ca', color=colours_04[0])
+    axs[0].scatter(te_1209[te_1209.MnCa > 120].MnCa, te_1209[te_1209.MnCa > 120].MgCa, marker='+', color='r')
+    axs[0].set(title='Mn/Ca', xlabel='Mn/Ca ({})'.format(r'$\mu$mol/mol'))
 
     # Fe/Ca
-    axs[0, 1].scatter(te_1209.MgCa, te_1209.FeCa, marker='+', label='Fe/Ca', color=colours_04[1])
-    axs[0, 1].scatter(te_1209[te_1209.FeCa > 120].MgCa, te_1209[te_1209.FeCa > 120].FeCa, marker='+', color='r')
-    axs[0, 1].set(title='Fe/Ca')
+    axs[1].scatter(te_1209.FeCa, te_1209.MgCa, marker='+', label='Fe/Ca', color=colours_04[1])
+    axs[1].scatter(te_1209[te_1209.FeCa > 120].FeCa, te_1209[te_1209.FeCa > 120].MgCa, marker='+', color='r')
+    axs[1].set(title='Fe/Ca', xlabel='Fe/Ca ({})'.format(r'$\mu$mol/mol'))
 
     # Al/Ca
-    axs[1, 0].scatter(te_1209.MgCa, te_1209.AlCa, marker='+', label='Al/Ca', color=colours_04[2])
-    axs[1, 0].scatter(te_1209[te_1209.AlCa > 120].MgCa, te_1209[te_1209.AlCa > 120].AlCa, marker='+', color='r')
-    axs[1, 0].set(title='Al/Ca')
+    axs[2].scatter(te_1209.AlCa, te_1209.MgCa, marker='+', label='Al/Ca', color=colours_04[2])
+    axs[2].scatter(te_1209[te_1209.AlCa > 120].AlCa, te_1209[te_1209.AlCa > 120].MgCa, marker='+', color='r')
+    axs[2].set(title='Al/Ca', xlabel='Al/Ca ({})'.format(r'$\mu$mol/mol'))
 
     for ax in axs.flat:
-        ax.set(xlabel='Mg/Ca (mmol/mol)', ylabel='Contaminants ({})'.format(r'$\mu$mol/mol'), ylim=[0, 270])
+        ax.set(ylabel='Mg/Ca (mmol/mol)', xlim=[0, 270])
         ax.label_outer()
 
     # Save the figure if required

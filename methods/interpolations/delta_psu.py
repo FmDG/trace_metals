@@ -21,7 +21,7 @@ def delta_psu(save_fig: bool = False) -> int:
 
     # Define the colour schemes
     c_diff = {'color': colours[2], 'label': '1208 - 1209'}
-    c_filt = {'color': 'k', 'label': "Rolling mean ({} ka)".format(window_size)}
+    c_filt = {'color': 'k', 'label': "{} ka smoothing".format(window_size)}
 
     age_min, age_max = 2450, 2900
 
@@ -123,5 +123,4 @@ def delta_psu(save_fig: bool = False) -> int:
 
 
 if __name__ == '__main__':
-    os.chdir("../..")
     delta_psu(save_fig=False)

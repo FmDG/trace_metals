@@ -1,20 +1,17 @@
-"""
-Plotting up all the figures for the paper.
-"""
 
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
-import objects.figure_arguments as args
+import objects.args_isfahan as args
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 
 
 def pres_figures():
 
-    num_plots = 2
+    num_plots = 3
     min_age, max_age = 2500, 2850
 
     # --------------------- DEFINE THE DIFFERENCE IN d18O -------------------
@@ -33,28 +30,35 @@ def pres_figures():
     fig, axs = plt.subplots(
         nrows=num_plots,
         ncols=1,
-        sharex='all'
+        sharex='all',
+        figsize=(8, 8)
     )
 
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
-    # Plot the differences in d18O
-    axs[1].plot(age_array, differences, **args.args_diff)
-    axs[1].plot(age_array, filtered_diff, **args.args_filt)
-    axs[1].fill_between(age_array, filtered_diff, **args.fill_diff)
+    # Plot the original d18O data
+    axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
+    axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args.args_1209)
 
-    # PSU d18O_sw estimates
-    axs[0].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args.args_1208)
-    axs[0].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **args.fill_1208)
+    # PSU BWT estimates - 1208
+    axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
+    axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
+    # PSU BWT estimates - 1209
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
+    axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
 
-    # PSU d18O_sw estimates
-    axs[0].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args.args_1209)
-    axs[0].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **args.fill_1209)
+    # PSU d18O_sw estimates - 1208
+    axs[2].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args.args_1208)
+    axs[2].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **args.fill_1208)
+    # PSU d18O_sw estimates - 1209
+    axs[2].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args.args_1209)
+    axs[2].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **args.fill_1209)
 
     # -- Define the axes --
-    axs[0].set(ylabel='Modelled {} ({} VPDB)'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
-    axs[1].set(ylabel="{} (VPDB {})".format(r'$\Delta \delta^{18}$O ', u"\u2030"))
+    axs[0].set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    axs[1].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
+    axs[2].set(ylabel='Modelled {} ({} VPDB)'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
 
     tick_dirs(
         axs=axs,
@@ -64,7 +68,7 @@ def pres_figures():
     )
 
     axs[0].invert_yaxis()
-    axs[1].invert_yaxis()
+    axs[2].invert_yaxis()
 
     plt.show()
 

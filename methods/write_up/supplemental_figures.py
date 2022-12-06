@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.trace_elements import te_1208, te_1209
-import objects.figure_arguments as args
-from objects.colours import colours_04
+import objects.args_isfahan as args
+from objects.met_brewer import Isfahan2
 from methods.figures.tick_dirs import tick_dirs
+
+colours_04 = Isfahan2
 
 
 def processing_thresholds(data_set, threshold):
@@ -197,6 +199,6 @@ def figure_s4(save_fig: bool = False, figure_ratio: float = 1.0):
 
 
 if __name__ == "__main__":
-    # figure_s1(save_fig=True)
-    # figure_s2(save_fig=True, figure_ratio=0.8)
-    figure_s3(save_fig=True)
+    figure_s1(save_fig=False)
+    figure_s2(save_fig=False, figure_ratio=0.8)
+    figure_s3(save_fig=False)

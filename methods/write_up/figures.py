@@ -7,7 +7,7 @@ from scipy.signal import savgol_filter
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
-import objects.figure_arguments as args
+import objects.args_isfahan as args
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 
@@ -196,7 +196,7 @@ def figure_three(save_fig: bool = False) -> int:
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
     # Name the Plot
-    fig.suptitle("Global Context\n ({} - {} ka)".format(min_age, max_age))
+    # fig.suptitle("Global Context\n ({} - {} ka)".format(min_age, max_age))
 
     # -- Plot the 1208 data --
     # PSU BWT estimates
@@ -239,6 +239,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 if __name__ == "__main__":
 
-    figure_one(save_fig=True)
-    figure_two(save_fig=True)
-    figure_three(save_fig=True)
+    figure_one(save_fig=False)
+    figure_two(save_fig=False)
+    figure_three(save_fig=False)

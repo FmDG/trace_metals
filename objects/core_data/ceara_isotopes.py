@@ -1,14 +1,15 @@
 import os
 
-from pandas import read_csv
+from objects.cores import Core
 
 
 if not os.path.isdir("data/cores"):
     os.chdir('../..')
 
 # Load the Oxygen Isotope datasets
-iso_925 = read_csv("data/ceara_rise/925_d18O.csv").sort_values(by="age_ka")
-iso_926 = read_csv("data/ceara_rise/926_d18O.csv").sort_values(by="age_ka")
-iso_927 = read_csv("data/ceara_rise/927_d18O.csv").sort_values(by="age_ka")
-iso_928 = read_csv("data/ceara_rise/928_d18O.csv").sort_values(by="age_ka")
-iso_929 = read_csv("data/ceara_rise/929_d18O.csv").sort_values(by="age_ka")
+iso_925 = Core("925", "d18O", "ceara_rise", sort="age_ka")
+iso_926 = Core("926", "d18O", "ceara_rise", sort="age_ka")
+iso_927 = Core("927", "d18O", "ceara_rise", sort="age_ka")
+iso_928 = Core("928", "d18O", "ceara_rise", sort="age_ka")
+iso_929 = Core("929", "d18O", "ceara_rise", sort="age_ka")
+

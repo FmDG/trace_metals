@@ -1,65 +1,74 @@
-import os
+"""
+This file produces a plot that summarises the usefulness of Mg/Li as a palaeothermometer at Site 1209.
+"""
 
 import matplotlib.pyplot as plt
-import pandas as pd
+
+from objects.core_data.trace_elements import te_1209
+from objects.met_brewer import Isfahan2 as colours
+from methods.figures.tick_dirs import tick_dirs
 
 
 def lithium_plots():
-    # Load the 1209 and 1208 dataset
-    te_1209 = pd.read_csv("data/1209_TraceMetals.csv")
-    te_1208 = pd.read_csv("data/1208_TraceMetals.csv")
 
     # Set the ages
     min_age, max_age = 2400, 2900
 
-    # Decide on the colours for 1208 and 1209
-    colour_1209, colour_1208 = "#1b9e77", "#d95f02"
+    # Trim 1209
+    trimmed_1209 = te_1209.loc[te_1209.age_ka < max_age].copy()
+
+    # Define Mg/Li
+    trimmed_1209["MgLi"] = (trimmed_1209.MgCa / trimmed_1209.LiCa)
+    trimmed_1209["MgCa_norm"] = (trimmed_1209.MgCa - trimmed_1209.MgCa.min()) / (trimmed_1209.MgCa.max() - trimmed_1209.MgCa.min())
+    trimmed_1209["MgLi_norm"] = (trimmed_1209.MgLi - trimmed_1209.MgLi.min()) / (trimmed_1209.MgLi.max() - trimmed_1209.MgLi.min())
+
+    trimmed_1209["dMg"] = trimmed_1209.MgCa_norm - trimmed_1209.MgLi_norm
 
     # Set up the plots
-    num_plots = 3
-    fig, axs = plt.subplots(num_plots, 1, sharex="all")
+    num_plots = 4
+    fig, axs = plt.subplots(
+        num_plots,
+        1,
+        sharex="all",
+        figsize=(8, 8)
+    )
 
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
-    # Name the Plots
-    fig.suptitle("Comparison of Sites 1208/09\n ({} - {} ka)".format(min_age, max_age))
+    # Title for the plot
+    fig.suptitle("Trace Metal Data from 1209")
 
-    axs[0].plot(te_1208.age_ka, te_1208.MgCa, marker='+', color=colour_1208, label="ODP 1208")
-    axs[0].plot(te_1209.age_ka, te_1209.MgCa, marker='+', color=colour_1209, label="ODP 1209")
+    # Plot the Mg/Ca ratio at 1209
+    axs[0].plot(trimmed_1209.age_ka, trimmed_1209.MgCa, color=colours[0], marker='+')
     # Label the y-axis
-    axs[0].set(ylabel='{} ({})'.format('Mg/Ca', "mmol/mol"))
+    axs[0].set(ylabel='Mg/Ca (mmol/mol)')
 
-    axs[1].plot(te_1209.age_ka, te_1209.LiCa, marker='+', color=colour_1209, label="ODP 1209")
+    # Plot the Mg/Li ratio at 1209
+    axs[1].plot(trimmed_1209.age_ka, trimmed_1209.MgLi, color=colours[1], marker='+')
     # Label the y-axis
-    axs[1].set(ylabel='{} ({})'.format('Li/Ca', "mmol/mol"))
+    axs[1].set(ylabel='Mg/Li (mmol/mol)')
 
-    te_1209["MgLi"] = (te_1209.MgCa / te_1209.LiCa)
-
-    axs[2].plot(te_1209.age_ka, te_1209.MgLi, marker='+', color=colour_1209, label="ODP 1209")
+    # Plot the difference between the Mg/Li and Mg/Ca ratio at 1209
+    axs[2].plot(trimmed_1209.age_ka, trimmed_1209.dMg, color=colours[2], marker='+')
     # Label the y-axis
-    axs[2].set(ylabel='{} ({})'.format('Mg/Li', "mmol/mol"))
+    axs[2].set(ylabel=r'Mg/Ca$_{norm}$ - Mg/Li$_{norm}$')
 
-    for q in range(num_plots):
-        # Remove the left/right axes to make the plot look cleaner
-        if q % 2 == 1:
-            axs[q].yaxis.set(ticks_position="right", label_position='right')
-            axs[q].spines['left'].set_visible(False)
-        else:
-            axs[q].spines['right'].set_visible(False)
-        axs[q].spines['top'].set_visible(False)
-        axs[q].spines['bottom'].set_visible(False)
+    # Plot the B/Ca ratio at 1209
+    axs[3].plot(trimmed_1209.age_ka, trimmed_1209.BCa, color=colours[3], marker='+')
+    # Label the y-axis
+    axs[3].set(ylabel='B/Ca ({}mol/mol)'.format(r'$\mu$'))
 
-    # Set the bottom axis on and label it with the age.
-    axs[(num_plots - 1)].spines['bottom'].set_visible(True)
-    axs[(num_plots - 1)].set(xlabel='Age (ka)', xlim=[min_age, max_age])
-
-    # Add a legend to the first plot
-    axs[0].legend(loc='upper left', shadow=False, frameon=False)
+    tick_dirs(
+        axs=axs,
+        num_plots=num_plots,
+        min_age=min_age,
+        max_age=max_age,
+        legend=False
+    )
 
     plt.show()
 
 
 if __name__ == "__main__":
-    os.chdir("../..")
     lithium_plots()

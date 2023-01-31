@@ -41,13 +41,13 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
 
     # If highlights are selected, the areas filled in a faint colour before any of the data is plotted.
     if highlights:
-        ax.fill_between([2500, 2550], [1, 1], [5, 5], fc="b", ec=None, alpha=0.08, label="MIS 100, 99")
-        ax.fill_between([3200, 3210], [1, 1], [5, 5], fc="r", ec=None, alpha=0.08, label="MIS KM5c")
+        ax.fill_between([2400, 2550], [1, 1], [5, 5], fc="b", ec=None, alpha=0.08, label="MIS 95-100")
+        ax.fill_between([3100, 3300], [1, 1], [5, 5], fc="r", ec=None, alpha=0.08, label="KM1 - M2")
 
     # Select every site
     for x in range(len(sites)):
         site_name = sites[x]
-        site_data = pd.read_csv("data/ceara_rise/{}_d18O.csv".format(str(site_name))).sort_values(by="age_ka")
+        site_data = pd.read_csv("data/ceara_rise/{}_d18O.csv".format(str(site_name))).dropna(subset='d18O_corr').sort_values(by="age_ka")
         # For each site, plot the age against the corrected d18O from Wilkens 2017
         ax.plot(
             site_data.age_ka, site_data.d18O_corr, marker="+", color=colours[x], label="ODP {}".format(site_name)
@@ -63,11 +63,13 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
 
     # Invert the axis because it is a plot of d18O.
     ax.invert_yaxis()
-    ax.legend(frameon=False, shadow=False)
+    ax.legend(frameon=True, shadow=False, framealpha=1, ncol=2)
 
     # Remove unnecessary spines from the plot.
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
+
+    plt.tight_layout()
 
     if save_fig:
         plt.savefig("figures/ceara_rise/{}.png".format(figure_name), format='png', dpi=150)
@@ -83,5 +85,8 @@ if __name__ == "__main__":
 
     ceara_sites(
         save_fig=False,
-        highlights=True
+        highlights=True,
+        sites=[925, 929],
+        age_max=4000,
+        age_min=2000
     )

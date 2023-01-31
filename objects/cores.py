@@ -13,5 +13,5 @@ class Core:
         if drop is None:
             return read_csv(loc).sort_values(by=sort)
         else:
-            return read_csv(loc).sort_values(by=sort).dropna(drop)
+            return read_csv(loc).sort_values(by=sort).dropna(subset=drop)
 

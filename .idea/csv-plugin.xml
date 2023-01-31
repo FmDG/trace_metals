@@ -52,6 +52,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/ceara_rise/925_d18O.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/ceara_rise/full_d18O.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/1208_d18O_cibs.csv">
           <value>
             <Attribute>

@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
-from objects.figure_arguments import args_1209, args_1208
+from objects.args_brewer import args_1209, args_1208
 from methods.figures.tick_dirs import tick_dirs
 
 

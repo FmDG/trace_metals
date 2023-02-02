@@ -3,12 +3,13 @@ import gsw
 import matplotlib.pyplot as plt
 
 
-def density_plot(min_temp=-4, max_temp=15, min_sal=33, max_sal=36):
+def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, save_fig: bool = False) -> int:
     """
     This function uses the Gibbs Seawater (GSW) library to generate a contour plot of density (sigma-theta)
     given minimum and maximum temperature and salinity values. It takes four parameters, min_temp, max_temp,
     min_sal and max_sal, as input and plots the density contours of the resulting temperature-salinity space.
     It also labels the axes, contour lines and titles the plot.
+    :param save_fig: boolean - deciding whether you want to save the figure.
     :param min_temp: minimum temperature of the plot
     :param max_temp: maximum temperature of the plot
     :param min_sal: minimum salinity of the plot
@@ -34,8 +35,16 @@ def density_plot(min_temp=-4, max_temp=15, min_sal=33, max_sal=36):
 
     plt.tight_layout()
 
-    plt.show()
+    # Save the figure if required
+    if save_fig:
+        plt.savefig("figures/Density.png", format="png", dpi=300)
+    else:
+        plt.show()
+
+    return 1
 
 
 if __name__ == "__main__":
-    density_plot()
+    density_plot(
+        save_fig=False
+    )

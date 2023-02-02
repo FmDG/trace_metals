@@ -7,7 +7,7 @@ from scipy.signal import savgol_filter
 from generate_interpolations import generate_interpolation
 from objects.core_data.psu import psu_1208, psu_1209
 from objects.core_data.isotopes import iso_1209, iso_1208
-import objects.figure_arguments as args
+import objects.args_brewer as args
 from objects.colours import colours
 
 

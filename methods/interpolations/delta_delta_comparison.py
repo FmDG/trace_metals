@@ -8,7 +8,7 @@ from methods.interpolations.generate_interpolations import generate_interpolatio
 from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.trace_elements import te_1208, te_1209
-from objects.figure_arguments import args_1209, args_1208, args_diff
+from objects.args_brewer import args_1209, args_1208, args_diff
 
 
 def interpolations_glacials(age_min: int = 2400, age_max: int = 3400, window: int = 40, save_fig: bool = False):

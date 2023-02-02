@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from objects.colours import colours_extra as colours
+from objects.args_brewer import args_1209, args_1208, args_607, args_925, args_929
+from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
+from objects.core_data.ceara_isotopes import iso_925_cibs, iso_929_cibs, iso_925, iso_929
 
 
 def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = None, figure_name: str = "figure_01",
@@ -77,16 +80,73 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
         plt.show()
 
 
+def comparison_ceara(save_fig: bool = False, min_age: int = 2400, max_age: int = 4000, cibs_only: bool = True):
+
+    site_1208 = iso_1208[iso_1208.age_ka.between(min_age, max_age)]
+    site_1209 = iso_1209[iso_1209.age_ka.between(min_age, max_age)]
+    site_607 = iso_607[iso_607.age_ka.between(min_age, max_age)]
+
+    fig, ax = plt.subplots(
+        sharex="all",
+        figsize=(16, 8)
+    )
+
+    # Remove horizontal space between axes
+    fig.subplots_adjust(hspace=0)
+    # Name the Plot
+    fig.suptitle("Comparison of Pacific and Atlantic Sites")
+
+    # -- Plot the Pacific d18O isotope data --
+    ax.plot(site_1208.age_ka, site_1208.d18O_unadj, **args_1208, lw=2.0)
+    ax.plot(site_1209.age_ka, site_1209.d18O_unadj, **args_1209, lw=2.0)
+
+    # -- Plot the 607 data --
+    ax.plot(site_607.age_ka, site_607.d18O, **args_607, lw=2.0)
+
+    # -- Plot the Ceara Rise data --
+    if cibs_only:
+        site_925 = iso_925_cibs[iso_925_cibs.age_ka.between(min_age, max_age)]
+        site_929 = iso_929_cibs[iso_929_cibs.age_ka.between(min_age, max_age)]
+        ax.plot(site_925.age_ka, site_925.d18O, **args_925, lw=2.0)
+        ax.plot(site_929.age_ka, site_929.d18O, **args_929, lw=2.0)
+    else:
+        site_925 = iso_925[iso_925.age_ka.between(min_age, max_age)]
+        site_929 = iso_929[iso_929.age_ka.between(min_age, max_age)]
+        ax.plot(site_925.age_ka, (site_925.d18O_corr - 0.64), **args_925, lw=2.0)
+        ax.plot(site_929.age_ka, (site_929.d18O_corr - 0.64), **args_929, lw=2.0)
+
+    # -- Define the axes --
+    ax.set(ylabel="{} (VPDB {})".format(r'$\delta^{18}$O', u"\u2030"), xlabel='Age (ka)', xlim=[min_age, max_age])
+
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+
+    # Invert the axes with d18O and add a legend.
+    ax.invert_yaxis()
+    ax.legend(frameon=True, shadow=False, framealpha=1, ncol=2)
+
+    # Put a tight layout on the plot
+    plt.tight_layout()
+
+    # Save the figure if required
+    if save_fig:
+        plt.savefig("figures/ceara_rise/Figure_comp.png", format="png", dpi=300)
+    else:
+        plt.show()
+
+    return 1
+
+
 if __name__ == "__main__":
 
     # Change the directory to the parent directory
     if not os.path.isdir("data/cores"):
         os.chdir('../..')
 
-    ceara_sites(
+    comparison_ceara(
         save_fig=False,
-        highlights=True,
-        sites=[925, 929],
-        age_max=4000,
-        age_min=2000
+        min_age=2500,
+        max_age=3500,
+        cibs_only=False
     )
+

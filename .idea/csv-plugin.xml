@@ -185,6 +185,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/607_psu.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/607_te.csv">
           <value>
             <Attribute>

@@ -44,8 +44,8 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
 
     # If highlights are selected, the areas filled in a faint colour before any of the data is plotted.
     if highlights:
-        ax.fill_between([2400, 2550], [1, 1], [5, 5], fc="b", ec=None, alpha=0.08, label="MIS 95-100")
-        ax.fill_between([3100, 3300], [1, 1], [5, 5], fc="r", ec=None, alpha=0.08, label="KM1 - M2")
+        ax.axvpsan(xmin=2400, xmax=2550, fc="b", ec=None, alpha=0.08, label="MIS 95-100")
+        ax.axvspan(xmin=3100, xmax=3300, fc="r", ec=None, alpha=0.08, label="KM1 - M2")
 
     # Select every site
     for x in range(len(sites)):

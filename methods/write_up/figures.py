@@ -5,11 +5,11 @@ Plotting up all the figures for the paper.
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
-from methods.interpolations.generate_interpolations import generate_interpolation
-from methods.figures.tick_dirs import tick_dirs
 import objects.args_isfahan as args
-from objects.core_data.psu import psu_1208, psu_1209, psu_607
+from methods.figures.tick_dirs import tick_dirs
+from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
+from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
 
 def figure_one(save_fig: bool = False) -> int:
@@ -238,7 +238,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 
 if __name__ == "__main__":
-
     figure_one(save_fig=False)
-    figure_two(save_fig=False)
-    figure_three(save_fig=False)
+    # figure_two(save_fig=False)
+    # figure_three(save_fig=False)

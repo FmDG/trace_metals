@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import scipy.interpolate as interpol
 
@@ -15,4 +17,8 @@ def def_age_model(site: str = "1209"):
 
 
 if __name__ == "__main__":
-    pass
+    os.chdir("../..")
+    age_model_1209 = def_age_model("1209")
+    new_iso = pd.read_csv("data/new_isotopes.csv")
+    new_iso["age_ka"] = age_model_1209(new_iso.mcd)
+    new_iso.to_csv("data/new_isotopes_2.csv")

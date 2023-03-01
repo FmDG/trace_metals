@@ -3,17 +3,15 @@ import pandas as pd
 
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
-
-# Load the data from the objects file
-from objects.core_data.psu import psu_1208, psu_1209, psu_607
-from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.args_lakota import args_1209, args_1208
 from objects.colours import colours_extra
+from objects.core_data.isotopes import iso_1208, iso_1209
+# Load the data from the objects file
+from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
 mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.4, 34.4, 34.9
-
 
 
 def salinity_calculations(d18o: float) -> float:
@@ -63,24 +61,24 @@ def plot_palaeo_densities():
     ax = add_modern_fill(ax)
 
     # -- Add mPWP densities --
-    # ax.scatter(*average_cdt(psu_1208, 3060, 3090), marker='+', label='1208 (mPWP)')
-    ax.scatter(*average_cdt(psu_1209, 3060, 3090), marker='+', label='1209 (mPWP)')
+    ax.scatter(*average_cdt(psu_1208, 3060, 3090), marker='s', label='1208 (mPWP)', color='r')
+    ax.scatter(*average_cdt(psu_1209, 3060, 3090), marker='s', label='1209 (mPWP)', color='b')
     # ax.scatter(*average_cdt(psu_607, 3060, 3090), marker='+', label='607 (mPWP)')
 
     # -- Add Early Pleistocene IG densities --
-    # ax.scatter(*average_cdt(psu_1208, 2655, 2675), marker='+', label='1208 (IG)')
-    ax.scatter(*average_cdt(psu_1209, 2655, 2675), marker='+', label='1209 (IG)')
+    ax.scatter(*average_cdt(psu_1208, 2655, 2675), marker='o', label='1208 (IG)', color='r')
+    ax.scatter(*average_cdt(psu_1209, 2655, 2675), marker='o', label='1209 (IG)', color='b')
 
     # -- Add Early Pleistocene G densities
-    # ax.scatter(*average_cdt(psu_1208, 2800, 2815), marker='+', label='1208 (G)')
-    ax.scatter(*average_cdt(psu_1209, 2800, 2815), marker='+', label='1209 (G)')
+    ax.scatter(*average_cdt(psu_1208, 2800, 2815), marker='^', label='1208 (G)', color='r')
+    ax.scatter(*average_cdt(psu_1209, 2800, 2815), marker='^', label='1209 (G)', color='b')
 
     # -- Add modern densities
-    # ax.scatter(mod_sal_1208, mod_temp_1208, marker='+', label='1208 (Modern)')
-    ax.scatter(mod_sal_1209, mod_temp_1209, marker='+', label='1209 (Modern)')
+    ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color='r')
+    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color='b')
     # ax.scatter(mod_sal_607, mod_temp_607, marker='+', label='607 (Modern)')
 
-    ax.legend(frameon=True, ncol=3)
+    ax.legend(frameon=True, ncol=5)
 
     plt.show()
 
@@ -168,6 +166,6 @@ def plot_density_trajectories():
 
 
 if __name__ == "__main__":
-    # plot_palaeo_densities()
+    plot_palaeo_densities()
     # plot_isotopes(sections=[[3060, 3090], [2655, 2675], [2800, 2815]])
-    plot_density_trajectories()
+    # plot_density_trajectories()

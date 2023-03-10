@@ -3,7 +3,7 @@ import pandas as pd
 
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
-from objects.args_lakota import args_1209, args_1208
+from objects.args_isfahan import args_1209, args_1208, colour
 from objects.colours import colours_extra
 from objects.core_data.isotopes import iso_1208, iso_1209
 # Load the data from the objects file
@@ -11,7 +11,7 @@ from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
-mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.4, 34.4, 34.9
+mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
 
 
 def salinity_calculations(d18o: float) -> float:
@@ -39,43 +39,58 @@ def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tupl
     return avg_sal, avg_bwt
 
 
-def add_modern_fill(ax: plt.axes, nadw: bool = True) -> plt.axes:
+def add_modern_fill(ax: plt.axes, nadw: bool = True, aabw: bool = True, cdw: bool = True, aaiw: bool = True,
+                    npdw: bool = True) -> plt.axes:
     if nadw:
         # NADW has a temperature of 2 - 4 °C with a salinity of 34.9-35.0 psu
         ax.fill([34.9, 34.9, 35.0, 35.0, 34.9], [2.0, 4.0, 4.0, 2.0, 2.0], label='NADW', c=colours_extra[0], alpha=0.5)
-    # AABW has temperatures ranging from −0.8°C to 2°C (35°F), salinities from 34.6 to 34.7
-    ax.fill([34.6, 34.6, 34.7, 34.7, 34.6], [2.0, -0.8, -0.8, 2.0, 2.0], label='AABW', c=colours_extra[1], alpha=0.5)
-    # In the Pacific Ocean, it has a temperature of 0.1 to 2.0 °C. The salinity of CDW is 34.62 to 34.73
-    # ax.fill([34.62, 34.62, 34.73, 34.73, 34.62], [2.0, 0.1, 0.1, 2.0, 2.0], label='CDW', c=colours_extra[2], alpha=0.5)
-    # Typical temperature values for the AAIW are 3-7°C, and a salinity of 34.2-34.4 psu upon initial formation
-    ax.fill([34.2, 34.2, 34.4, 34.4, 34.2], [3.0, 7.0, 7.0, 3.0, 3.0], label='AAIW', c=colours_extra[3], alpha=0.5)
+    if aabw:
+        # AABW has temperatures ranging from −0.8°C to 2°C (35°F), salinities from 34.6 to 34.7
+        ax.fill([34.6, 34.6, 34.7, 34.7, 34.6], [2.0, -0.8, -0.8, 2.0, 2.0], label='AABW', c=colours_extra[1], alpha=0.5)
+    if cdw:
+        # In the Pacific Ocean, it has a temperature of 0.1 to 2.0 °C. The salinity of CDW is 34.62 to 34.73
+        ax.fill([34.62, 34.62, 34.73, 34.73, 34.62], [2.0, 0.1, 0.1, 2.0, 2.0], label='CDW', c=colours_extra[2], alpha=0.5)
+    if aaiw:
+        # Typical temperature values for the AAIW are 3-7°C, and a salinity of 34.2-34.4 psu upon initial formation
+        ax.fill([34.2, 34.2, 34.4, 34.4, 34.2], [3.0, 7.0, 7.0, 3.0, 3.0], label='AAIW', c=colours_extra[3], alpha=0.5)
+    if npdw:
+        # Typical values from NPDW from Fuhr et al., 2021 of 2 - 1.5'C and 34.57 - 34.67 psu
+        ax.fill([34.57, 34.57, 34.67, 34.67, 34.57], [2.0, 1.5, 1.5, 2.0, 2.0], label='NPDW', c=colours_extra[4], alpha=0.5)
 
+    return ax
+
+
+def plot_density_diff(ax: plt.axes, age_lower: int, age_higher: int, name: str = None, marker: str = None) -> plt.axes:
+    ax.scatter(*average_cdt(psu_1208, age_lower, age_higher), marker=marker, label='1208 ({})'.format(name), color=colour[0])
+    ax.scatter(*average_cdt(psu_1209, age_lower, age_higher), marker=marker, label='1209 ({})'.format(name), color=colour[1])
     return ax
 
 
 def plot_palaeo_densities():
     # Generate the density plot
-    ax = density_plot(min_sal=32.0)
+    ax = density_plot(min_sal=32.0, min_temp=-3, max_temp=10)
 
     # Add the areas corresponding to modern water masses
-    ax = add_modern_fill(ax)
+    # ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
 
     # -- Add mPWP densities --
-    ax.scatter(*average_cdt(psu_1208, 3060, 3090), marker='s', label='1208 (mPWP)', color='r')
-    ax.scatter(*average_cdt(psu_1209, 3060, 3090), marker='s', label='1209 (mPWP)', color='b')
-    # ax.scatter(*average_cdt(psu_607, 3060, 3090), marker='+', label='607 (mPWP)')
+    ax = plot_density_diff(ax, age_lower=3060, age_higher=3090, name="mPWP", marker="s")
 
-    # -- Add Early Pleistocene IG densities --
-    ax.scatter(*average_cdt(psu_1208, 2655, 2675), marker='o', label='1208 (IG)', color='r')
-    ax.scatter(*average_cdt(psu_1209, 2655, 2675), marker='o', label='1209 (IG)', color='b')
+    # -- Add Early Pleistocene IG densities (1/4)
+    ax = plot_density_diff(ax, age_lower=2730, age_higher=2770, name="IG 1", marker="o")
+    ax = plot_density_diff(ax, age_lower=2655, age_higher=2675, name="IG 2", marker="*")
+    ax = plot_density_diff(ax, age_lower=2615, age_higher=2630, name="IG 3", marker="^")
+    ax = plot_density_diff(ax, age_lower=2570, age_higher=2595, name="IG 4", marker="P")
 
-    # -- Add Early Pleistocene G densities
-    ax.scatter(*average_cdt(psu_1208, 2800, 2815), marker='^', label='1208 (G)', color='r')
-    ax.scatter(*average_cdt(psu_1209, 2800, 2815), marker='^', label='1209 (G)', color='b')
+    # -- Add Early Pleistocene G densities (1/4)
+    ax = plot_density_diff(ax, age_lower=2800, age_higher=2815, name="G 1", marker="$1$")
+    ax = plot_density_diff(ax, age_lower=2680, age_higher=2690, name="G 2", marker="$2$")
+    ax = plot_density_diff(ax, age_lower=2635, age_higher=2650, name="G 3", marker="$3$")
+    ax = plot_density_diff(ax, age_lower=2595, age_higher=2610, name="G 4", marker="$4$")
 
     # -- Add modern densities
-    ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color='r')
-    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color='b')
+    ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
+    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
     # ax.scatter(mod_sal_607, mod_temp_607, marker='+', label='607 (Modern)')
 
     ax.legend(frameon=True, ncol=5)
@@ -83,7 +98,7 @@ def plot_palaeo_densities():
     plt.show()
 
 
-def plot_isotopes(sections: list[list[int, int]] = None):
+def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: list[list[int, int]] = None):
     fig, axs = plt.subplots(
         nrows=2,
         sharex='all',
@@ -118,54 +133,17 @@ def plot_isotopes(sections: list[list[int, int]] = None):
     )
 
     for ax in axs:
-        for section in sections:
+        for section in warm_sections:
+            ax.axvspan(xmin=section[0], xmax=section[1], fc="r", ec=None, alpha=0.08)
+        for section in cold_sections:
             ax.axvspan(xmin=section[0], xmax=section[1], fc="b", ec=None, alpha=0.08)
 
-    plt.show()
-
-
-def get_density_trajectories(dataframe: pd.DataFrame, ages: list[list[int, int]]):
-    sals = []
-    temps = []
-    for age_set in ages:
-        sal_01, temp_01 = average_cdt(dataframe, age_set[0], age_set[1])
-        sals.append(sal_01)
-        temps.append(temp_01)
-
-    return sals, temps
-
-
-def plot_density_trajectories():
-
-    ages = [[3060, 3090], [2655, 2675], [2800, 2815]]
-
-    # Compile trajectory for 1208
-    traj_1208_sal, traj_1208_temp = get_density_trajectories(psu_1208, ages)
-    traj_1208_sal.append(mod_sal_1208)
-    traj_1208_temp.append(mod_temp_1208)
-
-    # Compile trajectory for 1209
-    traj_1209_sal, traj_1209_temp = get_density_trajectories(psu_1209, ages)
-    traj_1209_sal.append(mod_sal_1209)
-    traj_1209_temp.append(mod_temp_1209)
-
-    # Compile trajcetory for 607
-    traj_607_sal, traj_607_temp = get_density_trajectories(psu_607, ages)
-    traj_607_sal.append(mod_sal_607)
-    traj_607_temp.append(mod_temp_607)
-
-    ax = density_plot(min_sal=32.0)
-
-    ax.plot(traj_1208_sal, traj_1208_temp, label='1208')
-    ax.plot(traj_1209_sal, traj_1209_temp, label='1209')
-    ax.plot(traj_607_sal, traj_607_temp, label='607')
-
-    ax.legend()
+    for section in warm_sections + cold_sections:
+        axs[1].annotate(section[2], (((section[0] + section[1])/2 - 6), -2), fontsize="xx-small")
 
     plt.show()
 
 
 if __name__ == "__main__":
     plot_palaeo_densities()
-    # plot_isotopes(sections=[[3060, 3090], [2655, 2675], [2800, 2815]])
-    # plot_density_trajectories()
+    plot_isotopes(warm_sections=[[3060, 3090, None], [2730, 2770, "I1"], [2655, 2675, "I2"], [2615, 2630, "I3"], [2570, 2595, "I4"]], cold_sections=[[2800, 2815, "G1"], [2680, 2690, "G2"], [2635, 2650, "G3"], [2595, 2610, "G4"]])

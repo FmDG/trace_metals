@@ -27,13 +27,13 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36):
     densities = gsw.sigma0(sal, temp)
 
     # Create the figure
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(12, 8))
     # Generate contours in density space for each T and S point
     contours = ax.contour(sal, temp, densities, colors="grey", zorder=1)
     # Label the density contours
     plt.clabel(contours, fontsize=10, inline=False, fmt="%.1f")
     # Label the axes
-    ax.set(xlabel=r'Salinity ($‰$)', ylabel=r'Temperature ($^\circ$C)', title="Temperature-Salinity Plot")
+    ax.set(xlabel=r'Salinity (psu)', ylabel=r'Temperature ($^\circ$C)', title="Temperature-Salinity Plot")
 
     plt.tight_layout()
 

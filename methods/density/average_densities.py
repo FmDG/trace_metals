@@ -1,17 +1,23 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Load the density plot and tick direction methods
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
+# Load the data from the objects file
+from objects.core_data.psu import psu_1208, psu_1209
 from objects.args_isfahan import args_1209, args_1208, colour
 from objects.colours import colours_extra
 from objects.core_data.isotopes import iso_1208, iso_1209
-# Load the data from the objects file
-from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
 mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
+
+# Marine Isotope Stages
+interglacials = [[2730, 2759, "G7"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"], [2494, 2510, "99"]]
+glacials = [[2798, 2820, "G10"], [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"], [2510, 2540, "100"]]
+mpwp = [3055, 3087, "K1"]
 
 
 def salinity_calculations(d18o: float) -> float:
@@ -24,7 +30,7 @@ def salinity_calculations(d18o: float) -> float:
     return salinity
 
 
-def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tuple[2, float]:
+def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tuple[float, float]:
     """
     Return the temperature and salnity properties for a frame between the lower and upper age limits
     :param dataframe: dataset
@@ -37,6 +43,23 @@ def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tupl
     avg_d18_sw = selected.d18O_sw.mean()
     avg_sal = salinity_calculations(avg_d18_sw)
     return avg_sal, avg_bwt
+
+
+def average_cdt_uncertainties(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tuple[float, float, float, float]:
+    """
+    Return the temperature and salnity properties for a frame between the lower and upper age limits
+    :param dataframe: dataset
+    :param age_lower: lower limit of the age (in ka)
+    :param age_upper: upper limit of the age (in ka)
+    :return: the mean bottom water temperature and salinity for the site over the time interval.
+    """
+    selected = dataframe[dataframe.age_ka.between(age_lower, age_upper)]
+    avg_bwt = selected.temp.mean()
+    uncertainty_bwt = (selected.temp_plus1.mean() - selected.temp_min1.mean())/2
+    avg_d18_sw = selected.d18O_sw.mean()
+    avg_sal = salinity_calculations(avg_d18_sw)
+    uncertainty_sal = selected.d18O_plus1.mean() - selected.d18O_min1.mean()
+    return avg_sal, avg_bwt, uncertainty_sal, uncertainty_bwt
 
 
 def add_modern_fill(ax: plt.axes, nadw: bool = True, aabw: bool = True, cdw: bool = True, aaiw: bool = True,
@@ -66,27 +89,32 @@ def plot_density_diff(ax: plt.axes, age_lower: int, age_higher: int, name: str =
     return ax
 
 
-def plot_palaeo_densities():
+def plot_density_diff_uncertainty(ax: plt.axes, age_lower: int, age_higher: int, name: str = None, marker: str = None) -> plt.axes:
+    ans_1208 = average_cdt_uncertainties(psu_1208, age_lower, age_higher)
+    ans_1209 = average_cdt_uncertainties(psu_1209, age_lower, age_higher)
+
+    ax.errorbar(ans_1208[0], ans_1208[1], xerr=ans_1208[2], yerr=ans_1208[3], label="1208 ({})".format(name), color=colour[0], marker=marker, capsize=3.0)
+    ax.errorbar(ans_1209[0], ans_1209[1], xerr=ans_1209[2], yerr=ans_1209[3], label="1209 ({})".format(name), color=colour[1], marker=marker, capsize=3.0)
+    return ax
+
+
+def plot_palaeo_densities(save_fig: bool = False):
     # Generate the density plot
     ax = density_plot(min_sal=32.0, min_temp=-3, max_temp=10)
 
     # Add the areas corresponding to modern water masses
-    # ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
+    ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
 
     # -- Add mPWP densities --
-    ax = plot_density_diff(ax, age_lower=3060, age_higher=3090, name="mPWP", marker="s")
+    ax = plot_density_diff(ax, age_lower=mpwp[0], age_higher=mpwp[1], name=mpwp[2], marker="s")
 
-    # -- Add Early Pleistocene IG densities (1/4)
-    ax = plot_density_diff(ax, age_lower=2730, age_higher=2770, name="IG 1", marker="o")
-    ax = plot_density_diff(ax, age_lower=2655, age_higher=2675, name="IG 2", marker="*")
-    ax = plot_density_diff(ax, age_lower=2615, age_higher=2630, name="IG 3", marker="^")
-    ax = plot_density_diff(ax, age_lower=2570, age_higher=2595, name="IG 4", marker="P")
-
-    # -- Add Early Pleistocene G densities (1/4)
-    ax = plot_density_diff(ax, age_lower=2800, age_higher=2815, name="G 1", marker="$1$")
-    ax = plot_density_diff(ax, age_lower=2680, age_higher=2690, name="G 2", marker="$2$")
-    ax = plot_density_diff(ax, age_lower=2635, age_higher=2650, name="G 3", marker="$3$")
-    ax = plot_density_diff(ax, age_lower=2595, age_higher=2610, name="G 4", marker="$4$")
+    markers = ["o", "^", "*", "P", "X", "H", "p", "$o$"]
+    slice_num = 2
+    for x in range(slice_num):
+        # -- Add Early Pleistocene IG densities (1/4)
+        ax = plot_density_diff(ax, age_lower=interglacials[4+x][0], age_higher=interglacials[4+x][1], name=interglacials[4+x][2], marker=markers[x])
+        # -- Add Early Pleistocene G densities (1/4)
+        ax = plot_density_diff(ax, age_lower=glacials[4+x][0], age_higher=glacials[4+x][1], name=glacials[4+x][2], marker=markers[x + slice_num])
 
     # -- Add modern densities
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
@@ -95,10 +123,39 @@ def plot_palaeo_densities():
 
     ax.legend(frameon=True, ncol=5)
 
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/densities/past_densities_fills.png", format='png', dpi=150)
+    else:
+        plt.show()
 
 
-def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: list[list[int, int]] = None):
+def plot_palaeo_densities_uncertainties(save_fig: bool = False):
+    # Generate the density plot
+    ax = density_plot(min_sal=31, min_temp=-3, max_temp=10, max_sal=35)
+
+    # Add the areas corresponding to modern water masses
+    # ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
+
+    # -- Add mPWP densities --
+    ax = plot_density_diff_uncertainty(ax, age_lower=mpwp[0], age_higher=mpwp[1], name=mpwp[2], marker="D")
+
+    # -- Add Early Pleistocene densities
+    ax = plot_density_diff_uncertainty(ax, age_lower=interglacials[0][0], age_higher=interglacials[0][1], name=interglacials[0][2], marker="s")
+    ax = plot_density_diff_uncertainty(ax, age_lower=glacials[0][0], age_higher=glacials[0][1], name=glacials[0][2], marker="o")
+
+    # -- Add modern densities
+    ax.scatter(mod_sal_1208, mod_temp_1208, marker='P', label='1208 (Modern)', color=colour[0])
+    ax.scatter(mod_sal_1209, mod_temp_1209, marker='P', label='1209 (Modern)', color=colour[1])
+
+    ax.legend(frameon=True, ncol=4)
+
+    if save_fig:
+        plt.savefig("figures/densities/densities_uncertain.png", format='png', dpi=150)
+    else:
+        plt.show()
+
+
+def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: list[list[int, int]] = None, save_fig: bool = False):
     fig, axs = plt.subplots(
         nrows=2,
         sharex='all',
@@ -115,14 +172,16 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
     axs[0].plot(select_1208.age_ka, select_1208.d18O_unadj, **args_1208)
     axs[0].plot(select_1209.age_ka, select_1209.d18O_unadj, **args_1209)
     axs[0].invert_yaxis()
-    axs[0].set(ylabel="d18O")
 
     select_1208 = psu_1208[psu_1208.age_ka.between(min_age, max_age)]
     select_1209 = psu_1209[psu_1209.age_ka.between(min_age, max_age)]
 
     axs[1].plot(select_1208.age_ka, select_1208.temp, **args_1208)
     axs[1].plot(select_1209.age_ka, select_1209.temp, **args_1209)
-    axs[1].set(ylabel="BWT")
+
+    axs[1].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
+    axs[0].set(ylabel="{} (VPDB {})".format(r'$\delta^{18}$O', u"\u2030"))
+
 
     tick_dirs(
         axs=axs,
@@ -141,9 +200,14 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
     for section in warm_sections + cold_sections:
         axs[1].annotate(section[2], (((section[0] + section[1])/2 - 6), -2), fontsize="xx-small")
 
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/densities/timeslices.png", format='png', dpi=150)
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    plot_palaeo_densities()
-    plot_isotopes(warm_sections=[[3060, 3090, None], [2730, 2770, "I1"], [2655, 2675, "I2"], [2615, 2630, "I3"], [2570, 2595, "I4"]], cold_sections=[[2800, 2815, "G1"], [2680, 2690, "G2"], [2635, 2650, "G3"], [2595, 2610, "G4"]])
+    plot_palaeo_densities(save_fig=True)
+    # plot_palaeo_densities_uncertainties(save_fig=True)
+    interglacials.append(mpwp)
+    plot_isotopes(warm_sections=interglacials, cold_sections=glacials, save_fig=True)

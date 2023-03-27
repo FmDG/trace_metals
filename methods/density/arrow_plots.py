@@ -10,6 +10,11 @@ from objects.args_egypt import colour
 mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
 mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
 
+# Marine Isotope Stages
+interglacials = [[2730, 2759, "G7"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"], [2494, 2510, "99"]]
+glacials = [[2798, 2820, "G10"], [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"], [2510, 2540, "100"]]
+mpwp = [3055, 3087, "K1"]
+
 
 def arrow_diff(ax: plt.axes, age_lower: int, age_higher: int, lc=None) -> plt.axes:
     ans_01 = average_cdt(psu_1208, age_lower, age_higher)
@@ -25,24 +30,20 @@ def arrow_diff(ax: plt.axes, age_lower: int, age_higher: int, lc=None) -> plt.ax
     return ax
 
 
-def arrow_plot_densities():
+def arrow_plot_densities(save_fig: bool = False):
     # Generate the density plot
     ax = density_plot(min_sal=32.0, min_temp=-3, max_temp=10)
 
     # -- Add mPWP densities --
-    ax = arrow_diff(ax, age_lower=3060, age_higher=3090, lc=colour[2])
+    ax = arrow_diff(ax, age_lower=mpwp[0], age_higher=mpwp[1], lc=colour[2])
 
     # -- Add Early Pleistocene IG densities (1/4)
-    ax = arrow_diff(ax, age_lower=2730, age_higher=2770, lc=colour[0])
-    ax = arrow_diff(ax, age_lower=2655, age_higher=2675, lc=colour[0])
-    ax = arrow_diff(ax, age_lower=2615, age_higher=2630, lc=colour[0])
-    ax = arrow_diff(ax, age_lower=2570, age_higher=2595, lc=colour[0])
+    for x in interglacials:
+        ax = arrow_diff(ax, age_lower=x[0], age_higher=x[1], lc=colour[0])
 
     # -- Add Early Pleistocene G densities (1/4)
-    ax = arrow_diff(ax, age_lower=2800, age_higher=2815, lc=colour[1])
-    ax = arrow_diff(ax, age_lower=2680, age_higher=2690, lc=colour[1])
-    ax = arrow_diff(ax, age_lower=2635, age_higher=2650, lc=colour[1])
-    ax = arrow_diff(ax, age_lower=2595, age_higher=2610, lc=colour[1])
+    for y in glacials:
+        ax = arrow_diff(ax, age_lower=y[0], age_higher=y[1], lc=colour[1])
 
     ax.annotate(
         text=None,
@@ -51,8 +52,11 @@ def arrow_plot_densities():
         arrowprops=dict(arrowstyle="->", color=colour[3]),
     )
 
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/densities/arrow_plot.png", format='png', dpi=150)
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    arrow_plot_densities()
+    arrow_plot_densities(save_fig=True)

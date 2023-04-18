@@ -17,10 +17,12 @@ def plot_lr04(save_fig: bool = False):
     d18O = d18O[d18O.age_ka.between(0, 5000)]
 
     # Set up the figure
-    fig, ax = plt.subplots(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=(7, 4))
 
-    ax.plot(d18O.age_ka, d18O.d18O, color=colour[1])
-    ax.axvspan(xmin=2500, xmax=3100, fc=colour[0], ec=None, alpha=0.08)
+    fig.suptitle("LR04 {} record".format(r'$\delta^{18}$O'))
+
+    ax.plot(d18O.age_ka, d18O.d18O, color='k')
+    ax.axvspan(xmin=2500, xmax=3100, fc=colour[2], ec=None, alpha=0.2)
 
     ax.invert_yaxis()
 
@@ -38,4 +40,4 @@ def plot_lr04(save_fig: bool = False):
 
 
 if __name__ == "__main__":
-    plot_lr04()
+    plot_lr04(save_fig=True)

@@ -5,7 +5,7 @@ Plotting up all the figures for the paper.
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
-import objects.args_isfahan as args
+import objects.args_brewer as args
 from methods.figures.tick_dirs import tick_dirs, tick_dirs_both
 from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
@@ -74,7 +74,9 @@ def figure_one(save_fig: bool = False) -> int:
     axs[0].invert_yaxis()
     axs[2].invert_yaxis()
 
-    tick_dirs_both(axs, num_plots, min_age, max_age)
+    # Decide which Tick Directions function you want to run.
+    # tick_dirs_both(axs, num_plots, min_age, max_age)
+    tick_dirs(axs, num_plots, min_age, max_age)
 
     # Save the figure if required
     if save_fig:
@@ -158,7 +160,9 @@ def figure_two(save_fig: bool = False) -> int:
     axs[1].invert_yaxis()
     axs[2].invert_yaxis()
 
-    tick_dirs_both(axs, num_plots, min_age, max_age)
+    # Decide which Tick Directions function you want to run.
+    # tick_dirs_both(axs, num_plots, min_age, max_age)
+    tick_dirs(axs, num_plots, min_age, max_age)
 
     # Save the figure if required
     if save_fig:
@@ -226,7 +230,9 @@ def figure_three(save_fig: bool = False) -> int:
     # Invert the axes with d18O
     axs[1].invert_yaxis()
 
-    tick_dirs_both(axs, num_plots, min_age, max_age)
+    # Decide which Tick Directions function you want to run.
+    # tick_dirs_both(axs, num_plots, min_age, max_age)
+    tick_dirs(axs, num_plots, min_age, max_age)
 
     # Save the figure if required
     if save_fig:

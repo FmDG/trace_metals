@@ -19,16 +19,16 @@ def plot_lr04(save_fig: bool = False):
     # Set up the figure
     fig, ax = plt.subplots(figsize=(7, 4))
 
-    fig.suptitle("LR04 {} record".format(r'$\delta^{18}$O'))
+    # fig.suptitle("LR04 {} record".format(r'$\delta^{18}$O'))
 
     ax.plot(d18O.age_ka, d18O.d18O, color='k')
-    ax.axvspan(xmin=2500, xmax=3100, fc=colour[2], ec=None, alpha=0.2)
+    ax.axvspan(xmin=2500, xmax=3100, fc=colour[2], ec=None, alpha=0.5)
 
     ax.invert_yaxis()
 
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.set(xlabel='Age (ka)', xlim=[-10, 5010], ylabel='{} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    ax.set(xlabel='Age (ka)', xlim=[0, 5010], ylabel='{} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     ax.xaxis.set_minor_locator(AutoMinorLocator(20))
     ax.yaxis.set_minor_locator(AutoMinorLocator(10))
 

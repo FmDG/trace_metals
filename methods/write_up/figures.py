@@ -4,6 +4,7 @@ Plotting up all the figures for the paper.
 
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
+from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_brewer as args
 from methods.figures.tick_dirs import tick_dirs, tick_dirs_both
@@ -244,6 +245,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 
 if __name__ == "__main__":
-    figure_one(save_fig=False)
-    figure_two(save_fig=False)
-    figure_three(save_fig=False)
+    figure_one(save_fig=True)
+    # figure_two(save_fig=False)
+    # figure_three(save_fig=False)

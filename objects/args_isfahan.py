@@ -19,6 +19,9 @@ fill_607 = {'facecolor': colour[3], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
 args_1313 = {'color': colour[4], 'label': "1313", 'marker': '+'}
 fill_1313 = {'facecolor': colour[4], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
 
+# COLOURS - 849
+args_849 = {'color': colour[3], 'label': "849", 'marker': '+'}
+
 # COLOURS - 925/929
 args_925 = {'color': colour[4], 'label': "925", 'marker': '+'}
 fill_925 = {'facecolor': colour[4], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}

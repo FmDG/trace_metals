@@ -1,6 +1,7 @@
 
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
+from matplotlib.ticker import AutoMinorLocator
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
@@ -9,7 +10,7 @@ from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 
 
-def pres_figures():
+def pres_figures(save_fig: bool = False):
 
     num_plots = 3
     min_age, max_age = 2500, 2850
@@ -70,9 +71,50 @@ def pres_figures():
     axs[0].invert_yaxis()
     axs[2].invert_yaxis()
 
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/presentation_figure.png", format="png", dpi=150)
+    else:
+        plt.show()
+
+
+def single_figure(save_fig: bool = False, y_axis: str = "d18O"):
+    fig, ax = plt.subplots(figsize=(11, 8))
+
+    if y_axis == "d18O":
+        # Plot the original d18O data
+        ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
+        ax.plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args.args_1209)
+        # -- Define the axes --
+        ax.set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+        ax.invert_yaxis()
+    elif y_axis == "BWT":
+        # PSU BWT estimates - 1208
+        ax.plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
+        ax.fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
+        # PSU BWT estimates - 1209
+        ax.plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
+        ax.fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
+        ax.set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
+    else:
+        raise ValueError("Incorrect Figure Type, include 'd18O' or 'BWT' as type.")
+
+    ax.set(xlabel="Age (ka)", xlim=[2400, 3200])
+    ax.legend(shadow=False, frameon=False)
+    ax.tick_params(axis='y', which="both", left=True, right=False, direction="out")
+    ax.tick_params(axis='x', which="both", top=False, bottom=True)
+    ax.tick_params(axis="both", which='major', length=6)
+    ax.tick_params(axis="both", which='minor', length=3)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_minor_locator(AutoMinorLocator(10))
+    ax.yaxis.set_minor_locator(AutoMinorLocator(5))
+
+    if save_fig:
+        plt.savefig("figures/presentation_figure.png", format="png", dpi=150)
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    pres_figures()
+    single_figure(y_axis="d18O")
 

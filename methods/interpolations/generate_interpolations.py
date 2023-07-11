@@ -22,5 +22,3 @@ def generate_interpolation(data_series, fs=1.0, start=2400, end=3400, pchip=Fals
 
     return interpolated_dataset, age_array
 
-
-hell = "hell"

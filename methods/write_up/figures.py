@@ -29,7 +29,7 @@ def figure_one(save_fig: bool = False) -> int:
 
     # Plots for d18O_benthic, BWT and d18O_sw.
     num_plots = 3
-    min_age, max_age = 2400, 2900
+    min_age, max_age = 2500, 2900
 
     # Define the figure
     fig, axs = plt.subplots(
@@ -51,7 +51,7 @@ def figure_one(save_fig: bool = False) -> int:
     # PSU BWT estimates
     axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
     axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
-
+    # axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min2, psu_1208.temp_plus2, alpha=0.05)
     # PSU d18O_sw estimates
     axs[2].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args.args_1208)
     axs[2].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **args.fill_1208)
@@ -62,6 +62,7 @@ def figure_one(save_fig: bool = False) -> int:
     # PSU BWT estimates
     axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
     axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
+    # axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min2, psu_1209.temp_plus2, alpha=0.05)
     # PSU d18O_sw estimates
     axs[2].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args.args_1209)
     axs[2].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **args.fill_1209)
@@ -77,11 +78,13 @@ def figure_one(save_fig: bool = False) -> int:
 
     # Decide which Tick Directions function you want to run.
     # tick_dirs_both(axs, num_plots, min_age, max_age)
-    tick_dirs(axs, num_plots, min_age, max_age)
+    tick_dirs(axs, num_plots, min_age, max_age, legend=False)
+
+    axs[0].legend(shadow=False, frameon=False)
 
     # Save the figure if required
     if save_fig:
-        plt.savefig("figures/paper/Figure_1.png", format="png", dpi=300)
+        plt.savefig("figures/new_data/Figure_1_a.png", format="png", dpi=300)
     else:
         plt.show()
 
@@ -167,7 +170,7 @@ def figure_two(save_fig: bool = False) -> int:
 
     # Save the figure if required
     if save_fig:
-        plt.savefig("figures/paper/Figure_2.png".format(min_age, max_age), format="png", dpi=300)
+        plt.savefig("figures/new_data/Figure_2.png".format(min_age, max_age), format="png", dpi=300)
     else:
         plt.show()
 
@@ -237,7 +240,7 @@ def figure_three(save_fig: bool = False) -> int:
 
     # Save the figure if required
     if save_fig:
-        plt.savefig("figures/paper/Figure_3.png".format(min_age, max_age), format="png", dpi=300)
+        plt.savefig("figures/new_data/Figure_3.png".format(min_age, max_age), format="png", dpi=300)
     else:
         plt.show()
 
@@ -245,6 +248,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 
 if __name__ == "__main__":
-    figure_one(save_fig=True)
+    figure_one(save_fig=False)
     # figure_two(save_fig=False)
     # figure_three(save_fig=False)

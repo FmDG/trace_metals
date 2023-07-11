@@ -17,7 +17,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/PlioVAR_changepoints.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/1208_psu.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/cores/1209_complete.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -31,7 +45,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/1209_te.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/849_cibs_adj.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/samples.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

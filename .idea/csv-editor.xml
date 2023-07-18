@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/1209_d18O_cibs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_d18O_cibs_newAges.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/LR04.csv">
           <value>
             <Attribute>
@@ -38,6 +52,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/1209_cibs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/1209_complete.csv">
           <value>
             <Attribute>
@@ -60,13 +81,6 @@
           </value>
         </entry>
         <entry key="/data/cores/849_cibs_adj.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/samples.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

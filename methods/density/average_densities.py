@@ -6,7 +6,8 @@ from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
 # Load the data from the objects file
 from objects.core_data.psu import psu_1208, psu_1209
-from objects.args_isfahan import args_1209, args_1208, colour
+from objects.args_brewer import args_1209, args_1208, fill_1208, fill_1209
+from objects.args_brewer import clr as colour
 from objects.colours import colours_extra
 from objects.core_data.isotopes import iso_1208, iso_1209
 
@@ -15,8 +16,12 @@ mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
 mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
 
 # Marine Isotope Stages
-interglacials = [[2820, 2838, "G11"], [2777, 2798, "G9"], [2730, 2759, "G7"], [2690, 2704, "G5"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"], [2494, 2510, "99"]]
-glacials = [[2798, 2820, "G10"], [2759, 2777, "G8"], [2704, 2730, "G6"], [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"], [2510, 2540, "100"]]
+interglacials = [[2893, 2913, "G15"], [2858, 2876, "G13"], [2820, 2838, "G11"], [2777, 2798, "G9"], [2730, 2759, "G7"],
+                 [2690, 2704, "G5"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"],
+                 [2494, 2510, "99"], [2477, 2452, "97"], [2407, 2427, "95"]]
+glacials = [[2876, 2893, "G14"], [2838, 2858, "G12"], [2798, 2820, "G10"], [2759, 2777, "G8"], [2704, 2730, "G6"],
+            [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"], [2510, 2540, "100"],
+            [2477, 2494, "98"], [2427, 2452, "96"], [2387, 2407, "94"]]
 mpwp = [3055, 3087, "K1"]
 
 glacial_interval = [2595, 2614, "104 (G)"]
@@ -173,7 +178,7 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
-    min_age, max_age = 2200, 3400
+    min_age, max_age = 2400, 2910
 
     select_1208 = iso_1208[iso_1208.age_ka.between(min_age, max_age)]
     select_1209 = iso_1209[iso_1209.age_ka.between(min_age, max_age)]
@@ -186,10 +191,14 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
     select_1209 = psu_1209[psu_1209.age_ka.between(min_age, max_age)]
 
     axs[1].plot(select_1208.age_ka, select_1208.temp, **args_1208)
+    axs[1].fill_between(select_1208.age_ka, select_1208.temp_min1, select_1208.temp_plus1, **fill_1208)
     axs[1].plot(select_1209.age_ka, select_1209.temp, **args_1209)
+    axs[1].fill_between(select_1209.age_ka, select_1209.temp_min1, select_1209.temp_plus1, **fill_1209)
 
     axs[1].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
     axs[0].set(ylabel="{} (VPDB {})".format(r'$\delta^{18}$O', u"\u2030"))
+
+    axs[0].legend(frameon=False)
 
 
     tick_dirs(
@@ -197,26 +206,26 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
         num_plots=2,
         min_age=min_age,
         max_age=max_age,
-        legend=True
+        legend=False
     )
 
     for ax in axs:
         for section in warm_sections:
-            ax.axvspan(xmin=section[0], xmax=section[1], fc="r", ec=None, alpha=0.08)
+            ax.axvspan(xmin=section[0], xmax=section[1], fc="r", ec=None, alpha=0)
         for section in cold_sections:
-            ax.axvspan(xmin=section[0], xmax=section[1], fc="b", ec=None, alpha=0.08)
+            ax.axvspan(xmin=section[0], xmax=section[1], fc="b", ec=None, alpha=0.03)
 
     for section in warm_sections + cold_sections:
-        axs[1].annotate(section[2], (((section[0] + section[1])/2 - 6), -2), fontsize="xx-small")
+        axs[1].annotate(section[2], (((section[0] + section[1])/2 - 5), -2), fontsize="xx-small")
 
     if save_fig:
-        plt.savefig("figures/densities/timeslices.png", format='png', dpi=150)
+        plt.savefig("figures/presentation/timeslices.png", format='png', dpi=300)
     else:
         plt.show()
 
 
 if __name__ == "__main__":
     # plot_palaeo_densities(save_fig=False)
-    plot_palaeo_densities_uncertainties(save_fig=False)
+    # plot_palaeo_densities_uncertainties(save_fig=False)
     interglacials.append(mpwp)
-    plot_isotopes(warm_sections=interglacials, cold_sections=glacials, save_fig=False)
+    plot_isotopes(warm_sections=interglacials, cold_sections=glacials, save_fig=True)

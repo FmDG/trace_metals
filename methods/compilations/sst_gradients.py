@@ -44,7 +44,7 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
 
     # -------- DEFINE PLOT AREA -------------
     num_plots = 2
-    fig, axs = plt.subplots(1, num_plots, sharey="all", sharex="all")
+    fig, axs = plt.subplots(1, num_plots, sharey="all", sharex="all", figsize=(13, 7))
     # Name the Plot
     fig.suptitle("Comparison of Pacific Alkenone SST Records\n ({} - {} ka)".format(min_age, max_age))
     fig.subplots_adjust(left=0.10, right=0.90, bottom=0.10, top=0.90, wspace=0.05)
@@ -93,7 +93,7 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
 if __name__ == '__main__':
     os.chdir("../..")
     show_sst_gradients(
-        save_fig=False,
+        save_fig=True,
         max_age=3500,
         min_age=2300
     )

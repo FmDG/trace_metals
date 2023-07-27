@@ -1,6 +1,10 @@
-from methods.simple_figures.isotope_figure import whole_isotope_figure
+from methods.simple_figures.glacial_highlights import glacial_highlights_isotopes
 
 
 if __name__ == "__main__":
-    whole_isotope_figure(2400, 3400)
+    glacial_highlights_isotopes(
+        age_min=2400,
+        age_max=2900,
+        save_fig=False
+    )
 

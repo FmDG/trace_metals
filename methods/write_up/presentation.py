@@ -1,11 +1,13 @@
+import os
 
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 from matplotlib.ticker import AutoMinorLocator
+import pandas as pd
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
-import objects.args_isfahan as args
+import objects.args_brewer as args
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 

@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_brewer as args
 from objects.core_data.isotopes import iso_1208, iso_1209
+from objects.core_data.lr04 import iso_lr04
 from methods.figures.tick_dirs import tick_dirs
 
 
@@ -35,3 +37,28 @@ def whole_isotope_figure(age_min: int = 2200, age_max: int = 3700):
     plt.show()
 
 
+def lr04_figure(save_fig:bool = False, age_min: int = 2400, age_max: int = 3600):
+    fig, ax = plt.subplots(figsize=(11, 8))
+
+    # Plot the original d18O data
+    new_data = iso_lr04[iso_lr04.age_ka.between(age_min, age_max)]
+
+    ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, marker="+")
+    # -- Define the axes --
+    ax.set(ylabel='LR04 {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    ax.invert_yaxis()
+
+    ax.set(xlabel="Age (ka)", xlim=[age_min, age_max])
+    ax.tick_params(axis='y', which="both", left=True, right=False, direction="out")
+    ax.tick_params(axis='x', which="both", top=False, bottom=True)
+    ax.tick_params(axis="both", which='major', length=6)
+    ax.tick_params(axis="both", which='minor', length=3)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_minor_locator(AutoMinorLocator(10))
+    ax.yaxis.set_minor_locator(AutoMinorLocator(5))
+
+    if save_fig:
+        plt.savefig("figures/LR04.png", format="png", dpi=150)
+    else:
+        plt.show()

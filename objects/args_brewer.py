@@ -3,7 +3,7 @@ from objects.colours import colours_extra as clr
 # COLOURS - 1208/1209
 args_1208 = {'color': clr[0], 'label': "1208", 'marker': '+'}
 fill_1208 = {'facecolor': clr[0], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
-args_1209 = {'color': clr[1], 'label': "1209", 'marker': '+'}
+args_1209 = {'color': clr[1], 'label': "1209", "marker": "+"}
 fill_1209 = {'facecolor': clr[1], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
 
 # COLOURS - FILL

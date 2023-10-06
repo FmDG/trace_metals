@@ -93,7 +93,7 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
 if __name__ == '__main__':
     os.chdir("../..")
     show_sst_gradients(
-        save_fig=True,
+        save_fig=False,
         max_age=3500,
         min_age=2300
     )

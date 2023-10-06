@@ -4,14 +4,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.signal import savgol_filter, periodogram
 
-from objects.colours import pastels
+from objects.args_brewer import args_1209, args_1208, clr
+from methods.figures.tick_dirs import tick_dirs
 from generate_interpolations import generate_interpolation
 
 
-def interpolate_isotopes(plot_interpol=False):
-    # Age limits
-    start = 2400
-    stop = 3400
+def interpolate_isotopes(age_min: int = 2300, age_max: int = 3600, save_fig: bool = False):
 
     # Load the datasets
     site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
@@ -20,117 +18,48 @@ def interpolate_isotopes(plot_interpol=False):
     # We can use two different interpolation techniques - the first is a simple 1D interpolation, the second is a
     # PChip interpolation
 
-    interp_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=False)
-    interp_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=False)
+    interp_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=age_min, end=age_max, pchip=False)
+    interp_1209, _ = generate_interpolation(site_1209, fs=0.1, start=age_min, end=age_max, pchip=False)
 
     # Filter pchip function
-    filtered_diff = savgol_filter((interp_1208 - interp_1209), 301, 3)
+    filtered_diff = savgol_filter((interp_1208 - interp_1209), 201, 3)
 
-    fig, axs = plt.subplots(2, sharex="all")
+    fig, axs = plt.subplots(2, sharex="all", figsize=(15, 7))
     # Remove horizontal space between axes
     fig.subplots_adjust(hspace=0)
 
-    axs[0].plot(site_1208.age_ka, site_1208.d18O_unadj, label="ODP 1208", marker='+')
-    axs[0].plot(site_1209.age_ka, site_1209.d18O_unadj, label="ODP 1209", marker='+')
+    axs[0].plot(site_1208.age_ka, site_1208.d18O_unadj, **args_1208)
+    axs[0].plot(site_1209.age_ka, site_1209.d18O_unadj, **args_1209)
     axs[0].set(ylabel='Benthic {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[0].invert_yaxis()
-    axs[0].spines['right'].set_visible(False)
-    axs[0].spines['top'].set_visible(False)
-    axs[0].spines['bottom'].set_visible(False)
-    axs[0].legend()
 
-    axs[1].plot(age_array, (interp_1208 - interp_1209), label="Difference", c='m')
-    axs[1].plot(age_array, filtered_diff, label="Filtered Difference", c='k')
+    axs[1].plot(age_array, (interp_1208 - interp_1209), label="Difference", c=clr[2])
+    axs[1].plot(age_array, filtered_diff, label="20 ka Filter", c='k')
     axs[1].set(xlabel="Age (ka)", ylabel="Difference in {} ({})".format(r'$\delta^{18}$O', u"\u2030"),
-               xlim=[start, stop])
+               xlim=[age_min, age_max])
+
+    tick_dirs(axs, num_plots=2, min_age=age_min, max_age=age_max, legend=True)
+
+    for ax in axs:
+        ax.invert_yaxis()
 
     # Adds horizontal 0 line
-    # axs[1].axhline(0, ls='--', color='m')
-
-    # Adds ± 2 and 4 sig.diff bars
-    # axs[1].fill_between(age_array, -0.12, 0.12, color='m', alpha=0.2, label=r'$\pm 2 \sigma$')
-    # axs[1].fill_between(age_array, -0.24, 0.24, color='m', alpha=0.1, label=r'$\pm 4 \sigma$')
+    axs[1].axhline(0, ls='--', color='k')
 
     # Fills in the gap between the line and the 0 axis
-    # axs[1].fill_between(age_array, (pchip_1208 - pchip_1209), 0, color='m', alpha=0.2)
-    axs[1].fill_between(age_array, filtered_diff, 0, color='k', alpha=0.2)
-
-    # Fill between regions where d18O goes higher than 2.9 per mil
-
-    axs[1].invert_yaxis()
-    axs[1].legend()
-    axs[1].yaxis.set(ticks_position="right", label_position='right')
-    axs[1].spines['left'].set_visible(False)
-    axs[1].spines['top'].set_visible(False)
-
-    plt.show()
+    # axs[1].fill_between(age_array, (pchip_1208 - pchip_1209), 0, color=clr[2], alpha=0.2)
+    axs[1].fill_between(age_array, filtered_diff, 0, color=clr[2], alpha=0.2)
 
 
-def show_interpolation(num_interpolation=1.0):
-    site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
-    site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
-
-    start = 2400
-    stop = 3400
-
-    pchip_1208, age_array = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=True)
-    pchip_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=True)
-
-    # Interpolate across this age array
-    interpolated_1208, _ = generate_interpolation(site_1208, fs=0.1, start=start, end=stop, pchip=False)
-    interpolated_1209, _ = generate_interpolation(site_1209, fs=0.1, start=start, end=stop, pchip=False)
-
-    fig, axs = plt.subplots(2, sharex="all")
-    # Remove horizontal space between axes
-    fig.subplots_adjust(hspace=0)
-
-    axs[0].plot(age_array, interpolated_1208, label="1208 Interpolated")
-    axs[0].plot(age_array, pchip_1208, label="1208 pCHIP")
-    axs[0].scatter(site_1208.age_ka, site_1208.d18O_unadj, label="1208 True", marker='+', c='k')
-    axs[0].set(ylabel='{} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[0].invert_yaxis()
-    axs[0].legend()
-
-    axs[1].plot(age_array, interpolated_1209, label="1209 Interpolated")
-    axs[1].plot(age_array, pchip_1209, label="1209 pCHIP")
-    axs[1].scatter(site_1209.age_ka, site_1209.d18O_unadj, label="1209 True", marker='+', c='k')
-    axs[1].set(ylabel='{} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"), xlim=[start, stop])
-    axs[1].invert_yaxis()
-    axs[1].legend()
-
-    plt.show()
-
-
-def time_series_analysis():
-    # Load the datasets
-    site_1208 = pd.read_csv('data/cores/1208_cibs.csv')
-    site_1209 = pd.read_csv('data/cores/1209_cibs.csv')
-
-    # Define the age array
-    start = 2400
-    stop = 3600
-    ts = 0.1
-
-    interpolated_1208, age_array = generate_interpolation(site_1208, fs=ts, start=start, end=stop)
-    interpolated_1209, _ = generate_interpolation(site_1209, fs=ts, start=start, end=stop)
-
-    freq_1208, psd_1208 = periodogram(interpolated_1208, fs=1)
-    freq_1209, psd_1209 = periodogram(interpolated_1209, fs=1)
-    freq_diff, psd_diff = periodogram((interpolated_1208 - interpolated_1209), fs=1)
-
-    fig, axs = plt.subplots(nrows=1, ncols=2)
-
-    axs[0].semilogy(freq_1208, psd_1208, color=pastels[0])
-    axs[0].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1208")
-    axs[1].semilogy(freq_1209, psd_1209, color=pastels[1])
-    axs[1].set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="1209")
-
-    fig, ax = plt.subplots(nrows=1, ncols=1)
-    ax.semilogy(freq_diff, psd_diff, color=pastels[2])
-    ax.set(ylim=[1e-8, 1e2], xlabel='frequency [1/kyr]', ylabel=r'PSD [$V^{2}$/kyr]', title="Difference")
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/paper/Figure_S4.png", format="png", dpi=300)
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
     os.chdir('../..')
-    interpolate_isotopes()
+    interpolate_isotopes(
+        age_min=2350,
+        age_max=3500,
+        save_fig=True
+    )

@@ -6,7 +6,8 @@ from objects.core_data.isotopes import iso_1208, iso_1209
 
 
 def oxygen_isotope_figure(age_min: int = 2200, age_max: int = 3700, save_fig: bool = False):
-    fig, ax = plt.subplots(figsize=(14, 6))
+    # Define figure size
+    fig, ax = plt.subplots(figsize=(15, 6))
 
     # d18O original data
     ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
@@ -41,10 +42,10 @@ def oxygen_isotope_figure(age_min: int = 2200, age_max: int = 3700, save_fig: bo
     ax.set(xlabel='Age (ka)', xlim=[age_min, age_max])
 
     if save_fig:
-        plt.savefig("figures/presentation/Figure_1.png", format="png", dpi=300)
+        plt.savefig("figures/paper/Figure_1.svg", format="svg", dpi=300)
     else:
         plt.show()
 
 
 if __name__ == "__main__":
-    oxygen_isotope_figure(age_min=2350, age_max=3600, save_fig=False)
+    oxygen_isotope_figure(age_min=2350, age_max=3600, save_fig=True)

@@ -1,9 +1,9 @@
 from objects.colours import colours_extra as clr
 
 # COLOURS - 1208/1209
-args_1208 = {'color': clr[0], 'label': "1208", 'marker': '+'}
+args_1208 = {'color': clr[0], 'label': "1208", 'marker': '^', 'ms': 5, "mfc": "white"}
 fill_1208 = {'facecolor': clr[0], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
-args_1209 = {'color': clr[1], 'label': "1209", "marker": "+"}
+args_1209 = {'color': clr[1], 'label': "1209", 'marker': 's', 'ms': 5, "mfc": "white"}
 fill_1209 = {'facecolor': clr[1], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
 
 # COLOURS - FILL
@@ -12,7 +12,7 @@ args_filt = {'color': 'k', 'label': "Rolling mean (30 ka)"}
 fill_diff = {'facecolor': 'k', 'alpha': 0.1}
 
 # COLOURS - 607/U1313
-args_607 = {'color': clr[2], 'label': "607", 'marker': '+'}
+args_607 = {'color': clr[2], 'label': "607", 'marker': 'o', "ms": 5, "mfc": "white"}
 fill_607 = {'facecolor': clr[2], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}
 args_1313 = {'color': clr[3], 'label': "1313", 'marker': '+'}
 fill_1313 = {'facecolor': clr[3], 'alpha': 0.1, 'label': r'$\pm 1\sigma$'}

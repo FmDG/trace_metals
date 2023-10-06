@@ -16,7 +16,10 @@ def ceara_rise():
 
     ax.set(ylabel='Corrected {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"), ylim=[2, 5])
     ax.invert_yaxis()
-    ax.axvspan(xmin=3195, xmax=3215, alpha=0.1, facecolor=colours[3])
+    ax.axvspan(xmin=3195, xmax=3215, alpha=0.1, facecolor='r')  # KM5c
+    ax.axvspan(xmin=2452, xmax=2477, alpha=0.1, facecolor='r')  # MIS 97
+    ax.axvspan(xmin=3119, xmax=3150, alpha=0.1, facecolor='b')  # KM2
+    ax.axvspan(xmin=2510, xmax=2540, alpha=0.1, facecolor='b')  # MIS 100
 
     min_age, max_age = 2000, 3300
 

@@ -190,7 +190,7 @@ def figure_three(save_fig: bool = False) -> int:
 
     # BWT across N. Atlantic and Pacific as well as d18O, and d18O_sw
     num_plots = 2
-    min_age, max_age = 2400, 2900
+    min_age, max_age = 2500, 2900
 
     # --------------------- PLOT THE DATA ------------------------
 
@@ -198,7 +198,7 @@ def figure_three(save_fig: bool = False) -> int:
         nrows=num_plots,
         ncols=1,
         sharex="all",
-        figsize=(8, 8)
+        figsize=(12, 8)
     )
 
     # Remove horizontal space between axes
@@ -207,40 +207,42 @@ def figure_three(save_fig: bool = False) -> int:
     # fig.suptitle("Global Context\n ({} - {} ka)".format(min_age, max_age))
 
     # -- Plot the 1208 data --
-    # PSU BWT estimates
-    axs[0].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
-    axs[0].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
     # d18O isotope plot
-    axs[1].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
+    axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args.args_1208)
+    # PSU BWT estimates
+    axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
+    axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
 
     # -- Plot the 1209 data --
-    # PSU BWT estimates
-    axs[0].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
-    axs[0].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
     # d18O isotope plot
-    axs[1].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args.args_1209)
+    axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args.args_1209)
+    # PSU BWT estimates
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
+    axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
 
     # -- Plot the 607 data --
-    # PSU BWT estimates
-    axs[0].plot(psu_607.age_ka, psu_607.temp, **args.args_607)
-    axs[0].fill_between(psu_607.age_ka, psu_607.temp_min1, psu_607.temp_plus1, **args.fill_607)
     # d18O isotope plot
-    axs[1].plot(iso_607.age_ka, iso_607.d18O, **args.args_607)
+    axs[0].plot(iso_607.age_ka, iso_607.d18O, **args.args_607)
+    # PSU BWT estimates
+    axs[1].plot(psu_607.age_ka, psu_607.temp, **args.args_607)
+    axs[1].fill_between(psu_607.age_ka, psu_607.temp_min1, psu_607.temp_plus1, **args.fill_607)
 
     # -- Define the axes --
-    axs[0].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
-    axs[1].set(ylabel="{} (VPDB {})".format(r'$\delta^{18}$O', u"\u2030"))
+    axs[0].set(ylabel="{} (VPDB {})".format(r'$\delta^{18}$O', u"\u2030"))
+    axs[1].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
 
     # Invert the axes with d18O
-    axs[1].invert_yaxis()
+    axs[0].invert_yaxis()
 
     # Decide which Tick Directions function you want to run.
     # tick_dirs_both(axs, num_plots, min_age, max_age)
-    tick_dirs(axs, num_plots, min_age, max_age)
+    tick_dirs(axs, num_plots, min_age, max_age, legend=False)
+
+    axs[0].legend(frameon=False)
 
     # Save the figure if required
     if save_fig:
-        plt.savefig("figures/new_data/Figure_3.png".format(min_age, max_age), format="png", dpi=300)
+        plt.savefig("figures/new_data/Figure_S4.png".format(min_age, max_age), format="png", dpi=300)
     else:
         plt.show()
 
@@ -248,6 +250,6 @@ def figure_three(save_fig: bool = False) -> int:
 
 
 if __name__ == "__main__":
-    figure_one(save_fig=False)
+    # figure_one(save_fig=False)
     # figure_two(save_fig=False)
-    # figure_three(save_fig=False)
+    figure_three(save_fig=True)

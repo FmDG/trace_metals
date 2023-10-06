@@ -62,3 +62,7 @@ def lr04_figure(save_fig:bool = False, age_min: int = 2400, age_max: int = 3600)
         plt.savefig("figures/LR04.png", format="png", dpi=150)
     else:
         plt.show()
+
+
+if __name__ == "__main__":
+    whole_isotope_figure(2400, 3600)

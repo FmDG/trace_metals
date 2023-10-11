@@ -20,15 +20,15 @@ def iso_bwt_figure(age_min: int = 2200, age_max: int = 3700, save_fig: bool = Fa
 
     # PSU BWT estimates
     axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args.args_1208)
-    axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
+    # axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **args.fill_1208)
     axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args.args_1209)
     axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **args.fill_1209)
 
     # PSU d18O_sw estimates
     axs[2].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args.args_1208)
-    axs[2].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **args.fill_1208)
+    # axs[2].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **args.fill_1208)
     axs[2].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args.args_1209)
-    axs[2].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **args.fill_1209)
+    # axs[2].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **args.fill_1209)
 
     # -- Define the axes --
     axs[0].set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))

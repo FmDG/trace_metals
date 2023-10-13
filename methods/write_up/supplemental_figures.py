@@ -5,9 +5,12 @@ from matplotlib import rcParams
 
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.trace_elements import te_1209
+from objects.core_data.psu import psu_core_top_1209, psu_core_top_1208
 import objects.args_Nature as args_Nat
 from methods.interpolations.generate_interpolations import resampling
 from methods.figures.tick_dirs import tick_dirs
+from methods.density.density_plots import density_plot
+from methods.density.average_densities import average_cdt, plot_density_diff
 
 rcParams["pdf.fonttype"] = 42
 rcParams['ps.fonttype'] = 42
@@ -96,7 +99,7 @@ def figure_s1(save_fig: bool = False):
     # -------------------- EXPORT FIGURE -------------------------
     # Save figure if needed.
     if save_fig:
-        plt.savefig("figures/paper/Figure_S1.svg", format="svg")
+        plt.savefig("figures/paper/Figure_S1.pdf", format='pdf')
     else:
         plt.show()
 
@@ -149,7 +152,7 @@ def figure_s2(save_fig: bool = False):
     # --------------- EXPORT FIGURE -----------------
     # Save the figure if required
     if save_fig:
-        plt.savefig("figures/paper/Figure_S2.svg", format="svg", dpi=300)
+        plt.savefig("figures/paper/Figure_S2.pdf", format='pdf')
     else:
         plt.show()
 
@@ -242,16 +245,70 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: boo
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_S4.svg", format='svg')
+        plt.savefig("figures/paper/Figure_S4.pdf", format='pdf')
     else:
         plt.show()
 
 
 def figure_s5(save_fig: bool = False):
-    pass
+    """
+    Generates Figure S5 - a density plot in temperature salinity space showing Pliocene and modern densities of water
+    masses.
+    :param save_fig: Boolean to determine whether to save the figure as Figure_S5.pdf
+    :return:
+    """
+    # -------------------- DATA PARAMETERS ----------------------
+    # There is some data that this plot requires which is listed below:
+    # Timings for glacial and interglacial intervals to be plotted up
+    glacial_interval = [2798, 2820, "G10"]
+    interglacial_interval = [2730, 2759, "G7"]
+    postglacial_interval = [2595, 2614, "104"]
+    # Modern Measurements
+    mod_temp_1209, mod_temp_1208 = 1.805, 1.525
+    mod_sal_1209, mod_sal_1208 = 34.61, 34.65
+    # Core Top salinity and temperature - 1209
+    holocene_sal_1209, holocene_temp_1209 = average_cdt(psu_core_top_1209, 0, 12)
+    lgm_sal_1209, lgm_temp_1209 = average_cdt(psu_core_top_1209, 12, 120)
+    # Core Top salinity and temperature - 1208
+    holocene_sal_1208, holocene_temp_1208 = average_cdt(psu_core_top_1208, 0, 12)
+    lgm_sal_1208, lgm_temp_1208 = average_cdt(psu_core_top_1208, 12, 120)
+
+    # ------------------ INITIALISE PLOT --------------------------
+    # Generate the density plot
+    ax = density_plot(min_sal=32.0, max_sal=35.0, min_temp=-4, max_temp=10, lv=15)
+
+    # ------------------ PLOT DATA ------------------------
+    # -- Add the Pliocene density differences
+    ax = plot_density_diff(ax, age_lower=glacial_interval[0], age_higher=glacial_interval[1], name=glacial_interval[2],
+                           marker="s")
+    ax = plot_density_diff(ax, age_lower=interglacial_interval[0], age_higher=interglacial_interval[1],
+                           name=interglacial_interval[2], marker="^")
+    ax = plot_density_diff(ax, age_lower=postglacial_interval[0], age_higher=postglacial_interval[1],
+                           name=postglacial_interval[2], marker="*")
+    # -- Add modern densities
+    ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=args_Nat.colours[0])
+    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=args_Nat.colours[1])
+    # -- Add core top densities - Holocene
+    ax.scatter(holocene_sal_1208, holocene_temp_1208, marker='o', label='1208 (Holocene)', color=args_Nat.colours[0])
+    ax.scatter(holocene_sal_1209, holocene_temp_1209, marker='o', label='1209 (Holocene)', color=args_Nat.colours[1])
+    # -- Add core top densities - LGM
+
+    ax.scatter(lgm_sal_1208, lgm_temp_1208, marker='x', label='1208 (LGM)', color=args_Nat.colours[0])
+    ax.scatter(lgm_sal_1209, lgm_temp_1209, marker='x', label='1209 (LGM)', color=args_Nat.colours[1])
+
+    # -------------- FORMAT PLOT ------------------------
+
+    ax.legend(frameon=True, ncol=2)
+
+    # ---------------- EXPORT FIGURE -----------------------
+    if save_fig:
+        plt.savefig("figures/paper/Figure_S5.pdf", format='pdf')
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    figure_s1(save_fig=True)
-    figure_s2(save_fig=True)
-    figure_s4(save_fig=True, sampling_frequency=5, dropna=False)
+    # figure_s1(save_fig=True)
+    # figure_s2(save_fig=True)
+    # figure_s4(save_fig=True, sampling_frequency=5, dropna=False)
+    figure_s5(save_fig=True)

@@ -5,15 +5,15 @@ import pandas as pd
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
 # Load the data from the objects file
-from objects.core_data.psu import psu_1208, psu_1209
-from objects.args_brewer import args_1209, args_1208, fill_1208, fill_1209
-from objects.args_brewer import clr as colour
+from objects.core_data.psu import psu_1208, psu_1209, psu_core_top_1209
+from objects.args_Nature import args_1209, args_1208, fill_1208, fill_1209
+from objects.args_Nature import colours as colour
 from objects.colours import colours_extra
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 # Modern Measurements
-mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
-mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
+mod_temp_1209, mod_temp_1208 = 1.805, 1.525
+mod_sal_1209, mod_sal_1208 = 34.61, 34.65
 
 # Marine Isotope Stages
 interglacials = [[2893, 2913, "G15"], [2858, 2876, "G13"], [2820, 2838, "G11"], [2777, 2798, "G9"], [2730, 2759, "G7"],
@@ -24,9 +24,8 @@ glacials = [[2876, 2893, "G14"], [2838, 2858, "G12"], [2798, 2820, "G10"], [2759
             [2477, 2494, "98"], [2427, 2452, "96"], [2387, 2407, "94"]]
 mpwp = [3055, 3087, "K1"]
 
-glacial_interval = [2595, 2614, "104 (G)"]
-interglacial_interval = [2575, 2595, "103 (IG)"]
-pliocene_interval = [2820, 2838, "G11 (Plio)"]
+glacial_interval = [2798, 2820, "G10"]
+interglacial_interval = [2730, 2759, "G7"]
 
 
 def salinity_calculations(d18o: float) -> float:
@@ -109,22 +108,7 @@ def plot_density_diff_uncertainty(ax: plt.axes, age_lower: int, age_higher: int,
 
 def plot_palaeo_densities(save_fig: bool = False):
     # Generate the density plot
-    ax = density_plot(min_sal=32.0, min_temp=-3, max_temp=10)
-
-    # Add the areas corresponding to modern water masses
-    # ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
-
-    # -- Add mPWP densities --
-    ax = plot_density_diff(ax, age_lower=pliocene_interval[0], age_higher=pliocene_interval[1], name=pliocene_interval[2], marker="s")
-
-    markers = ["o", "^", "*", "P", "X", "H", "p", "$o$"]
-    slice_num = 2
-    for x in range(slice_num):
-        # -- Add Early Pleistocene IG densities (1/4)
-        # ax = plot_density_diff(ax, age_lower=interglacials[4+x][0], age_higher=interglacials[4+x][1], name=interglacials[4+x][2], marker=markers[x])
-        # -- Add Early Pleistocene G densities (1/4)
-        # ax = plot_density_diff(ax, age_lower=glacials[4+x][0], age_higher=glacials[4+x][1], name=glacials[4+x][2], marker=markers[x + slice_num])
-        pass
+    ax = density_plot(min_sal=32.0, max_sal=35.0, min_temp=-4, max_temp=10, lv=15)
 
     # Plot up glacial and interglacial intervals
     ax = plot_density_diff(ax, age_lower=glacial_interval[0], age_higher=glacial_interval[1], name=glacial_interval[2], marker="o")
@@ -133,9 +117,13 @@ def plot_palaeo_densities(save_fig: bool = False):
     # -- Add modern densities
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
     ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
-    # ax.scatter(mod_sal_607, mod_temp_607, marker='+', label='607 (Modern)')
 
-    ax.legend(frameon=True, ncol=5)
+    holocene_sal, holocene_temp = average_cdt(psu_core_top_1209, 0, 12)
+    lgm_sal, lgm_temp = average_cdt(psu_core_top_1209, 12, 120)
+    ax.scatter(holocene_sal, holocene_temp, marker='s', label='1209 (Holocene)', color=colour[2])
+    ax.scatter(lgm_sal, lgm_temp, marker='s', label='1209 (LGM)', color=colour[2])
+
+    ax.legend(frameon=True, ncol=2)
 
     if save_fig:
         plt.savefig("figures/densities/past_densities_fills.png", format='png', dpi=150)
@@ -149,9 +137,6 @@ def plot_palaeo_densities_uncertainties(save_fig: bool = False):
 
     # Add the areas corresponding to modern water masses
     # ax = add_modern_fill(ax=ax, nadw=False, aabw=True, aaiw=True, cdw=True, npdw=True)
-
-    # -- Add mPWP densities --
-    ax = plot_density_diff_uncertainty(ax, age_lower=pliocene_interval[0], age_higher=pliocene_interval[1], name=pliocene_interval[2], marker="s")
 
     # -- Add Early Pleistocene densities
     ax = plot_density_diff_uncertainty(ax, age_lower=interglacial_interval[0], age_higher=interglacial_interval[1], name=interglacial_interval[2], marker="^")
@@ -225,7 +210,7 @@ def plot_isotopes(warm_sections: list[list[int, int]] = None, cold_sections: lis
 
 
 if __name__ == "__main__":
-    # plot_palaeo_densities(save_fig=False)
+    plot_palaeo_densities(save_fig=False)
     # plot_palaeo_densities_uncertainties(save_fig=False)
-    interglacials.append(mpwp)
-    plot_isotopes(warm_sections=interglacials, cold_sections=glacials, save_fig=True)
+    # interglacials.append(mpwp)
+    # plot_isotopes(warm_sections=interglacials, cold_sections=glacials, save_fig=True)

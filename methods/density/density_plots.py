@@ -6,7 +6,7 @@ import pandas as pd
 from objects.colours import colours_extra
 
 
-def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36):
+def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, lv=9):
     """
     This function uses the Gibbs Seawater (GSW) library to generate a contour plot of density (sigma-theta)
     given minimum and maximum temperature and salinity values. It takes four parameters, min_temp, max_temp,
@@ -16,6 +16,7 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36):
     :param max_temp: maximum temperature of the plot
     :param min_sal: minimum salinity of the plot
     :param max_sal: maximum salinity of the plot
+    :param lv: number of levels specified in density plot
     :return: density plot
     """
     # Define the temperature and salinity space
@@ -29,11 +30,11 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36):
     # Create the figure
     fig, ax = plt.subplots(figsize=(12, 8))
     # Generate contours in density space for each T and S point
-    contours = ax.contour(sal, temp, densities, colors="grey", zorder=1)
+    contours = ax.contour(sal, temp, densities, colors="grey", zorder=1, levels=lv)
     # Label the density contours
     plt.clabel(contours, fontsize=10, inline=False, fmt="%.1f")
     # Label the axes
-    ax.set(xlabel=r'Salinity (psu)', ylabel=r'Temperature ($^\circ$C)', title="Temperature-Salinity Plot")
+    ax.set(xlabel=r'Salinity (psu)', ylabel=r'Temperature ($^\circ$C)')
 
     plt.tight_layout()
 

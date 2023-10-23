@@ -4,16 +4,11 @@ Plotting up all the figures for the paper.
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
-from matplotlib import rcParams
 
 import objects.args_Nature as args_Nat
 from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
-
-
-rcParams["pdf.fonttype"] = 42
-rcParams['ps.fonttype'] = 42
 
 
 def figure_1(save_fig: bool = False):
@@ -107,7 +102,7 @@ def figure_2(save_fig: bool = False):
             xmax=2510,
             ec=None,
             fc='red',
-            alpha=0.1
+            alpha=0.15
         )
         # Highlight MIS G4 (2.681 - 2.69 Ma)
         ax.axvspan(
@@ -115,7 +110,7 @@ def figure_2(save_fig: bool = False):
             xmax=2690,
             ec=None,
             fc="blue",
-            alpha=0.1
+            alpha=0.15
         )
 
     # ------------- PLOT DATA -------------------
@@ -232,7 +227,6 @@ def figure_4(save_fig: bool = False):
 
 
 if __name__ == "__main__":
-    figure_1(save_fig=True)
+    # figure_1(save_fig=False)
     figure_2(save_fig=True)
-    figure_4(save_fig=True)
-
+    # figure_4(save_fig=True)

@@ -1,16 +1,16 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-from matplotlib.ticker import AutoMinorLocator
 from matplotlib import rcParams
+from matplotlib.ticker import AutoMinorLocator
 
-from objects.core_data.isotopes import iso_1209, iso_1208
-from objects.core_data.trace_elements import te_1209
-from objects.core_data.psu import psu_core_top_1209, psu_core_top_1208
 import objects.args_Nature as args_Nat
-from methods.interpolations.generate_interpolations import resampling
-from methods.figures.tick_dirs import tick_dirs
-from methods.density.density_plots import density_plot
 from methods.density.average_densities import average_cdt, plot_density_diff
+from methods.density.density_plots import density_plot
+from methods.figures.tick_dirs import tick_dirs
+from methods.interpolations.generate_interpolations import resampling
+from objects.core_data.isotopes import iso_1209, iso_1208
+from objects.core_data.psu import psu_core_top_1209, psu_core_top_1208
+from objects.core_data.trace_elements import te_1209
 
 rcParams["pdf.fonttype"] = 42
 rcParams['ps.fonttype'] = 42
@@ -311,4 +311,4 @@ if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
     # figure_s4(save_fig=True, sampling_frequency=5, dropna=False)
-    figure_s5(save_fig=True)
+    figure_s5(save_fig=False)

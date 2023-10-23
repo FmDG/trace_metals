@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/MIS_Boundaries.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/PlioVAR_changepoints.csv">
           <value>
             <Attribute>
@@ -46,6 +53,13 @@
           </value>
         </entry>
         <entry key="/data/cores/1208_psu.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/cores/1209_BCa.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

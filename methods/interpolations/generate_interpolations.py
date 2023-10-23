@@ -62,9 +62,3 @@ def resampling(
         d18O_values.append(d18O_avg)
 
     return age_array, d18O_values
-
-
-
-
-
-

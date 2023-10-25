@@ -5,7 +5,7 @@ from numpy import arange
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 from objects.args_Nature import colours, args_1208, args_1209, args_diff
-from methods.interpolations.generate_interpolations import resampling
+from methods.interpolations.generate_interpolations import resample_both
 from methods.figures.tick_dirs import tick_dirs
 
 
@@ -23,20 +23,8 @@ def delta_d18o(save_fig: bool = False):
     interglacial_info = []
 
     # --------------- RESAMPLE THE 1208 and 1209 DATA ---------------
-
-    # Define the age array
-    fs = 5.0
-    age_array = arange(2300, 3700, fs)
-
-    interpolated_values = []
-
-    for age in age_array:
-        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
-        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
-        difference = avg_1208 - avg_1209
-        interpolated_values.append({"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
-
-    interpolated_frame = DataFrame.from_records(interpolated_values)
+    interpolated_frame = resample_both(5.0, 2300, 3700)
+    interpolated_frame_2 = resample_both(2.0, 2300, 3700)
 
     # --------------- DETERMINE INTERVAL INFORMATION ---------------
     # Iterate over the rows of the MIS boundaries
@@ -46,11 +34,12 @@ def delta_d18o(save_fig: bool = False):
         values_1208 = iso_1208[iso_1208.age_ka.between(row.age_start, row.age_end)].d18O_unadj
         values_difference = interpolated_frame[interpolated_frame.age_ka.between(row.age_start, row.age_end)].d18O_difference
         info = {"age_ka": ((row.age_start + row.age_end) / 2),
-                "mean_1209": values_1209.mean(), "std_1209": values_1209.std(),
-                "mean_1208": values_1208.mean(), "std_1208": values_1208.std(),
+                "mean_1209": values_1209.mean(), "std_1209": values_1209.std(), "median_1209": values_1209.median(),
+                "mean_1208": values_1208.mean(), "std_1208": values_1208.std(), "median_1208": values_1208.median(),
                 "max_1209": values_1209.max(), "max_1208": values_1208.max(),
                 "min_1209": values_1209.min(), "min_1208": values_1208.min(),
-                "difference_d18O": values_difference.mean(), "difference_std": values_difference.std()
+                "difference_d18O": values_difference.mean(), "difference_std": values_difference.std(),
+                "difference_median": values_difference.median()
                 }
         # Add this information to the correct list
         if int(index) % 2 == 0:
@@ -62,10 +51,10 @@ def delta_d18o(save_fig: bool = False):
     interglacials = DataFrame.from_records(interglacial_info)
     # --------------- INITIALISE FIGURE ---------------
     fig, axs = plt.subplots(
-        nrows=5,
+        nrows=4,
         ncols=1,
         sharex="all",
-        figsize=(12, 14)
+        figsize=(12, 16)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -96,56 +85,49 @@ def delta_d18o(save_fig: bool = False):
     axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
     axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_1209)
 
-    # Plot the interpolated differences
-    axs[1].errorbar(
+    # 5 ka rolling mean
+    interpolated_frame = interpolated_frame.dropna()
+    axs[1].plot(interpolated_frame.age_ka, interpolated_frame.d18O_difference, **args_diff)
+
+    # Difference of the means
+    axs[2].errorbar(
         glacials.age_ka, (glacials.mean_1208 - glacials.mean_1209),
         # yerr=(glacials.std_1209 + glacials.std_1208),
         marker="D", c="tab:blue", label="Glacials"
     )
-    axs[1].errorbar(
+    axs[2].errorbar(
         interglacials.age_ka, (interglacials.mean_1208 - interglacials.mean_1209),
         # yerr=(interglacials.std_1209 + interglacials.std_1208),
         marker="o", c="tab:orange", label="Interglacials"
     )
 
-    axs[2].plot(
-        glacials.age_ka, glacials.difference_d18O,
-        marker="D", c="tab:blue", label="Glacials"
-    )
-    axs[2].plot(
-        interglacials.age_ka, interglacials.difference_d18O,
-        marker="o", c="tab:orange", label="Interglacials"
-    )
-
+    # Difference of the medians
     axs[3].plot(
-        glacials.age_ka, (glacials.max_1208 - glacials.max_1209),
+        glacials.age_ka, (glacials.median_1208 - glacials.median_1209),
         marker="D", c="tab:blue", label="Glacials"
     )
     axs[3].plot(
-        interglacials.age_ka, (interglacials.min_1208 - interglacials.min_1209),
+        interglacials.age_ka, (interglacials.median_1208 - interglacials.median_1209),
         marker="o", c="tab:orange", label="Interglacials"
     )
-
-    axs[4].plot(interpolated_frame.age_ka, interpolated_frame.d18O_difference, **args_diff)
 
     axs[1].axhline(0, c='k', lw=1.0)
     axs[2].axhline(0, c='k', lw=1.0)
     axs[3].axhline(0, c='k', lw=1.0)
-    axs[4].axhline(0, c='k', lw=1.0)
 
     # ------------- FORMAT AXES ----------------
     # -- Label the axis --
     axs[0].set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[1].set(ylabel='{} Mean {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
-    axs[2].set(ylabel='Mean {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
-    axs[3].set(ylabel='Min/Max {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
-    axs[4].set(ylabel='Rolling {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
+    axs[1].set(ylabel='5-ka interpolated {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
+    axs[2].set(ylabel='{} Mean {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
+    axs[3].set(ylabel='{} Median {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
 
-    tick_dirs(axs, num_plots=5, min_age=2300, max_age=3700, legend=False)
+    tick_dirs(axs, num_plots=4, min_age=2300, max_age=3700, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
     axs[1].legend(shadow=False, frameon=False)
+    axs[2].legend(shadow=False, frameon=False)
 
     # Save the figure or show it
     if save_fig:

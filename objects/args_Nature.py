@@ -7,7 +7,7 @@ args_1209 = {'color': colours[1], 'label': "1209", 'marker': 's', 'ms': 5, "mfc"
 fill_1209 = {'facecolor': colours[1], 'alpha': 0.2}
 
 # COLOURS - FILL
-args_diff = {'color': colours[3], 'label': "1208 - 1209", "marker": "+"}
+args_diff = {'color': colours[3], 'label': "(1208 - 1209)", "marker": "+"}
 fill_diff = {'facecolor': colours[3], 'alpha': 0.2}
 
 # COLOURS - 607/U1313

@@ -2,6 +2,8 @@ import numpy as np
 import scipy.interpolate as interpol
 from pandas import DataFrame
 
+from objects.core_data.isotopes import iso_1208, iso_1209
+
 
 # Make an array with a spacing of 5 ka, starting at a known start point
 # For each point in the array, find the mean of all the points that are within ± 2.5 ka.
@@ -62,3 +64,18 @@ def resampling(
         d18O_values.append(d18O_avg)
 
     return age_array, d18O_values
+
+
+def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700):
+    # Define the age array
+    age_array = np.arange(min_age, max_age, fs)
+
+    interpolated_values = []
+
+    for age in age_array:
+        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
+        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
+        difference = avg_1208 - avg_1209
+        interpolated_values.append({"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
+
+    return DataFrame.from_records(interpolated_values)

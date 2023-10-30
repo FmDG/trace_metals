@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from methods.interpolations.low_pass_filter import butter_lowpass_filter
 from methods.interpolations.generate_interpolations import resample_both
 from methods.figures.tick_dirs import tick_dirs
+from methods.figures.highlight_mis import highlight_mis
 from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.args_Nature import args_1209, args_1208, args_diff, fill_diff
 
@@ -66,24 +67,8 @@ def filter_difference(save_fig: bool = False, filter_period: float = 10.0):
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
 
-    # --------------- HIGHLIGHT MIS ---------------
-    for ax in axs:
-        # Highlight MIS 99 (2.494 - 2.51 Ma)
-        ax.axvspan(
-            xmin=2494,
-            xmax=2510,
-            ec=None,
-            fc='red',
-            alpha=0.15
-        )
-        # Highlight MIS G4 (2.681 - 2.69 Ma)
-        ax.axvspan(
-            xmin=2681,
-            xmax=2690,
-            ec=None,
-            fc="blue",
-            alpha=0.15
-        )
+    # ------------- HIGHLIGHT MIS ---------------
+    highlight_mis(axs)
 
     # --------------- PLOT DATA ---------------
     axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)  # Plot raw isotope d18O data

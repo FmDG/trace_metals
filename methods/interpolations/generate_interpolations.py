@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import scipy.interpolate as interpol
 from pandas import DataFrame
 
@@ -35,7 +36,7 @@ def resampling(
         start: int = 2400,
         end: int = 3600,
         fs: float = 5.0,
-        value: str = "d18O_unadj") -> tuple[np.ndarray, list[float]]:
+        value: str = "d18O_unadj") -> pd.DataFrame:
     """
     Resamples a dataset at a given time resolution.
 
@@ -60,8 +61,8 @@ def resampling(
     Examples:
         >>> import pandas as pd
         >>> import numpy as np
-        >>> data = pd.DataFrame({'age_ka': [2400, 2500, 2600, 2700, 2800], 'd18O_unadj': [1.1, 1.2, 1.3, 1.4, 1.5]})
-        >>> age_array, d18O_values = resampling(data, start=2400, end=2800, fs=100, value='d18O_unadj')
+        >>> data = pd.DataFrame({'age_ka': [2400, 2500, 2600, 2700, 2800], 'temperature': [1.1, 1.2, 1.3, 1.4, 1.5]})
+        >>> resampled_data = resampling(data, start=2400, end=2800, fs=100, value='temperature')
     """
     # -------------- INITIALISE ARRAY ----------------
     # Define the age array
@@ -76,15 +77,15 @@ def resampling(
     data_series = data_series.drop_duplicates(subset='age_ka')
 
     # ------------ OBTAIN VALUES ------------------
-    d18O_values = []
+    raw_values = []
     for age in age_array:
-        d18O_avg = data_series[data_series.age_ka.between(age-gap, age+gap)][value].mean()
-        d18O_values.append(d18O_avg)
+        value_avg = data_series[data_series.age_ka.between(age-gap, age+gap)][value].mean()
+        raw_values.append({"age_ka": age, "value_avg": value_avg})
 
-    return age_array, d18O_values
+    return DataFrame.from_records(raw_values)
 
 
-def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700):
+def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700, value: str = "d18O_unadj") -> pd.DataFrame:
     """
      Resamples two datasets and calculates the difference between them at regular age intervals.
 
@@ -92,6 +93,7 @@ def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700):
         fs (float, optional): Time step for resampling. Default is 5.0.
         min_age (int, optional): Minimum age for resampling. Default is 2300.
         max_age (int, optional): Maximum age for resampling. Default is 3700.
+        value (string, optional): Value in the dataframe to resample. Default is 'd18O_uandj'
 
     Returns:
         pd.DataFrame: A pandas DataFrame containing resampled age values, d18O_1208, d18O_1209, and d18O_difference.
@@ -112,8 +114,8 @@ def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700):
     interpolated_values = []
 
     for age in age_array:
-        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
-        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs/2), age + (fs/2))]["d18O_unadj"].mean()
+        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs/2), age + (fs/2))][value].mean()
+        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs/2), age + (fs/2))][value].mean()
         difference = avg_1208 - avg_1209
         interpolated_values.append({"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
 

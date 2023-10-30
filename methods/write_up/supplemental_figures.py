@@ -159,6 +159,7 @@ def figure_s2(save_fig: bool = False):
 
 # FIGURE S3 is a modelling output from the Burls et al., 2017 model and so is not generated here.
 
+# FUNCTION FIGURE S4 IS UNDER REPAIRS!!!!!!
 def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: bool = False):
     """
     This figure shows the interpolated difference in the d18O_c record of 1208 and 1209
@@ -184,10 +185,11 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: boo
     )
 
     # Join the new data together in one DataFrame
-    new_data = pd.DataFrame(list(zip(values_1208, values_1209)), columns=['d18O_1208', 'd18O_1209'])
+    # THIS SECTION WON'T WORK CURRENTLY - UNDER REPAIRS!!!!!!
+    '''new_data = pd.DataFrame(list(zip(values_1208, values_1209)), columns=['d18O_1208', 'd18O_1209'])
     new_data['age_ka'] = age_array.tolist()
 
-    new_data["difference"] = new_data.d18O_1208 - new_data.d18O_1209
+    new_data["difference"] = new_data.d18O_1208 - new_data.d18O_1209'''
     if dropna:
         new_data = new_data.dropna(subset='difference')
 

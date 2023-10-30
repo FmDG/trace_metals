@@ -7,6 +7,7 @@ from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_Nature as args_Nat
 from methods.figures.tick_dirs import tick_dirs
+from methods.figures.highlight_mis import highlight_mis
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
@@ -95,23 +96,7 @@ def figure_2(save_fig: bool = False):
     fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    for ax in axs:
-        # Highlight MIS 99 (2.494 - 2.51 Ma)
-        ax.axvspan(
-            xmin=2494,
-            xmax=2510,
-            ec=None,
-            fc='red',
-            alpha=0.15
-        )
-        # Highlight MIS G4 (2.681 - 2.69 Ma)
-        ax.axvspan(
-            xmin=2681,
-            xmax=2690,
-            ec=None,
-            fc="blue",
-            alpha=0.15
-        )
+    highlight_mis(axs)
 
     # ------------- PLOT DATA -------------------
     # d18O original data
@@ -174,23 +159,7 @@ def figure_4(save_fig: bool = False):
     fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    for ax in axs:
-        # Highlight MIS 99 (2.494 - 2.51 Ma)
-        ax.axvspan(
-            xmin=2494,
-            xmax=2510,
-            ec=None,
-            fc='red',
-            alpha=0.1
-        )
-        # Highlight MIS G4 (2.681 - 2.69 Ma)
-        ax.axvspan(
-            xmin=2681,
-            xmax=2690,
-            ec=None,
-            fc="blue",
-            alpha=0.1
-        )
+    highlight_mis(axs)
 
     # ------------- PLOT DATA -------------------
     # d18O original data

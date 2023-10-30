@@ -37,13 +37,31 @@ def resampling(
         fs: float = 5.0,
         value: str = "d18O_unadj") -> tuple[np.ndarray, list[float]]:
     """
-    Resamples a dataset at a given time resolution
-    :param data_series: input pandas series
-    :param start: start age
-    :param end: end age
-    :param fs: time step
-    :param value: input value
-    :return: tuple(age_array, list of values)
+    Resamples a dataset at a given time resolution.
+
+    Args:
+        data_series (DataFrame): Input pandas DataFrame containing age and value data.
+        start (int, optional): Start age for resampling. Default is 2400.
+        end (int, optional): End age for resampling. Default is 3600.
+        fs (float, optional): Time step for resampling. Default is 5.0.
+        value (str, optional): Name of the value column to be resampled. Default is "d18O_unadj".
+
+    Returns:
+        Tuple[np.ndarray, List[float]]: A tuple containing two elements:
+            - age_array (np.ndarray): An array of ages at which resampling was performed.
+            - d18O_values (List[float]): A list of resampled values corresponding to the ages in age_array.
+
+    The function resamples the input dataset at the specified time resolution, generating an age array and a list
+    of resampled values. It drops N/A values, removes duplicates, and sorts the dataset by age before resampling.
+
+    Note:
+        This function assumes that the input DataFrame `data_series` contains columns 'age_ka' and `value`.
+
+    Examples:
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>> data = pd.DataFrame({'age_ka': [2400, 2500, 2600, 2700, 2800], 'd18O_unadj': [1.1, 1.2, 1.3, 1.4, 1.5]})
+        >>> age_array, d18O_values = resampling(data, start=2400, end=2800, fs=100, value='d18O_unadj')
     """
     # -------------- INITIALISE ARRAY ----------------
     # Define the age array
@@ -67,7 +85,28 @@ def resampling(
 
 
 def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700):
-    # Define the age array
+    """
+     Resamples two datasets and calculates the difference between them at regular age intervals.
+
+    Args:
+        fs (float, optional): Time step for resampling. Default is 5.0.
+        min_age (int, optional): Minimum age for resampling. Default is 2300.
+        max_age (int, optional): Maximum age for resampling. Default is 3700.
+
+    Returns:
+        pd.DataFrame: A pandas DataFrame containing resampled age values, d18O_1208, d18O_1209, and d18O_difference.
+
+    This function generates an age array at specified intervals and resamples two datasets, 'iso_1208' and 'iso_1209', at each age point.
+    It calculates the difference between the corresponding 'd18O_unadj' values in both datasets and returns the results in a DataFrame.
+
+    Note:
+        - The 'iso_1208' and 'iso_1209' DataFrames are assumed to be available in the global scope.
+        - The function relies on the 'age_ka' and 'd18O_unadj' columns in the input DataFrames.
+
+    Example:
+        >>> resampled_data = resample_both(fs=10, min_age=2400, max_age=3600)
+        >>> print(resampled_data)
+    """
     age_array = np.arange(min_age, max_age, fs)
 
     interpolated_values = []

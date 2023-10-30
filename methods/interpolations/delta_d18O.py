@@ -5,7 +5,7 @@ from numpy import arange
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 from objects.args_Nature import colours, args_1208, args_1209, args_diff
-from methods.interpolations.generate_interpolations import resample_both
+from methods.interpolations.generate_interpolations import resample_both, butter_lowpass_filter
 from methods.figures.tick_dirs import tick_dirs
 
 
@@ -24,7 +24,7 @@ def delta_d18o(save_fig: bool = False):
 
     # --------------- RESAMPLE THE 1208 and 1209 DATA ---------------
     interpolated_frame = resample_both(5.0, 2300, 3700)
-    interpolated_frame_2 = resample_both(2.0, 2300, 3700)
+    interpolated_frame_2 = resample_both(2.0, 2300, 3700).dropna()
 
     # --------------- DETERMINE INTERVAL INFORMATION ---------------
     # Iterate over the rows of the MIS boundaries
@@ -138,5 +138,5 @@ def delta_d18o(save_fig: bool = False):
 
 if __name__ == "__main__":
     delta_d18o(
-        save_fig=True
+        save_fig=False
     )

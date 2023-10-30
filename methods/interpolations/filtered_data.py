@@ -6,6 +6,33 @@ from objects.core_data.isotopes import iso_1208, iso_1209
 
 
 def filter_difference(save_fig: bool = False):
+    """
+    Filter the difference between two isotope datasets and plot the results.
+
+    Args:
+        save_fig (bool, optional): If True, save the resulting figure as "filtered_data.png"
+                                    in the "figures/interpolations" directory. Default is False.
+
+    Returns:
+        None
+
+    This function performs the following steps:
+    1. Initializes age_min and age_max for the desired age range and sample rate (fs).
+    2. Resamples the isotope data in the specified age range, and extracts d18O data.
+    3. Defines filter parameters including sample_period, sample rate (fs), cutoff frequency, Nyquist Frequency, and filter order.
+    4. Applies a low-pass Butterworth filter to both d18O datasets.
+    5. Creates a multi-plot figure to display the original and filtered data.
+    6. If save_fig is True, saves the figure as "filtered_data.png"; otherwise, it displays the figure.
+
+    Note:
+    - The filter is applied to the difference between the two datasets and also to the individual datasets.
+    - The function assumes that the following variables are available in the global scope: iso_1208, iso_1209,
+      resample_both, butter_lowpass_filter, and plt (matplotlib.pyplot).
+
+    Example usage:
+    filter_difference(save_fig=True)  # Apply filtering and save the resulting figure.
+    filter_difference()  # Apply filtering and display the resulting figure.
+    """
     # --------------- INITIALISE PARAMETERS ---------------
     age_min, age_max = 2300, 3700
     fs = 4.0
@@ -52,8 +79,13 @@ def filter_difference(save_fig: bool = False):
         ax.legend()
         ax.invert_yaxis()
 
-    plt.show()
+    if save_fig:
+        plt.savefig("figures/interpolations/filtered_data.png", format="png")
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    filter_difference()
+    filter_difference(
+        save_fig=False
+    )

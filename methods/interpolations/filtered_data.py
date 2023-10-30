@@ -119,9 +119,7 @@ def filter_difference(save_fig: bool = False, filter_period: float = 10.0):
 
 
 if __name__ == "__main__":
-    figure_list = [5]  # , 7, 10, 15]
-    for instrument in figure_list:
-        filter_difference(
-            save_fig=False,
-            filter_period=instrument
-        )
+    filter_difference(
+        save_fig=False,
+        filter_period=5
+    )

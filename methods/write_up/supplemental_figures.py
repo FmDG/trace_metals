@@ -268,5 +268,5 @@ def figure_s5(save_fig: bool = False):
 if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
-    # figure_s4(save_fig=False, sampling_frequency=5, dropna=False)
-    figure_s5(save_fig=False)
+    figure_s4(save_fig=False, sampling_frequency=5, dropna=False)
+    # figure_s5(save_fig=False)

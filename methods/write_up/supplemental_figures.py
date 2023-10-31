@@ -1,19 +1,15 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-from matplotlib import rcParams
 from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_Nature as args_Nat
 from methods.density.average_densities import average_cdt, plot_density_diff
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
-from methods.interpolations.generate_interpolations import resampling
+from methods.figures.highlight_mis import highlight_mis
+from methods.interpolations.generate_interpolations import resample_both
 from objects.core_data.isotopes import iso_1209, iso_1208
-from objects.core_data.psu import psu_core_top_1209, psu_core_top_1208
+from objects.core_data.psu import psu_core_tops_1209, psu_core_tops_1208
 from objects.core_data.trace_elements import te_1209
-
-rcParams["pdf.fonttype"] = 42
-rcParams['ps.fonttype'] = 42
 
 
 def processing_thresholds(data_set, threshold):
@@ -158,8 +154,6 @@ def figure_s2(save_fig: bool = False):
 
 
 # FIGURE S3 is a modelling output from the Burls et al., 2017 model and so is not generated here.
-
-# FUNCTION FIGURE S4 IS UNDER REPAIRS!!!!!!
 def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: bool = False):
     """
     This figure shows the interpolated difference in the d18O_c record of 1208 and 1209
@@ -168,30 +162,8 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: boo
     :param dropna: whether to drop the NAN values in the resampling.
     :return:
     """
-    # ------------------- PREPROCESSING -------------
-    age_array, values_1208 = resampling(
-        iso_1208,
-        start=2400,
-        end=3600,
-        fs=sampling_frequency,
-        value="d18O_unadj"
-    )
-    _, values_1209 = resampling(
-        iso_1209,
-        start=2400,
-        end=3600,
-        fs=sampling_frequency,
-        value="d18O_unadj"
-    )
-
-    # Join the new data together in one DataFrame
-    # THIS SECTION WON'T WORK CURRENTLY - UNDER REPAIRS!!!!!!
-    '''new_data = pd.DataFrame(list(zip(values_1208, values_1209)), columns=['d18O_1208', 'd18O_1209'])
-    new_data['age_ka'] = age_array.tolist()
-
-    new_data["difference"] = new_data.d18O_1208 - new_data.d18O_1209'''
-    if dropna:
-        new_data = new_data.dropna(subset='difference')
+    # ------------------- RESAMPLING -------------
+    new_data = resample_both(fs=sampling_frequency, min_age=2400, max_age=3600, value="d18O_unadj")
 
     # ------------- DEFINE FIGURE --------------------
     fig, axs = plt.subplots(
@@ -204,23 +176,7 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: boo
     fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    for ax in axs:
-        # Highlight MIS 99 (2.494 - 2.51 Ma)
-        ax.axvspan(
-            xmin=2494,
-            xmax=2510,
-            ec=None,
-            fc='red',
-            alpha=0.1
-        )
-        # Highlight MIS G4 (2.681 - 2.69 Ma)
-        ax.axvspan(
-            xmin=2681,
-            xmax=2690,
-            ec=None,
-            fc="blue",
-            alpha=0.1
-        )
+    highlight_mis(axs)
 
     # ------------- PLOT DATA -------------------
     # d18O original data
@@ -228,8 +184,8 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: boo
     axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_Nat.args_1209)
 
     # Plot the interpolated differences
-    axs[1].plot(new_data.age_ka, new_data.difference, **args_Nat.args_diff)
-    axs[1].fill_between(new_data.age_ka, new_data.difference, **args_Nat.fill_diff)
+    axs[1].plot(new_data.age_ka, new_data.d18O_difference, **args_Nat.args_diff)
+    axs[1].fill_between(new_data.age_ka, new_data.d18O_difference, **args_Nat.fill_diff)
 
     # ------------- FORMAT AXES ----------------
     # -- Label the axis --
@@ -269,11 +225,11 @@ def figure_s5(save_fig: bool = False):
     mod_temp_1209, mod_temp_1208 = 1.805, 1.525
     mod_sal_1209, mod_sal_1208 = 34.61, 34.65
     # Core Top salinity and temperature - 1209
-    holocene_sal_1209, holocene_temp_1209 = average_cdt(psu_core_top_1209, 0, 12)
-    lgm_sal_1209, lgm_temp_1209 = average_cdt(psu_core_top_1209, 12, 120)
+    holocene_sal_1209, holocene_temp_1209 = average_cdt(psu_core_tops_1209, 0, 12)
+    lgm_sal_1209, lgm_temp_1209 = average_cdt(psu_core_tops_1209, 12, 120)
     # Core Top salinity and temperature - 1208
-    holocene_sal_1208, holocene_temp_1208 = average_cdt(psu_core_top_1208, 0, 12)
-    lgm_sal_1208, lgm_temp_1208 = average_cdt(psu_core_top_1208, 12, 120)
+    holocene_sal_1208, holocene_temp_1208 = average_cdt(psu_core_tops_1208, 0, 12)
+    lgm_sal_1208, lgm_temp_1208 = average_cdt(psu_core_tops_1208, 12, 120)
 
     # ------------------ INITIALISE PLOT --------------------------
     # Generate the density plot
@@ -312,5 +268,5 @@ def figure_s5(save_fig: bool = False):
 if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
-    # figure_s4(save_fig=True, sampling_frequency=5, dropna=False)
+    # figure_s4(save_fig=False, sampling_frequency=5, dropna=False)
     figure_s5(save_fig=False)

@@ -5,7 +5,7 @@ import pandas as pd
 from methods.density.density_plots import density_plot
 from methods.figures.tick_dirs import tick_dirs
 # Load the data from the objects file
-from objects.core_data.psu import psu_1208, psu_1209, psu_core_top_1209
+from objects.core_data.psu import psu_1208, psu_1209, psu_core_tops_1209
 from objects.args_Nature import args_1209, args_1208, fill_1208, fill_1209
 from objects.args_Nature import colours as colour
 from objects.colours import colours_extra
@@ -118,8 +118,8 @@ def plot_palaeo_densities(save_fig: bool = False):
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
     ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
 
-    holocene_sal, holocene_temp = average_cdt(psu_core_top_1209, 0, 12)
-    lgm_sal, lgm_temp = average_cdt(psu_core_top_1209, 12, 120)
+    holocene_sal, holocene_temp = average_cdt(psu_core_tops_1209, 0, 12)
+    lgm_sal, lgm_temp = average_cdt(psu_core_tops_1209, 12, 120)
     ax.scatter(holocene_sal, holocene_temp, marker='s', label='1209 (Holocene)', color=colour[2])
     ax.scatter(lgm_sal, lgm_temp, marker='s', label='1209 (LGM)', color=colour[2])
 

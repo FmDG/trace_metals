@@ -3,7 +3,35 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="$USER_HOME$/Library/CloudStorage/OneDrive-UniversityCollegeLondon/Project/Chapter_1/trace_metals/data/cores/1208_core_tops_psu.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/ceara_rise/925_d18O.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_core_tops_cibs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_core_tops_uvi.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_psu_core_tops.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -32,6 +60,13 @@
           </value>
         </entry>
         <entry key="/data/comparisons/probStack.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/cores/1208_core_tops_psu.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

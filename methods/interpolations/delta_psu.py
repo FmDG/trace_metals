@@ -8,7 +8,7 @@ from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.args_Nature import args_1208, args_1209, args_diff
 
 
-def delta_psu(save_fig: bool = False):
+def delta_temp(save_fig: bool = False):
     """
         Plot temperature data and temperature differences between two datasets.
 
@@ -23,8 +23,8 @@ def delta_psu(save_fig: bool = False):
             - It relies on custom functions like 'resampling', 'highlight_mis', 'tick_dirs', and styling arguments ('args_1208', 'args_1209', 'args_diff').
 
         Example:
-            >>> delta_psu(save_fig=False)  # Plot and display the figure
-            >>> delta_psu(save_fig=True)   # Plot and save the figure as an image
+            delta_temp(save_fig=False)  # Plot and display the figure
+            delta_temp(save_fig=True)   # Plot and save the figure as an image
         """
     # ------------------- ERROR HANDLING -------------------
     if not isinstance(save_fig, bool):
@@ -77,4 +77,4 @@ def delta_psu(save_fig: bool = False):
 
 
 if __name__ == '__main__':
-    delta_psu()
+    delta_temp()

@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 from pandas import read_csv, DataFrame
-from numpy import arange
 
-from objects.core_data.isotopes import iso_1208, iso_1209
-
-from objects.args_Nature import colours, args_1208, args_1209, args_diff
-from methods.interpolations.generate_interpolations import resample_both, butter_lowpass_filter
+from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
+from methods.interpolations.generate_interpolations import resample_both
+from methods.interpolations.low_pass_filter import butter_lowpass_filter
+from objects.args_Nature import args_1208, args_1209, args_diff
+from objects.core_data.isotopes import iso_1208, iso_1209
 
 
 def delta_d18o(save_fig: bool = False):
@@ -23,8 +23,17 @@ def delta_d18o(save_fig: bool = False):
     interglacial_info = []
 
     # --------------- RESAMPLE THE 1208 and 1209 DATA ---------------
-    interpolated_frame = resample_both(5.0, 2300, 3700)
-    interpolated_frame_2 = resample_both(2.0, 2300, 3700).dropna()
+    age_min, age_max = 2300, 3700
+    interpolated_frame = resample_both(5.0, age_min, age_max).dropna()
+    # --------------- FILTER PARAMETERS ---------------
+    filter_period = 5  # in ka
+    fs = 2  # Sample rate, in ka
+    cutoff = 1.0 / filter_period  # Desired cutoff frequency of the filter, in 1\ka
+    nyq = 0.5 * fs  # Nyquist Frequency
+    order = 2  # Order of the filter
+
+    # --------------- FILTER DATA ---------------
+    interpolated_diff = butter_lowpass_filter(interpolated_frame.d18O_difference.to_numpy(), cutoff, fs, order, nyq)
 
     # --------------- DETERMINE INTERVAL INFORMATION ---------------
     # Iterate over the rows of the MIS boundaries
@@ -49,9 +58,11 @@ def delta_d18o(save_fig: bool = False):
     # Convert the lists into dataframes
     glacials = DataFrame.from_records(glacial_info)
     interglacials = DataFrame.from_records(interglacial_info)
+
     # --------------- INITIALISE FIGURE ---------------
+    num_figures = 3
     fig, axs = plt.subplots(
-        nrows=4,
+        nrows=num_figures,
         ncols=1,
         sharex="all",
         figsize=(12, 16)
@@ -60,23 +71,8 @@ def delta_d18o(save_fig: bool = False):
     fig.subplots_adjust(hspace=0)
 
     # --------------- HIGHLIGHT MIS ---------------
+    highlight_mis(axs)
     for ax in axs:
-        # Highlight MIS 99 (2.494 - 2.51 Ma)
-        ax.axvspan(
-            xmin=2494,
-            xmax=2510,
-            ec=None,
-            fc='red',
-            alpha=0.1
-        )
-        # Highlight MIS G4 (2.681 - 2.69 Ma)
-        ax.axvspan(
-            xmin=2681,
-            xmax=2690,
-            ec=None,
-            fc="blue",
-            alpha=0.1
-        )
         ax.invert_yaxis()
         ax.set(xlabel="Age (ka)", xlim=(2300, 3700))
 
@@ -88,8 +84,10 @@ def delta_d18o(save_fig: bool = False):
     # 5 ka rolling mean
     interpolated_frame = interpolated_frame.dropna()
     axs[1].plot(interpolated_frame.age_ka, interpolated_frame.d18O_difference, **args_diff)
+    axs[1].plot(interpolated_frame.age_ka, interpolated_diff, label="Filtered Difference (10 ka)", c="tab:gray")
+    axs[1].fill_between(interpolated_frame.age_ka, interpolated_diff, fc="tab:gray", alpha=0.3)
 
-    # Difference of the means
+    '''# Difference of the means
     axs[2].errorbar(
         glacials.age_ka, (glacials.mean_1208 - glacials.mean_1209),
         # yerr=(glacials.std_1209 + glacials.std_1208),
@@ -99,30 +97,28 @@ def delta_d18o(save_fig: bool = False):
         interglacials.age_ka, (interglacials.mean_1208 - interglacials.mean_1209),
         # yerr=(interglacials.std_1209 + interglacials.std_1208),
         marker="o", c="tab:orange", label="Interglacials"
-    )
+    )'''
 
     # Difference of the medians
-    axs[3].plot(
+    axs[2].plot(
         glacials.age_ka, (glacials.median_1208 - glacials.median_1209),
         marker="D", c="tab:blue", label="Glacials"
     )
-    axs[3].plot(
+    axs[2].plot(
         interglacials.age_ka, (interglacials.median_1208 - interglacials.median_1209),
         marker="o", c="tab:orange", label="Interglacials"
     )
 
     axs[1].axhline(0, c='k', lw=1.0)
     axs[2].axhline(0, c='k', lw=1.0)
-    axs[3].axhline(0, c='k', lw=1.0)
 
     # ------------- FORMAT AXES ----------------
     # -- Label the axis --
     axs[0].set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[1].set(ylabel='5-ka interpolated {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
-    axs[2].set(ylabel='{} Mean {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
-    axs[3].set(ylabel='{} Median {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"), ylim=(0.3, -0.7))
+    axs[1].set(ylabel='5-ka interpolated {} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"))
+    axs[2].set(ylabel='{} Median {} ({} VPDB)'.format(r'$\Delta$', r'$\delta^{18}$O', u"\u2030"))
 
-    tick_dirs(axs, num_plots=4, min_age=2300, max_age=3700, legend=False)
+    tick_dirs(axs, num_plots=num_figures, min_age=2300, max_age=3700, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
@@ -131,12 +127,12 @@ def delta_d18o(save_fig: bool = False):
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_S4.pdf", format='pdf')
+        plt.savefig("figures/delta_figures/delta_median.pdf", format='pdf')
     else:
         plt.show()
 
 
 if __name__ == "__main__":
     delta_d18o(
-        save_fig=False
+        save_fig=True
     )

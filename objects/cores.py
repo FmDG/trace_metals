@@ -14,4 +14,3 @@ class Core:
             return read_csv(loc).sort_values(by=sort)
         else:
             return read_csv(loc).sort_values(by=sort).dropna(subset=drop)
-

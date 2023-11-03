@@ -2,7 +2,6 @@ import os
 
 from pandas import read_csv
 
-
 if not os.path.isdir("data/cores"):
     os.chdir('../..')
 
@@ -13,5 +12,3 @@ iso_929 = read_csv("data/ceara_rise/929_d18O.csv").dropna(subset="d18O_corr").so
 
 iso_925_cibs = iso_925[iso_925.type == "CWUE"]
 iso_929_cibs = iso_929[iso_929.type == "CWUE"]
-
-

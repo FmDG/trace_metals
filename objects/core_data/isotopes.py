@@ -2,7 +2,6 @@ import os
 
 from pandas import read_csv
 
-
 if not os.path.isdir("data/cores"):
     os.chdir('../..')
 
@@ -14,4 +13,3 @@ iso_1313 = read_csv("data/cores/U1313_cibs_adj.csv")
 iso_849 = read_csv("data/cores/849_cibs_adj.csv").dropna(subset="d18O")
 
 iso_849["d18O_unadj"] = iso_849['d18O'] - 0.64
-

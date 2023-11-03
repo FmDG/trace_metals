@@ -2,7 +2,6 @@ import os
 
 from pandas import read_csv
 
-
 if not os.path.isdir("data/cores"):
     os.chdir('../..')
 

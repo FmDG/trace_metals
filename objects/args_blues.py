@@ -2,8 +2,7 @@
 # colours = ['#e6550d', '#fdae6b', '#fee6ce']  # Reds
 # colours = ['#31a354', '#a1d99b', '#e5f5e0']  # Greens
 # colours = ['#756bb1', '#bcbddc', '#efedf5']  # Purples
-colours = ['#3182bd', '#fdae6b', '#9ecae1'] #  Blue and orange
-
+colours = ['#3182bd', '#fdae6b', '#9ecae1']  # Blue and orange
 
 # COLOURS - 1208/1209
 args_1209 = {'color': colours[0], 'label': "ODP 1209", 'marker': 's'}

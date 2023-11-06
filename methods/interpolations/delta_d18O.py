@@ -134,5 +134,5 @@ def delta_d18o(save_fig: bool = False):
 
 if __name__ == "__main__":
     delta_d18o(
-        save_fig=True
+        save_fig=False
     )

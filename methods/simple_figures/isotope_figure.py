@@ -2,9 +2,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_brewer as args
-from objects.core_data.isotopes import iso_1208, iso_1209
-from objects.core_data.lr04 import iso_lr04
 from methods.figures.tick_dirs import tick_dirs
+from objects.core_data.isotopes import iso_1208, iso_1209
 
 
 def whole_isotope_figure(age_min: int = 2200, age_max: int = 3700):
@@ -39,9 +38,6 @@ def whole_isotope_figure(age_min: int = 2200, age_max: int = 3700):
 
 def lr04_figure(save_fig:bool = False, age_min: int = 2400, age_max: int = 3600):
     fig, ax = plt.subplots(figsize=(11, 8))
-
-    # Plot the original d18O data
-    new_data = iso_lr04[iso_lr04.age_ka.between(age_min, age_max)]
 
     ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, marker="+")
     # -- Define the axes --

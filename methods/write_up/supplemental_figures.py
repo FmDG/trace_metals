@@ -4,8 +4,8 @@ from matplotlib.ticker import AutoMinorLocator
 import objects.args_Nature as args_Nat
 from methods.density.average_densities import average_cdt, plot_density_diff
 from methods.density.density_plots import density_plot
-from methods.figures.tick_dirs import tick_dirs
 from methods.figures.highlight_mis import highlight_mis
+from methods.figures.tick_dirs import tick_dirs
 from methods.interpolations.generate_interpolations import resample_both
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_core_tops_1209, psu_core_tops_1208
@@ -154,12 +154,11 @@ def figure_s2(save_fig: bool = False):
 
 
 # FIGURE S3 is a modelling output from the Burls et al., 2017 model and so is not generated here.
-def figure_s4(save_fig: bool = False, sampling_frequency: float = 5, dropna: bool = False):
+def figure_s4(save_fig: bool = False, sampling_frequency: float = 5):
     """
     This figure shows the interpolated difference in the d18O_c record of 1208 and 1209
     :param save_fig: determines whether this figure needs to be saved to Figure_S4.svg
     :param sampling_frequency: the frequency (in ka) that is resampled to
-    :param dropna: whether to drop the NAN values in the resampling.
     :return:
     """
     # ------------------- RESAMPLING -------------
@@ -268,5 +267,5 @@ def figure_s5(save_fig: bool = False):
 if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
-    figure_s4(save_fig=False, sampling_frequency=5, dropna=False)
+    figure_s4(save_fig=False, sampling_frequency=5)
     # figure_s5(save_fig=False)

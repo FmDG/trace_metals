@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 
 from generate_interpolations import resampling, resample_both
-from methods.figures.tick_dirs import tick_dirs
 from methods.figures.highlight_mis import highlight_mis
-from objects.core_data.psu import psu_1208, psu_1209
-from objects.core_data.isotopes import iso_1209, iso_1208
+from methods.figures.tick_dirs import tick_dirs
 from objects.args_Nature import args_1208, args_1209, args_diff
+from objects.core_data.isotopes import iso_1209, iso_1208
+from objects.core_data.psu import psu_1208, psu_1209
 
 
 def resampled_difference(value: str, resampling_freq: float = 5.0, age_min: int = 2400, age_max: int = 2900):
@@ -179,7 +179,6 @@ def delta_psu(save_fig: bool = False):
 
     # ------------------- INITIALISE VALUES -------------------
     age_min, age_max = 2400, 2900  # min and max ages in ka
-    smoothing_period = 10  # in ka
     resampling_freq = 5.0
 
     # ------------------- RESAMPLE OUTPUTS -------------------

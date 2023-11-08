@@ -1,11 +1,11 @@
 import os
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib.ticker import StrMethodFormatter
 
 
-def format_degrees(value, pos=None):
+def format_degrees(value):
     return f'{value:.2f} °'
 
 

@@ -1,11 +1,10 @@
 import os
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 import pandas as pd
+from matplotlib.ticker import AutoMinorLocator
 
 from objects.args_egypt import colour
-
 
 os.chdir("../..")
 

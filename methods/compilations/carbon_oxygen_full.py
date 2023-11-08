@@ -1,9 +1,7 @@
 import matplotlib.pyplot as plt
 
-from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.args_brewer import args_1209, args_1208
-from methods.figures.tick_dirs import tick_dirs_both
-
+from objects.core_data.isotopes import iso_1208, iso_1209
 
 if __name__ == "__main__":
     # Define the plot

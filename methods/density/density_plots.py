@@ -16,7 +16,7 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, lv=9):
     :param max_temp: maximum temperature of the plot
     :param min_sal: minimum salinity of the plot
     :param max_sal: maximum salinity of the plot
-    :param lv: number of levels specified in density plot
+    :param lv: number of levels specified in the plot
     :return: density plot
     """
     # Define the temperature and salinity space

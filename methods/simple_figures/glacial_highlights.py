@@ -1,13 +1,12 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
+from methods.interpolations.generate_interpolations import generate_interpolation
+from objects.args_brewer import args_1209, args_1208, fill_1208, fill_1209
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.lr04 import iso_lr04
 from objects.core_data.psu import psu_1208, psu_1209
-from objects.args_brewer import args_1209, args_1208, args_diff, fill_1208, fill_1209
-
 
 # Marine Isotope Stages
 interglacials = [
@@ -79,8 +78,7 @@ def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool 
         plt.show()
 
 
-def glacial_highlights_isotopes(age_min: int = 2400, age_max: int = 2900, save_fig: bool = False,
-                                warm_sections: list[list[int, int]] = None, cold_sections: list[list[int, int]] = None):
+def glacial_highlights_isotopes(age_min: int = 2400, age_max: int = 2900, save_fig: bool = False):
     # We use a simple 1D interpolation, with a density of "freq"
     freq = 0.1
     interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False, value="d18O")
@@ -132,8 +130,6 @@ def glacial_highlights_isotopes(age_min: int = 2400, age_max: int = 2900, save_f
 
 if __name__ == "__main__":
     glacial_highlights_isotopes(
-        warm_sections=interglacials,
-        cold_sections=glacials,
         save_fig=True,
         age_max=3600,
         age_min=2400

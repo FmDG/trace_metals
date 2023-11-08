@@ -1,7 +1,6 @@
-from objects.core_data.ceara_isotopes import iso_925, iso_927, iso_929
-from methods.figures.tick_dirs import tick_dirs, tick_dirs_both
-
 import matplotlib.pyplot as plt
+
+from objects.core_data.ceara_isotopes import iso_925, iso_927, iso_929
 
 colours = ['#dd5129', '#0f7ba2', '#43b284', '#fab255']
 

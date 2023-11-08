@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_brewer as args
+from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209
-from methods.figures.tick_dirs import tick_dirs
 
 
 def iso_bwt_figure(age_min: int = 2200, age_max: int = 3700, save_fig: bool = False):

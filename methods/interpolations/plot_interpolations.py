@@ -86,7 +86,7 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
     filtered_1208, filtered_1209 = filter_difference(resampled_data, filter_period)
     resampled_data["difference_d18O"] = resampled_data.d18O_unadj_mean_1208 - resampled_data.d18O_unadj_mean_1209
     rolling_corr_100 = rolling_pearson(resampled_data, "difference_d18O", "d18O_unadj_mean_1208",
-                                       window=100, start=age_min, end=age_max)
+                                       window=window_size, start=age_min, end=age_max)
     # --------------- INITIALISE FIGURE ---------------
     num_rows = 5
     fig, axs = subplots(nrows=num_rows, sharex="all", figsize=(12, 12))

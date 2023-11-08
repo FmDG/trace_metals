@@ -1,14 +1,12 @@
 import os
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from objects.core_data.isotopes import iso_1208, iso_1209
-from objects.core_data.psu import psu_1208, psu_1209
 import objects.args_brewer as args
-
-from methods.figures.tick_dirs import tick_dirs
 from methods.age_models.age_model import def_age_model
+from methods.figures.tick_dirs import tick_dirs
+from objects.core_data.isotopes import iso_1208
 
 
 def naafs_runs():

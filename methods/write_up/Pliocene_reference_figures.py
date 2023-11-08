@@ -1,12 +1,9 @@
 import matplotlib.pyplot as plt
-from scipy.signal import savgol_filter
-from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_brewer as args
-from methods.figures.tick_dirs import tick_dirs, tick_dirs_both
-from methods.interpolations.generate_interpolations import generate_interpolation
-from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
-from objects.core_data.psu import psu_1208, psu_1209, psu_607
+from methods.figures.tick_dirs import tick_dirs
+from objects.core_data.isotopes import iso_1208, iso_1209
+from objects.core_data.psu import psu_1208, psu_1209
 
 
 def pliocene_reference_figure():

@@ -34,7 +34,7 @@ def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool 
     interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False, value="d18O")
 
     threshold = 3.64
-    glacials = (interp_lr04 > threshold)
+    glacials_thresh = (interp_lr04 > threshold)
 
     # Generate a plot to display this
     num_plots = 2
@@ -61,8 +61,8 @@ def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool 
     axs[1].set(ylabel="BWT ({})".format(u'\N{DEGREE SIGN}C'))
 
     # Label the position of the glacials
-    axs[0].fill_between(age_array, (glacials * 5), 0.25, fc='b', ec=None, alpha=0.1, label="Glacial periods")
-    axs[1].fill_between(age_array, ((glacials * 10) - 5), -5, fc='b', ec=None, alpha=0.1, label="Glacial periods")
+    axs[0].fill_between(age_array, (glacials_thresh * 5), 0.25, fc='b', ec=None, alpha=0.1, label="Glacial periods")
+    axs[1].fill_between(age_array, ((glacials_thresh * 10) - 5), -5, fc='b', ec=None, alpha=0.1, label="Glacial periods")
     axs[0].set_ylim(4, 2)
     axs[1].set_ylim(-2.5, 4.0)
 

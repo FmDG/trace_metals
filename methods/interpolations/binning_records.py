@@ -37,3 +37,16 @@ def binning_multiple_series(
         raw_values.append(series_values)
 
     return DataFrame.from_records(raw_values)
+
+
+def binning_frame(database: DataFrame, age_min: int = 2300, age_max: int = 3600, freq: float = 5.0,
+                  value: str = "d18O_unadj") -> DataFrame:
+    age_array = arange(age_min, age_max, freq)    # Define the age array
+    gap = freq/2    # Interp space
+    raw_values = []
+    for age in age_array:
+        value_avg = database[database.age_ka.between(age - gap, age + gap)][value].mean()
+        raw_values.append({"age_ka": age, value: value_avg})
+
+    return DataFrame.from_records(raw_values)
+

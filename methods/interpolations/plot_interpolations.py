@@ -108,9 +108,9 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
     axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, label="1209")  # Plot up oxygen isotope record
     axs[0].legend(frameon=False)
 
-    axs[1].plot(iso_1208.age_ka, iso_1208.d18O_unadj)  # Plot up oxygen isotope record
+    axs[1].plot(resampled_data.age_ka, resampled_data.d18O_unadj_mean_1208)  # Plot up oxygen isotope record
 
-    axs[2].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209)) # Plot the filtered difference
+    axs[2].plot(resampled_data.age_ka, resampled_data.difference_d18O)  # Plot the filtered difference
 
     axs[3].plot(rolling_corr_100.age_ka, (rolling_corr_100.r ** 2), label="100-ka window")  # Plot the correlation
 
@@ -140,5 +140,4 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
 
 
 if __name__ == "__main__":
-    plot_rolling_corr(save_fig=True, filter_period=4)
-
+    plot_rolling_corr(save_fig=False, filter_period=4)

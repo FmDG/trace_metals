@@ -52,3 +52,25 @@ def rolling_pearson(database: DataFrame, value_01: str, value_02: str, start: in
         raw_values.append(series_values)
 
     return DataFrame.from_records(raw_values)
+
+
+def rolling_pearson_two_databases(database_01: DataFrame, value_01: str, database_02: DataFrame, value_02,
+                                  start: int = 2300, end: int = 3600, window: int = 100) -> DataFrame:
+    # -------------- CHECK ERRORS --------------
+    if window > (end - start):
+        raise ValueError("Window size is greater than age interval")
+    # -------------- INITIALISE ARRAY ----------------
+    # Define the age array
+    gap = window/2
+    age_array = arange((start + gap - 1), (end - gap + 1), 1)
+
+    # ------------ OBTAIN VALUES ------------------
+    raw_values = []
+    for age in age_array:
+        sampling_01 = database_01[database_01.age_ka.between(age - gap, age + gap)]
+        sampling_02 = database_02[database_02.age_ka.between(age - gap, age + gap)]
+        r, p = pearsonr(sampling_01[value_01], sampling_02[value_02])
+        series_values = {"age_ka": age, "age_min": (age - gap), "age_max": (age + gap), "r": r, "p": p}
+        raw_values.append(series_values)
+
+    return DataFrame.from_records(raw_values)

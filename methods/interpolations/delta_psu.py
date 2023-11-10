@@ -183,7 +183,7 @@ def delta_psu(save_fig: bool = False):
 
     # ------------------- RESAMPLE OUTPUTS -------------------
     resampled_temp = resampled_difference("temp", resampling_freq, age_min, age_max)
-    resampled_d18O = resampled_difference("d18O_sw", resampling_freq, age_min, age_max)
+    resampled_d18_o = resampled_difference("d18O_sw", resampling_freq, age_min, age_max)
     resampled_iso = resample_both(resampling_freq, age_min, age_max).dropna()
 
     # ------------------- INITIALISE FIGURE -------------------
@@ -213,7 +213,7 @@ def delta_psu(save_fig: bool = False):
     axs[4].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args_1208)  # Initial PSU d18O_sw estimates
     axs[4].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args_1209)
 
-    axs[5].plot(resampled_d18O.age_ka, resampled_d18O.difference, **args_diff)  # 5-ka rolling difference
+    axs[5].plot(resampled_d18_o.age_ka, resampled_d18_o.difference, **args_diff)  # 5-ka rolling difference
     axs[5].axhline(0, c="k")
 
     axs[0].set(ylabel="{} ({})".format(r'$\delta^{18}$O', u"\u2030"))

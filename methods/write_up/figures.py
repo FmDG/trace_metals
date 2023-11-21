@@ -28,14 +28,6 @@ def figure_1(save_fig: bool = False):
     )
 
     # ------------- HIGHLIGHT MIS ---------------
-    # Highlight MIS 99 (2.494 - 2.51 Ma)
-    ax.axvspan(
-        xmin=2494,
-        xmax=2510,
-        ec=None,
-        fc='red',
-        alpha=0.1
-    )
     # Highlight MIS G4 (2.681 - 2.69 Ma)
     ax.axvspan(
         xmin=2681,
@@ -132,7 +124,7 @@ def figure_2(save_fig: bool = False):
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_2.pdf", transparent=True)
+        plt.savefig("figures/paper/Figure_2.pdf", transparent=False)
     else:
         plt.show()
 
@@ -190,12 +182,12 @@ def figure_4(save_fig: bool = False):
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_4.pdf", transparent=True)
+        plt.savefig("figures/paper/Figure_4.pdf", transparent=False)
     else:
         plt.show()
 
 
 if __name__ == "__main__":
-    # figure_1(save_fig=False)
+    figure_1(save_fig=True)
     figure_2(save_fig=True)
-    # figure_4(save_fig=True)
+    figure_4(save_fig=True)

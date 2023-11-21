@@ -52,17 +52,17 @@ def figure_s1(save_fig: bool = False):
     axs[0].legend(shadow=False, frameon=True)
 
     # Al/Ca
-    axs[1].scatter(te_1209.mcd, te_1209.AlCa, label='Al/Ca', color=args_Nat.colours[1], marker='+')
+    axs[1].scatter(te_1209.mcd, te_1209.AlCa, label='Al/Ca', color=args_Nat.colours[0], marker='+')
     axs[1].scatter(te_1209[te_1209.AlCa > 120].mcd, te_1209[te_1209.AlCa > 120].AlCa, color='r', marker='+')
     axs[1].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
 
     # Mn/Ca
-    axs[2].scatter(te_1209.mcd, te_1209.MnCa, label='Mn/Ca', color=args_Nat.colours[2], marker='+')
+    axs[2].scatter(te_1209.mcd, te_1209.MnCa, label='Mn/Ca', color=args_Nat.colours[0], marker='+')
     axs[2].scatter(te_1209[te_1209.MnCa > 120].mcd, te_1209[te_1209.MnCa > 120].MnCa, color='r', marker='+')
     axs[2].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
 
     # Fe/Ca
-    axs[3].scatter(te_1209.mcd, te_1209.FeCa, label='Fe/Ca', color=args_Nat.colours[3], marker='+')
+    axs[3].scatter(te_1209.mcd, te_1209.FeCa, label='Fe/Ca', color=args_Nat.colours[0], marker='+')
     axs[3].scatter(te_1209[te_1209.FeCa > 120].mcd, te_1209[te_1209.FeCa > 120].FeCa, color='r', marker='+')
     axs[3].axhline(120, ls='--', lw='0.8', color='r', label='Threshold')
 
@@ -121,17 +121,17 @@ def figure_s2(save_fig: bool = False):
     # --------------- PLOT DATA ------------------------
 
     # Al/Ca
-    axs[2].scatter(te_1209.AlCa, te_1209.MgCa, marker='+', label='Al/Ca', color=args_Nat.colours[1])
+    axs[2].scatter(te_1209.AlCa, te_1209.MgCa, marker='+', label='Al/Ca', color=args_Nat.colours[0])
     axs[2].scatter(te_1209[te_1209.AlCa > 120].AlCa, te_1209[te_1209.AlCa > 120].MgCa, marker='+', color='r')
     axs[2].set( xlabel='Al/Ca ({})'.format(r'$\mu$mol/mol'))
 
     # Mn/Ca
-    axs[0].scatter(te_1209.MnCa, te_1209.MgCa, marker='+', label='Mn/Ca', color=args_Nat.colours[2])
+    axs[0].scatter(te_1209.MnCa, te_1209.MgCa, marker='+', label='Mn/Ca', color=args_Nat.colours[0])
     axs[0].scatter(te_1209[te_1209.MnCa > 120].MnCa, te_1209[te_1209.MnCa > 120].MgCa, marker='+', color='r')
     axs[0].set(xlabel='Mn/Ca ({})'.format(r'$\mu$mol/mol'))
 
     # Fe/Ca
-    axs[1].scatter(te_1209.FeCa, te_1209.MgCa, marker='+', label='Fe/Ca', color=args_Nat.colours[3])
+    axs[1].scatter(te_1209.FeCa, te_1209.MgCa, marker='+', label='Fe/Ca', color=args_Nat.colours[0])
     axs[1].scatter(te_1209[te_1209.FeCa > 120].FeCa, te_1209[te_1209.FeCa > 120].MgCa, marker='+', color='r')
     axs[1].set(xlabel='Fe/Ca ({})'.format(r'$\mu$mol/mol'))
 

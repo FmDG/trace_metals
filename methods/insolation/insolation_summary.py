@@ -37,10 +37,10 @@ def insolation_plots(age_min: float = 2350, age_max: float = 3600, save_fig: boo
     )
     fig.subplots_adjust(hspace=0)
 
-    axs[0].plot(insol_frame.age_ka, insol_frame.solstice_insolation, c="k")
+    axs[0].plot(insol_frame.age_ka, insol_frame.summer_insolation, c="k")
     axs[0].set(ylabel='Summer solstice insolation at {}{}N\n({})'.format(latitude, r'$\degree$', r'W m$^{-1}$'))
 
-    axs[1].plot(insol_frame.age_ka, insol_frame.solstice_insolation_gradient, c="k")
+    axs[1].plot(insol_frame.age_ka, insol_frame.summer_gradient, c="k")
     axs[1].set(
         ylabel='Summer solstice insolation gradient ({}{}N - 0{})\n({})'.format(latitude, r'$\degree$', r'$\degree$',
                                                                                 r'W m$^{-1}$'))

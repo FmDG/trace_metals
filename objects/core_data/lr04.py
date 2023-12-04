@@ -7,3 +7,4 @@ if not os.path.isdir("data/cores"):
 
 # Load the Oxygen Isotope datasets
 iso_lr04 = read_csv("data/comparisons/LR04.csv")
+iso_probstack = read_csv("data/comparisons/probStack.csv")

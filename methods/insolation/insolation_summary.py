@@ -9,10 +9,10 @@ from insolation_comparison import generate_insolation_frame
 from insolation_difference_correlation import insol_correlation
 
 
-def insolation_plots(age_min: float = 2350, age_max: float = 3600, save_fig: bool = False):
+def insolation_plots(age_min: float = 2300, age_max: float = 3600, save_fig: bool = False):
     # --------------- GENERATE DIFFERENCES ---------------
     resampling_freq = 5.0  # Resampling frequency in ka
-    filter_period = 3.0
+    filter_period = 5.0
     resampled_data = binning_multiple_series(
         iso_1208, iso_1209,
         names=["1208", "1209"],
@@ -45,24 +45,24 @@ def insolation_plots(age_min: float = 2350, age_max: float = 3600, save_fig: boo
         ylabel='Summer solstice insolation gradient ({}{}N - 0{})\n({})'.format(latitude, r'$\degree$', r'$\degree$',
                                                                                 r'W m$^{-1}$'))
 
-    axs[2].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209))  # Plot the filtered difference
+    axs[2].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209), c="k")  # Plot the filtered difference
     axs[2].set(ylabel="{}-ka filtered {} ({})".format(filter_period, r'$\Delta \delta^{18}$O', u'\u2030'))
     axs[2].invert_yaxis()
 
-    axs[3].plot(corr_insol_frame.age_ka, (corr_insol_frame.r ** 2))
+    axs[3].plot(corr_insol_frame.age_ka, (corr_insol_frame.r ** 2), c="k")
     axs[3].set(ylabel=r'Correlation, $R^{2}$')
 
-    axs[4].plot(corr_insol_frame.age_ka, corr_insol_frame.p)
+    axs[4].plot(corr_insol_frame.age_ka, corr_insol_frame.p, c="k")
     axs[4].axhline(0.05, c='r', ls="--", label="p = 0.05")
     axs[4].legend(frameon=False)
     axs[4].set(ylabel="Significance, p-value", xlabel="Age (ka)", yscale="log")
     axs[4].invert_yaxis()
 
-    fig.suptitle(r'Correlation between the Summer Insolation at 65$\degree$N and $\Delta \delta^{18}$O')
+    # fig.suptitle(r'Correlation between the Summer Insolation at 65$\degree$N and $\Delta \delta^{18}$O')
 
     tick_dirs(axs, num_plots, int(age_min), int(age_max), False)
 
     if save_fig:
-        plt.savefig("figures/Correlation_Insolation_d18O_Difference.png", format="png", dpi=300)
+        plt.savefig("figures/Correlation_Insolation_d18O_Difference.pdf", format="pdf")
     else:
         plt.show()

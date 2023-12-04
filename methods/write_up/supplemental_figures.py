@@ -6,10 +6,13 @@ from methods.density.average_densities import average_cdt, plot_density_diff
 from methods.density.density_plots import density_plot
 from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
-from methods.interpolations.generate_interpolations import resample_both
+from methods.interpolations.binning_records import binning_multiple_series
+from methods.interpolations.filter_data import filter_difference
+from methods.interpolations.rolling_pearson import rolling_pearson
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_core_tops_1209, psu_core_tops_1208
 from objects.core_data.trace_elements import te_1209
+from objects.core_data.lr04 import iso_probstack
 
 
 def processing_thresholds(data_set, threshold):
@@ -154,16 +157,25 @@ def figure_s2(save_fig: bool = False):
 
 
 # FIGURE S3 is a modelling output from the Burls et al., 2017 model and so is not generated here.
-def figure_s4(save_fig: bool = False, sampling_frequency: float = 5):
+def figure_s4(save_fig: bool = False, filter_frequency: float = 5):
     """
     This figure shows the interpolated difference in the d18O_c record of 1208 and 1209
     :param save_fig: determines whether this figure needs to be saved to Figure_S4.svg
-    :param sampling_frequency: the frequency (in ka) that is resampled to
+    :param filter_frequency: the frequency (in ka) that is resampled to
     :return:
     """
     # ------------------- RESAMPLING -------------
-    new_data = resample_both(fs=sampling_frequency, min_age=2400, max_age=3600, value="d18O_unadj")
-
+    resampling_freq = 3.0  # Resampling frequency in ka
+    age_min, age_max = 2350, 3600  # Minimum and maximum ages in ka
+    resampled_data = binning_multiple_series(
+        iso_1208, iso_1209,
+        names=["1208", "1209"],
+        fs=resampling_freq,
+        start=age_min,
+        end=age_max
+    ).dropna()
+    # Filter the difference in d18O
+    filtered_1208, filtered_1209 = filter_difference(resampled_data, filter_frequency)
     # ------------- DEFINE FIGURE --------------------
     fig, axs = plt.subplots(
         nrows=2,
@@ -183,19 +195,22 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5):
     axs[0].plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_Nat.args_1209)
 
     # Plot the interpolated differences
-    axs[1].plot(new_data.age_ka, new_data.d18O_difference, **args_Nat.args_diff)
-    axs[1].fill_between(new_data.age_ka, new_data.d18O_difference, **args_Nat.fill_diff)
+    axs[1].plot(resampled_data.age_ka, (resampled_data.d18O_unadj_mean_1208 - resampled_data.d18O_unadj_mean_1209),
+                marker="+", color="tab:grey", label=r'$\Delta \delta^{18}$O', alpha=0.7)
+
+    axs[1].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209), color=args_Nat.colours[3])
+    axs[1].fill_between(resampled_data.age_ka, (filtered_1208 - filtered_1209), fc=args_Nat.colours[3], alpha=0.1)
 
     # ------------- FORMAT AXES ----------------
     # -- Label the axis --
     axs[0].set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[1].set(ylabel='{} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"))
+    axs[1].set(ylabel='{} ({} VPDB)'.format(r'$\Delta \delta^{18}$O', u"\u2030"), ylim=[-0.8, 0.2])
 
     # Invert the axes
     axs[0].invert_yaxis()
     axs[1].invert_yaxis()
 
-    tick_dirs(axs=axs, num_plots=2, min_age=2400, max_age=3600, legend=False)
+    tick_dirs(axs=axs, num_plots=2, min_age=age_min, max_age=age_max, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
@@ -207,7 +222,67 @@ def figure_s4(save_fig: bool = False, sampling_frequency: float = 5):
         plt.show()
 
 
-def figure_s5(save_fig: bool = False):
+def figure_s5(window_size: int = 100, filter_period: float = 4.0, save_fig: bool = False):
+    # --------------- GENERATE DIFFERENCES ---------------
+    resampling_freq = 5.0  # Resampling frequency in ka
+    age_min, age_max = 2300, 3600  # Minimum and maximum ages in ka
+    resampled_data = binning_multiple_series(
+        iso_1208, iso_1209, iso_probstack,
+        names=["1208", "1209", "ProbStack"],
+        fs=resampling_freq,
+        start=age_min,
+        end=age_max
+    ).dropna()
+    # Filter the difference in d18O
+    filtered_1208, filtered_1209 = filter_difference(resampled_data, filter_period)
+    resampled_data["difference_d18O"] = resampled_data.d18O_unadj_mean_1208 - resampled_data.d18O_unadj_mean_1209
+    rolling_corr_100 = rolling_pearson(resampled_data, "difference_d18O", "d18O_unadj_mean_ProbStack",
+                                       window=window_size, start=age_min, end=age_max)
+    # --------------- INITIALISE FIGURE ---------------
+    num_rows = 5
+    fig, axs = plt.subplots(nrows=num_rows, sharex="all", figsize=(12, 12))
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # --------------- HIGHLIGHT SECTIONS ---------------
+    highlight_mis(axs)
+    # --------------- PLOT FIGURE ---------------
+    probstack = iso_probstack[iso_probstack.age_ka.between(age_min - 10, age_max + 10)]
+    axs[0].plot(probstack.age_ka, probstack.d18O_unadj, c="k")  # Plot up oxygen isotope record
+
+    axs[1].plot(resampled_data.age_ka, resampled_data.difference_d18O, c="k")  # Plot the filtered difference
+
+    axs[2].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209), c="k")  # Plot the filtered difference
+
+    axs[3].plot(rolling_corr_100.age_ka, (rolling_corr_100.r ** 2), label="100-ka window", c="k")  # Plot the correlation
+
+    axs[4].plot(rolling_corr_100.age_ka, rolling_corr_100.p, c="k")  # Plot the significance
+    axs[4].axhline(0.05, c='r', ls="--", label="p = 0.05")
+    axs[4].legend(frameon=False)
+
+    # --------------- FORMAT AXES ---------------
+    axs[0].set(xlim=[age_min, age_max], ylabel=r'ProbStack $\delta^{18}$O')
+    axs[1].set(ylabel='{}'.format(r'$\Delta \delta^{18}$O'))
+    axs[2].set(ylabel='{:.0f}-ka filtered {}'.format(filter_period, r'$\Delta \delta^{18}$O'))
+    axs[3].set(ylabel=r'Correlation, $R^{2}$')
+    axs[3].invert_yaxis()
+    axs[4].set(ylabel="Significance, p-value", xlabel="Age (ka)", yscale="log")
+
+    for ax in axs:
+        ax.invert_yaxis()
+
+    tick_dirs(axs, num_plots=num_rows, min_age=age_min, max_age=age_max, legend=False)
+
+    # --------------- EXPORT FIGURE ---------------
+    if save_fig:
+        plt.savefig("figures/paper/Figure_S5.pdf", format='pdf')
+    else:
+        plt.show()
+
+
+#  Figure S6 showing insolation correlating with Dd18O is found in the insolation folder.
+
+def figure_s7(save_fig: bool = False):
     """
     Generates Figure S5 - a density plot in temperature salinity space showing Pliocene and modern densities of water
     masses.
@@ -219,7 +294,7 @@ def figure_s5(save_fig: bool = False):
     # Timings for glacial and interglacial intervals to be plotted up
     glacial_interval = [2798, 2820, "G10"]
     interglacial_interval = [2730, 2759, "G7"]
-    postglacial_interval = [2595, 2614, "104"]
+    # postglacial_interval = [2595, 2614, "104"]
     # Modern Measurements
     mod_temp_1209, mod_temp_1208 = 1.805, 1.525
     mod_sal_1209, mod_sal_1208 = 34.61, 34.65
@@ -240,8 +315,8 @@ def figure_s5(save_fig: bool = False):
                            marker="s")
     ax = plot_density_diff(ax, age_lower=interglacial_interval[0], age_higher=interglacial_interval[1],
                            name=interglacial_interval[2], marker="^")
-    ax = plot_density_diff(ax, age_lower=postglacial_interval[0], age_higher=postglacial_interval[1],
-                           name=postglacial_interval[2], marker="*")
+    # ax = plot_density_diff(ax, age_lower=postglacial_interval[0], age_higher=postglacial_interval[1],
+                           # name=postglacial_interval[2], marker="*")
     # -- Add modern densities
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=args_Nat.colours[0])
     ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=args_Nat.colours[1])
@@ -250,8 +325,8 @@ def figure_s5(save_fig: bool = False):
     ax.scatter(holocene_sal_1209, holocene_temp_1209, marker='o', label='1209 (Holocene)', color=args_Nat.colours[1])
     # -- Add core top densities - LGM
 
-    ax.scatter(lgm_sal_1208, lgm_temp_1208, marker='x', label='1208 (LGM)', color=args_Nat.colours[0])
-    ax.scatter(lgm_sal_1209, lgm_temp_1209, marker='x', label='1209 (LGM)', color=args_Nat.colours[1])
+    # ax.scatter(lgm_sal_1208, lgm_temp_1208, marker='x', label='1208 (LGM)', color=args_Nat.colours[0])
+    # ax.scatter(lgm_sal_1209, lgm_temp_1209, marker='x', label='1209 (LGM)', color=args_Nat.colours[1])
 
     # -------------- FORMAT PLOT ------------------------
 
@@ -259,7 +334,7 @@ def figure_s5(save_fig: bool = False):
 
     # ---------------- EXPORT FIGURE -----------------------
     if save_fig:
-        plt.savefig("figures/paper/Figure_S5.pdf", format='pdf')
+        plt.savefig("figures/paper/Figure_S7.pdf", format='pdf')
     else:
         plt.show()
 
@@ -267,5 +342,6 @@ def figure_s5(save_fig: bool = False):
 if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
-    figure_s4(save_fig=False, sampling_frequency=5)
-    # figure_s5(save_fig=False)
+    # figure_s4(save_fig=True, filter_frequency=5)
+    figure_s5(save_fig=False, filter_period=5)
+    # figure_s7(save_fig=True)

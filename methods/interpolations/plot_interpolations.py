@@ -8,6 +8,7 @@ from objects.args_Nature import args_1209, args_1208
 from objects.core_data.isotopes import iso_1208, iso_1209
 from rolling_correlations import rolling_correlation
 from rolling_pearson import rolling_pearson
+from methods.figures.highlight_mis import highlight_mis
 
 
 def plot_filtered_diff(filter_period: float, save_fig: bool = False):

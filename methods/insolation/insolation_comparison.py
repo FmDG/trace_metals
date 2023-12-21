@@ -1,7 +1,7 @@
 import numpy as np
-from pandas import DataFrame
 from climlab.solar.insolation import daily_insolation
 from climlab.solar.orbital import OrbitalTable
+from pandas import DataFrame
 
 
 def generate_solstice_insolation_record(age_min: float, age_max: float, latitude: float, summer: bool = True):

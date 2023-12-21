@@ -1,9 +1,8 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.args_brewer import args_1209, args_1208
-
+from objects.core_data.isotopes import iso_1208, iso_1209
 
 if __name__ == "__main__":
     dataset = pd.read_csv("data/full_new_data.csv")

@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
-from methods.interpolations.generate_interpolations import generate_interpolation
 from methods.figures.tick_dirs import tick_dirs
-from objects.core_data.isotopes import iso_1209, iso_1208
+from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.args_brewer import args_1209, args_1208, args_diff
+from objects.core_data.isotopes import iso_1209, iso_1208
 
 
 def interpolations_glacials(age_min: int = 2400, age_max: int = 3400, window: int = 40, save_fig: bool = False):
@@ -61,7 +61,6 @@ def interpolations_glacials(age_min: int = 2400, age_max: int = 3400, window: in
 
 
 def glacial_delta(age_min: int = 2400, age_max: int = 2750):
-
     # We use a simple 1D interpolation, with a density of "freq"
     freq = 0.1
 
@@ -81,5 +80,3 @@ def glacial_delta(age_min: int = 2400, age_max: int = 2750):
 if __name__ == "__main__":
     g_mean, g_std, ig_mean, ig_std = glacial_delta()
     print(f"Glacial Dd18O = \t\t{g_mean:.6f} ± {g_std:.6f} \nInterglacial Dd18O = \t{ig_mean:.6f} ± {ig_std:.6f}")
-
-

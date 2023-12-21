@@ -17,11 +17,9 @@ final = pd.merge(traces, isotopes, on='age_ka', how='outer')
 final = final.sort_values(by="age_ka")
 final = final.reset_index()
 
-
 age = []
 iso = []
 tel = []
-
 
 for x in range(final.shape[0]):
     if x == 0:

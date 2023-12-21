@@ -2,17 +2,18 @@ import matplotlib.pyplot as plt
 
 from methods.density.average_densities import average_cdt
 from methods.density.density_plots import density_plot
-
-from objects.core_data.psu import psu_1208, psu_1209
 from objects.args_egypt import colour
+from objects.core_data.psu import psu_1208, psu_1209
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208, mod_temp_607 = 1.7, 1.3, 2.2
 mod_sal_1209, mod_sal_1208, mod_sal_607 = 34.6, 34.6, 34.9
 
 # Marine Isotope Stages
-interglacials = [[2730, 2759, "G7"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"], [2494, 2510, "99"]]
-glacials = [[2798, 2820, "G10"], [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"], [2510, 2540, "100"]]
+interglacials = [[2730, 2759, "G7"], [2652, 2681, "G3"], [2614, 2638, "G1"], [2575, 2595, "103"], [2540, 2554, "101"],
+                 [2494, 2510, "99"]]
+glacials = [[2798, 2820, "G10"], [2681, 2690, "G4"], [2638, 2652, "G2"], [2595, 2614, "104"], [2554, 2575, "102"],
+            [2510, 2540, "100"]]
 mpwp = [3055, 3087, "K1"]
 
 

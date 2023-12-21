@@ -7,12 +7,14 @@ from objects.core_data.trace_elements import bca_1209
 
 
 def pacific_plots(save_fig: bool = False):
-
     fig, ax = plt.subplots(1, figsize=(13, 7.5))
 
-    ax.plot(iso_849[iso_849.age_ka.between(2400, 3400)].age_ka, iso_849[iso_849.age_ka.between(2400, 3400)].d18O_unadj, **args.args_849)
-    ax.plot(iso_1208[iso_1208.age_ka.between(2400, 3400)].age_ka, iso_1208[iso_1208.age_ka.between(2400, 3400)].d18O_unadj, **args.args_1208)
-    ax.plot(iso_1209[iso_1209.age_ka.between(2400, 3400)].age_ka, iso_1209[iso_1209.age_ka.between(2400, 3400)].d18O_unadj, **args.args_1209)
+    ax.plot(iso_849[iso_849.age_ka.between(2400, 3400)].age_ka, iso_849[iso_849.age_ka.between(2400, 3400)].d18O_unadj,
+            **args.args_849)
+    ax.plot(iso_1208[iso_1208.age_ka.between(2400, 3400)].age_ka,
+            iso_1208[iso_1208.age_ka.between(2400, 3400)].d18O_unadj, **args.args_1208)
+    ax.plot(iso_1209[iso_1209.age_ka.between(2400, 3400)].age_ka,
+            iso_1209[iso_1209.age_ka.between(2400, 3400)].d18O_unadj, **args.args_1209)
 
     ax.set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
@@ -64,7 +66,7 @@ def single_iso_figure(save_fig: bool = False):
         plt.show()
 
 
-def boron_plots(save_fig:bool = False):
+def boron_plots(save_fig: bool = False):
     fig, ax1 = plt.subplots(figsize=(8, 8))
 
     ax1.set(xlabel="Age (ka)", ylabel="B/Ca ({})".format(r'$\mu$mol/mol'))
@@ -124,5 +126,3 @@ if __name__ == "__main__":
     # pacific_plots(save_fig=True)
     # single_iso_figure(save_fig=False)
     boron_plots(save_fig=False)
-
-

@@ -40,7 +40,7 @@ def rolling_pearson(database: DataFrame, value_01: str, value_02: str, start: in
         raise ValueError("Window size is greater than age interval")
     # -------------- INITIALISE ARRAY ----------------
     # Define the age array
-    gap = window/2
+    gap = window / 2
     age_array = arange((start + gap - 1), (end - gap + 1), 1)
 
     # ------------ OBTAIN VALUES ------------------
@@ -61,7 +61,7 @@ def rolling_pearson_two_databases(database_01: DataFrame, value_01: str, databas
         raise ValueError("Window size is greater than age interval")
     # -------------- INITIALISE ARRAY ----------------
     # Define the age array
-    gap = window/2
+    gap = window / 2
     age_array = arange((start + gap - 1), (end - gap + 1), 1)
 
     # ------------ OBTAIN VALUES ------------------

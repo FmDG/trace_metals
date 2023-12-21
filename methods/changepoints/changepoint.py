@@ -4,7 +4,6 @@ import ruptures as rpt
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.args_brewer import clr
-
 from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209
 
@@ -36,11 +35,11 @@ def find_change_point(dataset, value, n=1, known_bkps=False):
     return changepoint
 
 
-def change_points_interp(data_array, time_array, known_bkps=True, n=1):
+def change_points_interp(data_array, time_array, known_bkp=True, n=1):
     data_array = normalise_array(data_array)
 
     # Detect the change-point or points
-    if known_bkps:
+    if known_bkp:
         algo = rpt.Dynp(model="rbf").fit(data_array)
         result = algo.predict(n_bkps=n)
     else:
@@ -130,8 +129,8 @@ def iso_change_points(n=1, save_fig: bool = True):
     interp_1209, _ = generate_interpolation(use_1209, fs=0.1, pchip=False)
 
     # Find the change points in the interpolated datasets.
-    cp_1208 = change_points_interp(interp_1208, age_array, known_bkps=True, n=n)
-    cp_1209 = change_points_interp(interp_1209, age_array, known_bkps=True, n=n)
+    cp_1208 = change_points_interp(interp_1208, age_array, known_bkp=True, n=n)
+    cp_1209 = change_points_interp(interp_1209, age_array, known_bkp=True, n=n)
 
     # Display the elements
     num_plots = 2
@@ -193,7 +192,7 @@ def diff_change_points(n=1, save_fig: bool = False):
 
     differences = (interp_1208 - interp_1209)
 
-    cp_diff = change_points_interp(differences, age_array, known_bkps=True, n=n)
+    cp_diff = change_points_interp(differences, age_array, known_bkp=True, n=n)
 
     fig, ax = plt.subplots(figsize=(12, 8))
 

@@ -1,10 +1,7 @@
 from pandas import DataFrame
 
-from methods.interpolations.binning_records import binning_multiple_series, binning_frame
-from methods.interpolations.filter_data import filter_difference
+from methods.interpolations.binning_records import binning_frame
 from methods.interpolations.rolling_pearson import rolling_pearson
-from objects.core_data.isotopes import iso_1208, iso_1209
-from insolation_comparison import generate_insolation_frame
 
 
 def insol_correlation(insol_frame: DataFrame, resampled_data: DataFrame, age_min: int = 2350, age_max: int = 3600,

@@ -4,13 +4,12 @@ This file produces a plot that summarises the usefulness of Mg/Li as a palaeothe
 
 import matplotlib.pyplot as plt
 
-from objects.core_data.trace_elements import te_1209
-from objects.args_Nature import colours
 from methods.figures.tick_dirs import tick_dirs
+from objects.args_Nature import colours
+from objects.core_data.trace_elements import te_1209
 
 
 def lithium_plots():
-
     # Set the ages
     min_age, max_age = 2400, 2900
 
@@ -19,8 +18,10 @@ def lithium_plots():
 
     # Define Mg/Li
     trimmed_1209["MgLi"] = (trimmed_1209.MgCa / trimmed_1209.LiCa)
-    trimmed_1209["MgCa_norm"] = (trimmed_1209.MgCa - trimmed_1209.MgCa.min()) / (trimmed_1209.MgCa.max() - trimmed_1209.MgCa.min())
-    trimmed_1209["MgLi_norm"] = (trimmed_1209.MgLi - trimmed_1209.MgLi.min()) / (trimmed_1209.MgLi.max() - trimmed_1209.MgLi.min())
+    trimmed_1209["MgCa_norm"] = (trimmed_1209.MgCa - trimmed_1209.MgCa.min()) / (
+                trimmed_1209.MgCa.max() - trimmed_1209.MgCa.min())
+    trimmed_1209["MgLi_norm"] = (trimmed_1209.MgLi - trimmed_1209.MgLi.min()) / (
+                trimmed_1209.MgLi.max() - trimmed_1209.MgLi.min())
 
     trimmed_1209["dMg"] = trimmed_1209.MgCa_norm - trimmed_1209.MgLi_norm
 

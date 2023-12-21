@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
 import objects.args_Nature as args_Nat
-from methods.figures.tick_dirs import tick_dirs
 from methods.figures.highlight_mis import highlight_mis
+from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 

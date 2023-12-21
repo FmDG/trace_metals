@@ -2,6 +2,7 @@ from matplotlib.pyplot import subplots, savefig, show
 
 from binning_records import binning_multiple_series
 from filter_data import filter_difference
+from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
 from objects.args_Nature import args_1209, args_1208
 from objects.core_data.isotopes import iso_1208, iso_1209
@@ -33,6 +34,9 @@ def plot_filtered_diff(filter_period: float, save_fig: bool = False):
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
+
+    # --------------- HIGHLIGHT MIS ---------------
+    highlight_mis(axs)
 
     # --------------- PLOT DATA ---------------
     axs[0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)  # Plot raw isotope d18O data
@@ -88,8 +92,8 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
     rolling_corr_100 = rolling_pearson(resampled_data, "difference_d18O", "d18O_unadj_mean_1208",
                                        window=window_size, start=age_min, end=age_max)
     # --------------- INITIALISE FIGURE ---------------
-    num_rows = 5
-    fig, axs = subplots(nrows=num_rows, sharex="all", figsize=(12, 12))
+    num_rows = 6
+    fig, axs = subplots(nrows=num_rows, sharex="all", figsize=(12, 16))
     fig.suptitle("Correlation between {} and 1208 {}".format(r'$\Delta \delta^{18}$O', r'$\delta^{18}$O'))
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -112,19 +116,22 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
 
     axs[2].plot(resampled_data.age_ka, resampled_data.difference_d18O)  # Plot the filtered difference
 
-    axs[3].plot(rolling_corr_100.age_ka, (rolling_corr_100.r ** 2), label="100-ka window")  # Plot the correlation
+    axs[3].plot(resampled_data.age_ka, (filtered_1208 - filtered_1209))  # Plot the filtered difference
 
-    axs[4].plot(rolling_corr_100.age_ka, rolling_corr_100.p)  # Plot the significance
-    axs[4].axhline(0.05, c='r', ls="--", label="p = 0.05")
-    axs[4].legend(frameon=False)
+    axs[4].plot(rolling_corr_100.age_ka, (rolling_corr_100.r ** 2), label="100-ka window")  # Plot the correlation
+
+    axs[5].plot(rolling_corr_100.age_ka, rolling_corr_100.p)  # Plot the significance
+    axs[5].axhline(0.05, c='r', ls="--", label="p = 0.05")
+    axs[5].legend(frameon=False)
 
     # --------------- FORMAT AXES ---------------
     axs[0].set(ylabel=r'$\delta^{18}$O')
     axs[1].set(xlim=[age_min, age_max], ylabel=r'1208 $\delta^{18}$O')
-    axs[2].set(ylabel='{:.0f}-ka filtered {}'.format(filter_period, r'$\Delta \delta^{18}$O'))
-    axs[3].set(ylabel=r'Correlation, $R^{2}$')
-    axs[3].invert_yaxis()
-    axs[4].set(ylabel="Significance, p-value", xlabel="Age (ka)", yscale="log")
+    axs[2].set(ylabel='{}'.format(r'$\Delta \delta^{18}$O'))
+    axs[3].set(ylabel='{:.0f}-ka filtered {}'.format(filter_period, r'$\Delta \delta^{18}$O'))
+    axs[4].set(ylabel=r'Correlation, $R^{2}$')
+    axs[4].invert_yaxis()
+    axs[5].set(ylabel="Significance, p-value", xlabel="Age (ka)", yscale="log")
 
     for ax in axs:
         ax.invert_yaxis()
@@ -140,4 +147,5 @@ def plot_rolling_corr(window_size: int = 100, filter_period: float = 4.0, save_f
 
 
 if __name__ == "__main__":
-    plot_rolling_corr(save_fig=False, filter_period=4)
+    plot_rolling_corr(save_fig=True, filter_period=5)
+    # plot_filtered_diff(filter_period=5, save_fig=False)

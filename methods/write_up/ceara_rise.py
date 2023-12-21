@@ -3,23 +3,23 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from objects.colours import colours_extra as colours
 from objects.args_brewer import args_1209, args_1208, args_607, args_925, args_929
-from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
+from objects.colours import colours_extra as colours
 from objects.core_data.ceara_isotopes import iso_925_cibs, iso_929_cibs, iso_925, iso_929
+from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 
 
 def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = None, figure_name: str = "figure_01",
                 age_min: int = 2400, age_max: int = 3300):
     """
-    GENERATES PLOT FOR CEARA RISE d18O
-    The function generates a plot from age_max to age_min of the d18O values from sites in the Ceara Rise from the data
+    GENERATES PLOT FOR CEARÁ RISE d18O
+    The function generates a plot from age_max to age_min of the d18O values from sites in the Ceará Rise from the data
     derived from Wilkens et al., 2017. This also highlights the regions that will be focussed on in the second chapter
     of my PhD project.
     :param save_fig: boolean, determines if the resultant figure should be saved to the ceara_rise folder in the
     figures' directory.
     :param highlights: boolean, determines if the focus regions should be highlighted on the figure.
-    :param sites: list of integers, the names of the sites that will appear on the figures. The Ceara Rise is the
+    :param sites: list of integers, the names of the sites that will appear on the figures. The Ceará Rise is the
     location of the ODP Site 925, 926, 927, 928 and 929.
     :param figure_name: string, determine the name of the resultant file if "save_fig" is selected.
     :param age_min: integer, the minimum age of the plot.
@@ -31,7 +31,7 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
     if sites is None:
         sites = [925, 927, 929]
     else:
-        # Checks that the sites are actually present on the Ceara Rise
+        # Checks that the sites are actually present on the Ceará Rise
         for x in sites:
             if x not in [925, 926, 927, 928, 929]:
                 raise ValueError("Sites not in the Ceara Rise")
@@ -50,7 +50,8 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
     # Select every site
     for x in range(len(sites)):
         site_name = sites[x]
-        site_data = pd.read_csv("data/ceara_rise/{}_d18O.csv".format(str(site_name))).dropna(subset='d18O_corr').sort_values(by="age_ka")
+        site_data = pd.read_csv("data/ceara_rise/{}_d18O.csv".format(str(site_name))).dropna(
+            subset='d18O_corr').sort_values(by="age_ka")
         # For each site, plot the age against the corrected d18O from Wilkens 2017
         ax.plot(
             site_data.age_ka, site_data.d18O_corr, marker="+", color=colours[x], label="ODP {}".format(site_name)
@@ -81,7 +82,6 @@ def ceara_sites(save_fig: bool = False, highlights: bool = False, sites: list = 
 
 
 def comparison_ceara(save_fig: bool = False, min_age: int = 2400, max_age: int = 4000, cibs_only: bool = True):
-
     site_1208 = iso_1208[iso_1208.age_ka.between(min_age, max_age)]
     site_1209 = iso_1209[iso_1209.age_ka.between(min_age, max_age)]
     site_607 = iso_607[iso_607.age_ka.between(min_age, max_age)]
@@ -149,4 +149,3 @@ if __name__ == "__main__":
         max_age=3500,
         cibs_only=False
     )
-

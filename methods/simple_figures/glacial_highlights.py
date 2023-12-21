@@ -31,7 +31,8 @@ glacials = [
 def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool = False):
     # We use a simple 1D interpolation, with a density of "freq"
     freq = 0.1
-    interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False, value="d18O")
+    interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False,
+                                                    value="d18O")
 
     threshold = 3.64
     glacials_thresh = (interp_lr04 > threshold)
@@ -62,7 +63,8 @@ def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool 
 
     # Label the position of the glacials
     axs[0].fill_between(age_array, (glacials_thresh * 5), 0.25, fc='b', ec=None, alpha=0.1, label="Glacial periods")
-    axs[1].fill_between(age_array, ((glacials_thresh * 10) - 5), -5, fc='b', ec=None, alpha=0.1, label="Glacial periods")
+    axs[1].fill_between(age_array, ((glacials_thresh * 10) - 5), -5, fc='b', ec=None, alpha=0.1,
+                        label="Glacial periods")
     axs[0].set_ylim(4, 2)
     axs[1].set_ylim(-2.5, 4.0)
 
@@ -81,10 +83,11 @@ def glacial_highlights(age_min: int = 2400, age_max: int = 2900, save_fig: bool 
 def glacial_highlights_isotopes(age_min: int = 2400, age_max: int = 2900, save_fig: bool = False):
     # We use a simple 1D interpolation, with a density of "freq"
     freq = 0.1
-    interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False, value="d18O")
+    interp_lr04, age_array = generate_interpolation(iso_lr04, fs=freq, start=age_min, end=age_max, pchip=False,
+                                                    value="d18O")
 
     threshold = 3.64
-    glacials = (interp_lr04 > threshold)
+    glacials_hits = (interp_lr04 > threshold)
 
     # Generate a plot to display this
     fig, ax = plt.subplots(1, sharex="all", figsize=(14, 6))
@@ -107,9 +110,8 @@ def glacial_highlights_isotopes(age_min: int = 2400, age_max: int = 2900, save_f
     for section in cold_sections:
         ax.annotate(section[2], (((section[0] + section[1]) / 2 - 2.5), 3.67), fontsize="xx-small")
     '''
-    ax.fill_between(age_array, (glacials * 5), 0.25, fc='b', ec=None, alpha=0.05, label=None)
+    ax.fill_between(age_array, (glacials_hits * 5), 0.25, fc='b', ec=None, alpha=0.05, label=None)
     ax.set_ylim(4, 2)
-
 
     ax.legend(frameon=False, shadow=False)
 

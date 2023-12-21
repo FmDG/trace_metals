@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
+from methods.figures.tick_dirs import tick_dirs
+from objects.args_brewer import args_1209, args_1208
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
-from objects.args_brewer import args_1209, args_1208
-from methods.figures.tick_dirs import tick_dirs
 
 
 def sampling_figures():
@@ -35,11 +35,11 @@ def sampling_resolution():
     num_plots = 2
     min_age, max_age = 2450, 2750
 
-    isosample_1209 = iso_1209[iso_1209.age_ka.between(min_age, max_age)]
-    isosample_1208 = iso_1208[iso_1208.age_ka.between(min_age, max_age)]
+    iso_sample_1209 = iso_1209[iso_1209.age_ka.between(min_age, max_age)]
+    iso_sample_1208 = iso_1208[iso_1208.age_ka.between(min_age, max_age)]
 
-    tesample_1209 = psu_1209[psu_1209.age_ka.between(min_age, max_age)]
-    tesample_1208 = psu_1208[psu_1208.age_ka.between(min_age, max_age)]
+    te_sample_1209 = psu_1209[psu_1209.age_ka.between(min_age, max_age)]
+    te_sample_1208 = psu_1208[psu_1208.age_ka.between(min_age, max_age)]
 
     # Define figure
     fig, axs = plt.subplots(num_plots, sharex='all')
@@ -48,12 +48,12 @@ def sampling_resolution():
     # Name the Plot
     fig.suptitle("Comparison of Sites 1208 and 1209\n ({} - {} ka)".format(min_age, max_age))
 
-    axs[0].plot(tesample_1208.age_ka, tesample_1208.temp, **args_1208)
-    axs[0].plot(tesample_1209.age_ka, tesample_1209.temp, **args_1209)
+    axs[0].plot(te_sample_1208.age_ka, te_sample_1208.temp, **args_1208)
+    axs[0].plot(te_sample_1209.age_ka, te_sample_1209.temp, **args_1209)
     axs[0].set(ylabel="BWT")
 
-    axs[1].plot(tesample_1208.age_ka, tesample_1208.age_ka.diff(), **args_1208)
-    axs[1].plot(tesample_1209.age_ka, tesample_1209.age_ka.diff(), **args_1209)
+    axs[1].plot(te_sample_1208.age_ka, te_sample_1208.age_ka.diff(), **args_1208)
+    axs[1].plot(te_sample_1209.age_ka, te_sample_1209.age_ka.diff(), **args_1209)
     axs[1].set(ylabel="Age between samples (ka)".format(r'$^{-1}$'), xlabel='Age (ka)', xlim=[min_age, max_age])
 
     tick_dirs(axs=axs, num_plots=num_plots, min_age=min_age, max_age=max_age)
@@ -63,4 +63,3 @@ def sampling_resolution():
 
 if __name__ == "__main__":
     sampling_resolution()
-

@@ -51,5 +51,3 @@ def iso_bwt_figure(age_min: int = 2200, age_max: int = 3700, save_fig: bool = Fa
 
 if __name__ == "__main__":
     iso_bwt_figure(age_min=2400, age_max=2900, save_fig=False)
-
-

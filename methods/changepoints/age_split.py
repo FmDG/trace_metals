@@ -1,4 +1,3 @@
-
 def age_split(data_series, split_point, value="MgCa"):
     # Split the dataframe into two parts
     before = data_series[data_series.age_ka > split_point]

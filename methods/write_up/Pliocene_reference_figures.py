@@ -7,7 +7,6 @@ from objects.core_data.psu import psu_1208, psu_1209
 
 
 def pliocene_reference_figure():
-
     new_1208, new_1209, min_age, max_age = pliocene_inset()
     # new_1208, new_1209, min_age, max_age = pliocene_reference()
 

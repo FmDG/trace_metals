@@ -1,15 +1,15 @@
 import os
 
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from matplotlib.ticker import AutoMinorLocator
 
 from methods.interpolations.generate_interpolations import generate_interpolation
 from objects.colours import colours_04
 
 
-def plot_SST_error_bars(ax: plt.Axes, datafile: pd.DataFrame, label: str = None, colour=colours_04[0]):
+def plot_sst_error_bars(ax: plt.Axes, datafile: pd.DataFrame, label: str = None, colour=colours_04[0]):
     ax.plot(datafile.age_ka, datafile.temp, marker="+", color=colour, alpha=0.7, label=label)
     ax.fill_between(datafile.age_ka, datafile.temp_min1, datafile.temp_plus1, color=colour, alpha=0.05)
     ax.fill_between(datafile.age_ka, datafile.temp_min2, datafile.temp_plus2, color=colour, alpha=0.05)
@@ -25,7 +25,6 @@ def add_trendlines(ax: plt.Axes, age_array, value_array, colour=colours_04[0]):
 
 
 def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int = 3500):
-
     # Error handling
     if not isinstance(save_fig, bool):
         raise ValueError("save_fig must be of type bool")
@@ -37,7 +36,8 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
     sst_1208 = pd.read_csv("data/comparisons/alkenones/1208_alkenones.csv")
 
     # -------- INTERPOLATE DATA ------------
-    interp_846, age_array = generate_interpolation(sst_846, fs=1.0, start=min_age, end=max_age, pchip=False, value="temp")
+    interp_846, age_array = generate_interpolation(sst_846, fs=1.0, start=min_age, end=max_age, pchip=False,
+                                                   value="temp")
     interp_1012, _ = generate_interpolation(sst_1012, fs=1.0, start=min_age, end=max_age, pchip=False, value="temp")
     interp_1417, _ = generate_interpolation(sst_1417, fs=1.0, start=min_age, end=max_age, pchip=False, value="temp")
     interp_1208, _ = generate_interpolation(sst_1208, fs=1.0, start=min_age, end=max_age, pchip=False, value="temp")
@@ -50,10 +50,10 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
     fig.subplots_adjust(left=0.10, right=0.90, bottom=0.10, top=0.90, wspace=0.05)
 
     # -------- PLOT VALUES -----------
-    axs[0] = plot_SST_error_bars(axs[0], sst_846, "846 (E Eq. Pacific)", colours_04[0])
-    axs[0] = plot_SST_error_bars(axs[0], sst_1012, "1012 (NE Pacific)", colours_04[1])
-    axs[0] = plot_SST_error_bars(axs[0], sst_1208, "1208 (NW Pacific)", colours_04[2])
-    axs[0] = plot_SST_error_bars(axs[0], sst_1417, "U1417 (Gulf of Alaska)", colours_04[3])
+    axs[0] = plot_sst_error_bars(axs[0], sst_846, "846 (E Eq. Pacific)", colours_04[0])
+    axs[0] = plot_sst_error_bars(axs[0], sst_1012, "1012 (NE Pacific)", colours_04[1])
+    axs[0] = plot_sst_error_bars(axs[0], sst_1208, "1208 (NW Pacific)", colours_04[2])
+    axs[0] = plot_sst_error_bars(axs[0], sst_1417, "U1417 (Gulf of Alaska)", colours_04[3])
 
     # ------------ ADD TRENDLINES --------------
     axs[0] = add_trendlines(axs[0], age_array, interp_846, colours_04[0])
@@ -77,11 +77,11 @@ def show_sst_gradients(save_fig: bool = False, min_age: int = 2200, max_age: int
         ax.xaxis.set_minor_locator(AutoMinorLocator(20))
         ax.yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[0].set(ylabel="SST ({})".format(u'\N{DEGREE SIGN}C'), xlabel="Age (ka)", title="Absolute SSTs")
-    axs[1].set(ylabel="{}SST ({})".format(r'$\Delta$', u'\N{DEGREE SIGN}C'), xlabel="Age (ka)", xlim=(min_age, max_age), title="SST gradients")
+    axs[1].set(ylabel="{}SST ({})".format(r'$\Delta$', u'\N{DEGREE SIGN}C'), xlabel="Age (ka)", xlim=(min_age, max_age),
+               title="SST gradients")
     axs[0].spines['right'].set_visible(False)
     axs[1].spines['left'].set_visible(False)
     axs[1].yaxis.set(ticks_position="right", label_position='right')
-
 
     # Save the figure if required
     if save_fig:

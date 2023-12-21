@@ -54,13 +54,13 @@
 
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-This project looks at producing images and graphics for my PhD project looking at the Pacific Ocean circulation during the Late Pliocene and Early Pleistocene and determining what role trace metals can play in uncovering past changes.
+This project looks at producing images and graphics for my PhD project looking at the Pacific Ocean circulation during
+the Late Pliocene and Early Pleistocene and determining what role trace metals can play in uncovering past changes.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -72,6 +72,7 @@ This project looks at producing images and graphics for my PhD project looking a
 
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -80,6 +81,7 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
+
 * npm
   ```sh
   npm install npm@latest -g
@@ -106,9 +108,11 @@ This is an example of how to list things you need to use the software and how to
 
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos
+work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -117,6 +121,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [ ] Feature 1
@@ -124,18 +129,22 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/FmDG/trace_metals/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/FmDG/trace_metals/issues) for a full list of proposed features (and known
+issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
+contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
+simply open an issue with the tag "enhancement".
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -148,6 +157,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -157,6 +167,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 <!-- CONTACT -->
+
 ## Contact
 
 Friso de Graaf - f.m.degraaf@qmul.ac.uk
@@ -168,6 +179,7 @@ Project Link: [https://github.com/FmDG/trace_metals](https://github.com/FmDG/tra
 
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 * Heather Ford
@@ -180,16 +192,27 @@ Project Link: [https://github.com/FmDG/trace_metals](https://github.com/FmDG/tra
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/FmDG/trace_metals.svg?style=for-the-badge
+
 [contributors-url]: https://github.com/FmDG/trace_metals/graphs/contributors
+
 [forks-shield]: https://img.shields.io/github/forks/FmDG/trace_metals.svg?style=for-the-badge
+
 [forks-url]: https://github.com/FmDG/trace_metals/network/members
+
 [stars-shield]: https://img.shields.io/github/stars/FmDG/trace_metals.svg?style=for-the-badge
+
 [stars-url]: https://github.com/FmDG/trace_metals/stargazers
+
 [issues-shield]: https://img.shields.io/github/issues/FmDG/trace_metals.svg?style=for-the-badge
+
 [issues-url]: https://github.com/FmDG/trace_metals/issues
+
 [license-shield]: https://img.shields.io/github/license/FmDG/trace_metals.svg?style=for-the-badge
+
 [license-url]: https://github.com/FmDG/trace_metals/master/LICENSE.txt
+
 [Python.com]: https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/python.svg
 
 

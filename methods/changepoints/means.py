@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 
 from methods.changepoints.age_split import age_split
-from objects.met_brewer import Juarez as add_colours
 from objects.args_brewer import clr as colours
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
+from objects.met_brewer import Juarez as addColours
 
 
 def change_points_mean(save_fig: bool = False):
-
     # Limit the 1209 PSU data to the last 3.0 Ma
     psu_1209_use = psu_1209[psu_1209.age_ka < 2900]
 
@@ -80,27 +79,27 @@ def change_points_mean(save_fig: bool = False):
         axs[i, j].plot(
             [x['data'].age_ka.min(), x['changepoint']], [after_mean, after_mean],
             label=f'Post-{x["changepoint"]} kyr = {after_mean:.2} ± {after_error:.1}',
-            color=add_colours[1]
+            color=addColours[1]
         )
         axs[i, j].fill_between(
             [x['data'].age_ka.min(), x['changepoint']],
             [after_mean - after_error, after_mean - after_error],
             [after_mean + after_error, after_mean + after_error],
             alpha=0.1,
-            color=add_colours[1]
+            color=addColours[1]
         )
         axs[i, j].plot(
             [x['changepoint'], x['data'].age_ka.max()],
             [before_mean, before_mean],
             label=f'Pre-{x["changepoint"]} kyr = {before_mean:.2} ± {before_error:.1}',
-            color=add_colours[2]
+            color=addColours[2]
         )
         axs[i, j].fill_between(
             [x['changepoint'], x['data'].age_ka.max()],
             [before_mean - before_error, before_mean - before_error],
             [before_mean + before_error, before_mean + before_error],
             alpha=0.1,
-            color=add_colours[2]
+            color=addColours[2]
         )
 
         axs[i, j].set(

@@ -11,16 +11,16 @@ os.chdir("../..")
 
 def plot_lr04(save_fig: bool = False):
     # Load the LR04 dataset
-    d18O = pd.read_csv("data/comparisons/LR04.csv")
+    d18_o = pd.read_csv("data/comparisons/LR04.csv")
 
-    d18O = d18O[d18O.age_ka.between(0, 5000)]
+    d18_o = d18_o[d18_o.age_ka.between(0, 5000)]
 
     # Set up the figure
     fig, ax = plt.subplots(figsize=(7, 4))
 
     # fig.suptitle("LR04 {} record".format(r'$\delta^{18}$O'))
 
-    ax.plot(d18O.age_ka, d18O.d18O, color='k')
+    ax.plot(d18_o.age_ka, d18_o.d18O, color='k')
     ax.axvspan(xmin=2500, xmax=3100, fc=colour[2], ec=None, alpha=0.5)
 
     ax.invert_yaxis()

@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
 import objects.args_brewer as args
+from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
-from methods.figures.tick_dirs import tick_dirs
 
 
 def atlantic_iso_bwt_figure(age_min: int = 2400, age_max: int = 2900):
@@ -39,5 +39,3 @@ def atlantic_iso_bwt_figure(age_min: int = 2400, age_max: int = 2900):
     axs[0].legend(shadow=False, frameon=False)
 
     plt.show()
-
-

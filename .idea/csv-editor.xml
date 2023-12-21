@@ -1480,6 +1480,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/probStack-Friso’s Laptop.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/probStack.csv">
           <value>
             <Attribute>
@@ -1705,6 +1712,13 @@
           </value>
         </entry>
         <entry key="/data/mag_suss/1209_mags.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/sea_levels/rohling_SL.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

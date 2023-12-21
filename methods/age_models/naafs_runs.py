@@ -10,7 +10,6 @@ from objects.core_data.isotopes import iso_1208
 
 
 def naafs_runs():
-
     if not os.path.isdir("data/cores"):
         os.chdir('../..')
 
@@ -55,5 +54,4 @@ def naafs_runs():
 
 
 if __name__ == "__main__":
-
     naafs_runs()

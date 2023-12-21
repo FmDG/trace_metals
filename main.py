@@ -1,6 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
-
+import pandas as pd
 
 if __name__ == "__main__":
     new_data = pd.read_csv("data/new_data.csv")
@@ -22,5 +21,3 @@ if __name__ == "__main__":
     ax.set(xlabel="Depth (mcd)", ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"), xlim=[33, 39])
 
     plt.show()
-
-

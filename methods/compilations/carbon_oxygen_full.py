@@ -27,9 +27,7 @@ if __name__ == "__main__":
     axs[0, 1].legend(shadow=False, frameon=False)
 
     axs[0, 0].set(xlim=[2300, 3500], ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
-    axs[1, 0].set(xlim=[2300, 3500], ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{13}$C', u"\u2030"), xlabel="Age (ka)")
+    axs[1, 0].set(xlim=[2300, 3500], ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{13}$C', u"\u2030"),
+                  xlabel="Age (ka)")
 
     plt.show()
-
-
-

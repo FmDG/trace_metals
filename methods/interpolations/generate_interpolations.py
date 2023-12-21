@@ -68,7 +68,7 @@ def resampling(
     # Define the age array
     age_array = np.arange(start, end, fs)
     # Interp space
-    gap = fs/2
+    gap = fs / 2
 
     # ------------ CLEAN INPUTS ---------------------
     # Drop any N/A values and duplicate values and sort the dataset in ascending order
@@ -79,7 +79,7 @@ def resampling(
     # ------------ OBTAIN VALUES ------------------
     raw_values = []
     for age in age_array:
-        value_avg = data_series[data_series.age_ka.between(age-gap, age+gap)][value].mean()
+        value_avg = data_series[data_series.age_ka.between(age - gap, age + gap)][value].mean()
         raw_values.append({"age_ka": age, "value_avg": value_avg})
 
     return DataFrame.from_records(raw_values)
@@ -114,9 +114,10 @@ def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700, val
     interpolated_values = []
 
     for age in age_array:
-        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs/2), age + (fs/2))][value].mean()
-        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs/2), age + (fs/2))][value].mean()
+        avg_1208 = iso_1208[iso_1208.age_ka.between(age - (fs / 2), age + (fs / 2))][value].mean()
+        avg_1209 = iso_1209[iso_1209.age_ka.between(age - (fs / 2), age + (fs / 2))][value].mean()
         difference = avg_1208 - avg_1209
-        interpolated_values.append({"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
+        interpolated_values.append(
+            {"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
 
     return DataFrame.from_records(interpolated_values)

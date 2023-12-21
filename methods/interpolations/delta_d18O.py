@@ -41,7 +41,8 @@ def delta_d18o(save_fig: bool = False):
         # For each MIS interval, find the average d18O for 1209 and 1208
         values_1209 = iso_1209[iso_1209.age_ka.between(row.age_start, row.age_end)].d18O_unadj
         values_1208 = iso_1208[iso_1208.age_ka.between(row.age_start, row.age_end)].d18O_unadj
-        values_difference = interpolated_frame[interpolated_frame.age_ka.between(row.age_start, row.age_end)].d18O_difference
+        values_difference = interpolated_frame[
+            interpolated_frame.age_ka.between(row.age_start, row.age_end)].d18O_difference
         info = {"age_ka": ((row.age_start + row.age_end) / 2),
                 "mean_1209": values_1209.mean(), "std_1209": values_1209.std(), "median_1209": values_1209.median(),
                 "mean_1208": values_1208.mean(), "std_1208": values_1208.std(), "median_1208": values_1208.median(),

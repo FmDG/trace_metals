@@ -31,6 +31,6 @@ def butter_lowpass_filter(data, cutoff, fs, order, nyq):
     """
     normal_cutoff = (cutoff / nyq)
     # Get the filter coefficients
-    b, a = butter(N=order, Wn=normal_cutoff, btype='low', analog=False,  output='ba', fs=fs)
+    b, a = butter(N=order, Wn=normal_cutoff, btype='low', analog=False, output='ba', fs=fs)
     y = filtfilt(b, a, data)
     return y

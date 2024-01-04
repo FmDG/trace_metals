@@ -1543,6 +1543,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/misc/rohling_SL_LR04.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/sea_levels/rohling_SL.csv">
           <value>
             <Attribute>

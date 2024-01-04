@@ -3,7 +3,7 @@ import numpy as np
 import ruptures as rpt
 
 from methods.interpolations.generate_interpolations import generate_interpolation
-from objects.args_brewer import clr
+from objects.arguments.args_brewer import clr
 from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209
 

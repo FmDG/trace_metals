@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-import objects.args_isfahan as args
+import objects.arguments.args_isfahan as args
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_849
 from objects.core_data.trace_elements import bca_1209
 

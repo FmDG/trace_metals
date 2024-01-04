@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import objects.args_brewer as args
+import objects.arguments.args_brewer as args
 from methods.age_models.age_model import def_age_model
 from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_1208

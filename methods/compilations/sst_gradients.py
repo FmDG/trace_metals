@@ -6,7 +6,7 @@ import pandas as pd
 from matplotlib.ticker import AutoMinorLocator
 
 from methods.interpolations.generate_interpolations import generate_interpolation
-from objects.colours import colours_04
+from objects.arguments.colours import colours_04
 
 
 def plot_sst_error_bars(ax: plt.Axes, datafile: pd.DataFrame, label: str = None, colour=colours_04[0]):

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-import objects.args_Nature as args_Nat
+import objects.arguments.args_Nature as args_Nat
 from methods.density.average_densities import average_cdt, plot_density_diff
 from methods.density.density_plots import density_plot
 from methods.figures.highlight_mis import highlight_mis

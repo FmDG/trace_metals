@@ -3,8 +3,8 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from objects.args_brewer import args_1209, args_1208, args_607, args_925, args_929
-from objects.colours import colours_extra as colours
+from objects.arguments.args_brewer import args_1209, args_1208, args_607, args_925, args_929
+from objects.arguments.colours import colours_extra as colours
 from objects.core_data.ceara_isotopes import iso_925_cibs, iso_929_cibs, iso_925, iso_929
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 

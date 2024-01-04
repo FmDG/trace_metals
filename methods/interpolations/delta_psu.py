@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from generate_interpolations import resampling, resample_both
 from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
-from objects.args_Nature import args_1208, args_1209, args_diff
+from objects.arguments.args_Nature import args_1208, args_1209, args_diff
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
 

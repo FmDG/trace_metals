@@ -3,7 +3,7 @@ from matplotlib.ticker import AutoMinorLocator
 
 from methods.figures.tick_dirs import tick_dirs
 from methods.interpolations.generate_interpolations import generate_interpolation
-from objects.args_brewer import args_1209, args_1208, fill_1208, fill_1209
+from objects.arguments.args_brewer import args_1209, args_1208, fill_1208, fill_1209
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.lr04 import iso_lr04
 from objects.core_data.psu import psu_1208, psu_1209

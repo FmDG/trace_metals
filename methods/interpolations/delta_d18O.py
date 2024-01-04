@@ -5,7 +5,7 @@ from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
 from methods.interpolations.generate_interpolations import resample_both
 from methods.interpolations.low_pass_filter import butter_lowpass_filter
-from objects.args_Nature import args_1208, args_1209, args_diff
+from objects.arguments.args_Nature import args_1208, args_1209, args_diff
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 

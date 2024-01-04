@@ -3,8 +3,8 @@ import pandas as pd
 
 from methods.density.calculations import full_inverse_salinity
 from methods.density.density_plots import density_plot
-from objects.args_Nature import colours as colour
-from objects.colours import colours_extra
+from objects.arguments.args_Nature import colours as colour
+from objects.arguments.colours import colours_extra
 from objects.core_data.psu import psu_1208, psu_1209, psu_core_tops_1209
 
 # Modern Measurements

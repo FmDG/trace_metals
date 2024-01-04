@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from objects.args_brewer import args_1209, args_1208
+from objects.arguments.args_brewer import args_1209, args_1208
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 if __name__ == "__main__":

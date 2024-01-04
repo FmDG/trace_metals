@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 from methods.density.average_densities import average_cdt
 from methods.density.density_plots import density_plot
-from objects.args_egypt import colour
+from objects.arguments.args_egypt import colour
 from objects.core_data.psu import psu_1208, psu_1209
 
 # Modern Measurements

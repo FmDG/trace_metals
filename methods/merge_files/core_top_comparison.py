@@ -24,8 +24,8 @@ def core_top_comparison():
     axs[1].scatter(combined.age_ka_mbsf, combined.MgCa_1209, label="1209", marker="+")
     axs[1].set(ylabel="Uvigerina Mg/Ca (mmol/mol)", xlabel="Age (ka)")
 
-    plt.savefig("core_top_comparison.png", dpi=300)
-
+    # plt.savefig("core_top_comparison.png", dpi=300)
+    plt.show()
 
 if __name__ == "__main__":
     core_top_comparison()

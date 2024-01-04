@@ -5,7 +5,7 @@ Plotting up all the figures for the paper.
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-import objects.args_Nature as args_Nat
+import objects.arguments.args_Nature as args_Nat
 from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209

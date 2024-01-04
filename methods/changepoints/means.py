@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
 
 from methods.changepoints.age_split import age_split
-from objects.args_brewer import clr as colours
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
-from objects.met_brewer import Juarez as addColours
+from objects.arguments.met_brewer import Juarez as addColours
 
 
 def change_points_mean(save_fig: bool = False):
@@ -71,7 +70,6 @@ def change_points_mean(save_fig: bool = False):
         axs[i, j].plot(
             x['data'].age_ka, x['data'][x['value']],
             marker='+',
-            color=colours[c],
             label=x['label']
         )
         c += 1

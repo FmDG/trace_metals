@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from objects.colours import colours_extra
+from objects.arguments.colours import colours_extra
 
 
 def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, lv=9):

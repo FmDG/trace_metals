@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-import objects.args_brewer as args
+import objects.arguments.args_brewer as args
 from methods.figures.tick_dirs import tick_dirs
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
 from objects.core_data.psu import psu_1208, psu_1209, psu_607

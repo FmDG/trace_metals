@@ -2,9 +2,8 @@ from matplotlib.pyplot import subplots, savefig, show
 
 from binning_records import binning_multiple_series
 from filter_data import filter_difference
-from methods.figures.highlight_mis import highlight_mis
 from methods.figures.tick_dirs import tick_dirs
-from objects.args_Nature import args_1209, args_1208
+from objects.arguments.args_Nature import args_1209, args_1208
 from objects.core_data.isotopes import iso_1208, iso_1209
 from rolling_correlations import rolling_correlation
 from rolling_pearson import rolling_pearson

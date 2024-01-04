@@ -5,7 +5,7 @@ This file produces a plot that summarises the usefulness of Mg/Li as a palaeothe
 import matplotlib.pyplot as plt
 
 from methods.figures.tick_dirs import tick_dirs
-from objects.args_Nature import colours
+from objects.arguments.args_Nature import colours
 from objects.core_data.trace_elements import te_1209
 
 

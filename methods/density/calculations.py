@@ -1,4 +1,4 @@
-from methods.density.data_import import modelled_sl
+from objects.misc.sea_level import sea_level
 
 
 def age_d18o_correction(d18o_sw: float, age: float) -> float:
@@ -11,7 +11,7 @@ def age_d18o_correction(d18o_sw: float, age: float) -> float:
     # The sea level database stores ages as floats to the nearest 1 ka.
     age_round = round(age)
     # Find the associated d18O change on the sea level expected for that age.
-    age_info = modelled_sl.loc[modelled_sl.age_ka == age_round]
+    age_info = sea_level.loc[sea_level.age_ka == age_round]
     return d18o_sw - age_info.Dd18O_ice
 
 
@@ -37,7 +37,7 @@ def inverse_age_d18o_correction(salinity: float, age: float) -> float:
     # The sea level database stores ages as floats to the nearest 1 ka.
     age_round = round(age)
     # Find the associated d18O change on the sea level expected for that age.
-    age_info = modelled_sl.loc[modelled_sl.age_ka == age_round]
+    age_info = sea_level.loc[sea_level.age_ka == age_round]
     add_salinity = age_info.Dd18O_ice * 1.1
     return salinity + add_salinity
 

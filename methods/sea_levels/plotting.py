@@ -4,11 +4,10 @@ import matplotlib.pyplot as plt
 from objects.misc.sea_level import sea_level
 from objects.arguments.args_Nature import args_1209, args_1208
 from objects.core_data.isotopes import iso_1208, iso_1209
-from methods.sea_levels.analysis import resampled_data, filtered_1208, filtered_1209
-from methods.figures.tick_dirs import tick_dirs
+from methods.sea_levels.analysis import resampled_data, filtered_1208, filtered_1209, rolling_corr
 
 
-def sea_level_plot(ax: plt.axis, colour: str = None,  age_min: int = 2400, age_max: int = 3600) -> plt.axis:
+def sea_level_plot(ax: plt.axis, colour: str = None,  age_min: int = 2350, age_max: int = 3400) -> plt.axis:
     if colour:
         args = {"marker": None, "color": colour}
     else:
@@ -54,31 +53,28 @@ def filtered_difference_plot(ax: plt.axis, colour: str = None) -> plt.axis:
     ax.plot(resampled_data.age_ka, (filtered_1208 - filtered_1209), **args)
     ax.fill_between(resampled_data.age_ka, (filtered_1208 - filtered_1209), alpha=0.1)
     ax.invert_yaxis()
+    ax.legend(frameon=False)
     return ax
 
 
-def sea_level_isotope_comparison(save_fig: bool = False) -> None:
-    n_plots = 3
-    fig, axs = plt.subplots(
-        nrows=n_plots,
-        ncols=1,
-        figsize=(12, 8),
-        sharex="all"
-    )
-    # Reduce the space between axes to 0
-    fig.subplots_adjust(hspace=0)
-
-    axs[0] = isotope_plot(axs[0])
-    axs[1] = filtered_difference_plot(axs[1])
-    axs[2] = sea_level_plot(axs[2])
-    tick_dirs(axs, min_age=2400, max_age=3600, legend=True, num_plots=n_plots)
-    # Save the figure or show it
-    if save_fig:
-        plt.savefig("figures/paper/sea_level.pdf", transparent=True)
+def sea_level_correlation_plot(ax: plt.axis, colour: str = None) -> plt.axis:
+    if colour:
+        args = {"marker": None, "color": colour}
     else:
-        plt.show()
+        args = {"marker": None}
+    ax.plot(rolling_corr.age_ka, (rolling_corr.r ** 2), **args)  # Plot the correlation
+    ax.set(ylabel=r'Correlation, $R^{2}$')
+    return ax
 
 
-
-if __name__ == "__main__":
-    sea_level_isotope_comparison(save_fig=False)
+def sea_level_correlation_significance_plot(ax: plt.axis, colour: str = None) -> plt.axis:
+    if colour:
+        args = {"marker": None, "color": colour}
+    else:
+        args = {"marker": None}
+    ax.plot(rolling_corr.age_ka, rolling_corr.p, **args)  # Plot the significance
+    ax.axhline(0.05, c='r', ls="--", label="p = 0.05")
+    ax.legend(frameon=False)
+    ax.invert_yaxis()
+    ax.set(ylabel="Significance, p-value", yscale="log")
+    return ax

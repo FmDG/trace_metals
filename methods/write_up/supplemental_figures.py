@@ -166,7 +166,7 @@ def figure_s4(save_fig: bool = False, filter_frequency: float = 5):
     """
     # ------------------- RESAMPLING -------------
     resampling_freq = 3.0  # Resampling frequency in ka
-    age_min, age_max = 2350, 3600  # Minimum and maximum ages in ka
+    age_min, age_max = 2350, 3400  # Minimum and maximum ages in ka
     resampled_data = binning_multiple_series(
         iso_1208, iso_1209,
         names=["1208", "1209"],
@@ -225,7 +225,7 @@ def figure_s4(save_fig: bool = False, filter_frequency: float = 5):
 def figure_s5(window_size: int = 100, filter_period: float = 4.0, save_fig: bool = False):
     # --------------- GENERATE DIFFERENCES ---------------
     resampling_freq = 5.0  # Resampling frequency in ka
-    age_min, age_max = 2300, 3600  # Minimum and maximum ages in ka
+    age_min, age_max = 2400, 3400  # Minimum and maximum ages in ka
     resampled_data = binning_multiple_series(
         iso_1208, iso_1209, iso_probstack,
         names=["1208", "1209", "ProbStack"],
@@ -240,7 +240,7 @@ def figure_s5(window_size: int = 100, filter_period: float = 4.0, save_fig: bool
                                        window=window_size, start=age_min, end=age_max)
     # --------------- INITIALISE FIGURE ---------------
     num_rows = 5
-    fig, axs = plt.subplots(nrows=num_rows, sharex="all", figsize=(12, 12))
+    fig, axs = plt.subplots(nrows=num_rows, sharex="all", figsize=(12, 16))
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
 
@@ -338,5 +338,5 @@ if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
     # figure_s4(save_fig=True, filter_frequency=5)
-    # figure_s5(save_fig=False, filter_period=5)
-    figure_s7(save_fig=True)
+    figure_s5(save_fig=True, filter_period=5)
+    # figure_s7(save_fig=False)

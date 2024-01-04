@@ -9,3 +9,14 @@ def highlight_mis(axs):
             fc="blue",
             alpha=0.1
         )
+
+
+def highlight_mis_single(ax):
+    # Highlight MIS G6 (2.704 - 2.730 Ma)
+    ax.axvspan(
+        xmin=2704,
+        xmax=2730,
+        ec=None,
+        fc="blue",
+        alpha=0.1
+    )

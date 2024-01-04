@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
 import objects.arguments.args_Nature as args_Nat
-from methods.figures.highlight_mis import highlight_mis
-from methods.figures.tick_dirs import tick_dirs
+from methods.figures.highlight_mis import highlight_mis, highlight_mis_single
+from methods.figures.tick_dirs import tick_dirs, tick_dirs_single
 from objects.core_data.isotopes import iso_607, iso_1208, iso_1209
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 
@@ -28,14 +28,7 @@ def figure_1(save_fig: bool = False):
     )
 
     # ------------- HIGHLIGHT MIS ---------------
-    # Highlight MIS G4 (2.681 - 2.69 Ma)
-    ax.axvspan(
-        xmin=2681,
-        xmax=2690,
-        ec=None,
-        fc="blue",
-        alpha=0.1
-    )
+    highlight_mis_single(ax)
 
     # ------------- PLOT DATA -------------------
     # d18O original data
@@ -44,23 +37,8 @@ def figure_1(save_fig: bool = False):
 
     # ------------- FORMAT AXES ----------------
     # -- Label the axis --
-    ax.set(
-        ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"),
-        xlabel="Age (ka)",
-        xlim=[2400, 3600]
-    )
-    # Invert the axis
-    ax.invert_yaxis()
-
-    # Add a legend
-    ax.legend(shadow=False, frameon=False)
-
-    # Add the spines
-    ax.spines['right'].set_visible(False)
-    ax.spines['top'].set_visible(False)
-    ax.xaxis.set_minor_locator(AutoMinorLocator(20))
-    ax.yaxis.set_minor_locator(AutoMinorLocator(5))
-
+    ax.set(ylabel='Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    tick_dirs_single(ax, min_age=2400, max_age=3600, legend=True)
     # Save the figure or show it
     if save_fig:
         plt.savefig("figures/paper/Figure_1.pdf", transparent=True)
@@ -188,6 +166,6 @@ def figure_4(save_fig: bool = False):
 
 
 if __name__ == "__main__":
-    figure_1(save_fig=True)
-    figure_2(save_fig=True)
-    figure_4(save_fig=True)
+    figure_1(save_fig=False)
+    figure_2(save_fig=False)
+    figure_4(save_fig=False)

@@ -75,33 +75,37 @@ the Late Pliocene and Early Pleistocene and determining what role trace metals c
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To set up this project you need to clone the full project into a local directory and then it 
+should be possible to run all the relevant functions. If you want to produce some plots which
+have been used before then you want to go to Methods/paper/main.py which will allow you to 
+produce the figures which are used in de Graaf et al., _in print_.
 
 ### Prerequisites
+The standard functions are required which are installed as below.
+* matplotlib
+    ```sh
+    pip install matplotlib
+    ```
+* pandas
+* scipy
+* numpy
 
-This is an example of how to list things you need to use the software and how to install them.
+There are also a couple of more distinct prerequisites required for functionality such as
+the palaeo-salinity calculations.
 
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* gsw
+    ```sh
+    pip install gsw
+    ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo.
    ```sh
    git clone https://github.com/FmDG/trace_metals.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+2. Install the relevant directories.
+3. Run the main.py function in methods/paper/main.py.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

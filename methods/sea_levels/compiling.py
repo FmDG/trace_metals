@@ -45,5 +45,5 @@ def sea_level_correlation(filter_period: float = 4.0, save_fig: bool = False):
 
 
 if __name__ == "__main__":
-    sea_level_isotope_comparison(save_fig=True)
-    sea_level_correlation(save_fig=True)
+    sea_level_isotope_comparison(save_fig=False)
+    sea_level_correlation(save_fig=False)

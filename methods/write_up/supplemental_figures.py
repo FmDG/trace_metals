@@ -337,6 +337,6 @@ def figure_s7(save_fig: bool = False):
 if __name__ == "__main__":
     # figure_s1(save_fig=True)
     # figure_s2(save_fig=True)
-    # figure_s4(save_fig=True, filter_frequency=5)
-    figure_s5(save_fig=True, filter_period=5)
+    figure_s4(save_fig=False, filter_frequency=5)
+    # figure_s5(save_fig=False, filter_period=5)
     # figure_s7(save_fig=False)

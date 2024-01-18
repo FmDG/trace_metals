@@ -5,7 +5,9 @@ from objects.misc.sea_level import sea_level
 from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
-from methods.sea_levels.analysis import resampled_data, filtered_1208, filtered_1209
+from objects.core_data.misc_proxies import opal_882
+from objects.core_data.alkenones import sst_846, sst_1208
+from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients
 
 
 def isotope_plot(ax: plt.axis) -> plt.axis:
@@ -66,7 +68,7 @@ def difference_plot(ax: plt.axis, colour: str = None, centre_line: bool = False)
         args = {"marker": None}
     if centre_line:
         ax.axhline(0, c="k", lw=0.7)
-    ax.plot(resampled_data.age_ka, (resampled_data.d18O_unadj_mean_1208 - resampled_data.d18O_unadj_mean_1209), **args)
+    ax.plot(resampled_data.age_ka, resampled_data.difference_d18O, **args)
     ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
     return ax
@@ -77,11 +79,69 @@ def filtered_difference_plot(ax: plt.axis, colour: str = None) -> plt.axis:
         args = {"marker": None, "color": colour, "label": "5-ka filtered data"}
     else:
         args = {"marker": None, "label": "5-ka filtered data"}
-    ax.axhline(0, c="k", lw=0.7)
-    ax.plot(resampled_data.age_ka, (resampled_data.d18O_unadj_mean_1208 - resampled_data.d18O_unadj_mean_1209),
-                marker="+", color="tab:grey", label="Difference" , alpha=0.7)
-    ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
-    ax.plot(resampled_data.age_ka, (filtered_1208 - filtered_1209), **args)
-    ax.fill_between(resampled_data.age_ka, (filtered_1208 - filtered_1209), alpha=0.1)
+    filter_diff = resampled_data[resampled_data.age_ka.between(2400, 3400)]
+    ax.plot(filter_diff.age_ka, filter_diff.difference_d18O, marker="+", color="tab:grey", label="Difference" , alpha=0.7)
+    ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O (1208 - 1209)', u"\u2030"))
+    ax.plot(filter_diff.age_ka, filter_diff.filtered_difference, **args)
+    ax.fill_between(filter_diff.age_ka, filter_diff.filtered_difference, alpha=0.1)
     ax.invert_yaxis()
+    return ax
+
+
+def opal_plot(ax: plt.axis, colour: str = None) -> plt.axis:
+    if colour:
+        args = {"marker": None, "color": colour}
+    else:
+        args = {"marker": None}
+    ax.plot(opal_882.age_ka, opal_882.opal_acc_rate, **args)
+    ax.set(ylabel="Biogenic Opal MAR ({})".format(r'g cm$^{-2}$ kyr$^{-1}$'))
+    return ax
+
+
+def alkenone_plot(ax: plt.axis) -> plt.axis:
+    ax.plot(sst_846.age_ka, sst_846.SST, color='gray', marker='o', label="ODP 846 (Equatorial Pacific)", ms=3, mfc="white")
+    ax.plot(sst_1208.age_ka, sst_1208.temp, color='k', marker="D", label="ODP 1208 (NW Pacific)", ms=3, mfc="white")
+    ax.legend(frameon=True)
+    ax.set(ylabel="Alkenone SST ({})".format(u'\N{DEGREE SIGN}C'))
+    return ax
+
+
+def alkenone_gradient_plot(ax: plt.axis) -> plt.axis:
+    args = {"marker": "+", "label": "846 - 1208", "color": "k", "lw": 1.2}
+    ax.plot(resampled_SST_1208.age_ka, resampled_SST_1208.difference_SST, **args)
+    ax.plot([2490, 2730], [sst_gradients["sst_grad_1"][0], sst_gradients["sst_grad_1"][0]], color='g')
+    ax.plot([2730, 2900], [sst_gradients["sst_grad_2"][0], sst_gradients["sst_grad_2"][0]], color='g')
+    ax.fill_between([2490, 2730], [sst_gradients["sst_grad_1"][0] + sst_gradients["sst_grad_1"][1], sst_gradients["sst_grad_1"][0] + sst_gradients["sst_grad_1"][1]], [sst_gradients["sst_grad_1"][0] - sst_gradients["sst_grad_1"][1], sst_gradients["sst_grad_1"][0] - sst_gradients["sst_grad_1"][1]],
+                    color='g', alpha=0.1, ec=None)
+    ax.fill_between([2730, 2900], [sst_gradients["sst_grad_2"][0] + sst_gradients["sst_grad_2"][1], sst_gradients["sst_grad_2"][0] + sst_gradients["sst_grad_2"][1]], [sst_gradients["sst_grad_2"][0] - sst_gradients["sst_grad_2"][1], sst_gradients["sst_grad_2"][0] - sst_gradients["sst_grad_2"][1]],
+                    color='g', alpha=0.1, ec=None)
+    ax.set(ylabel="Alkenone SST Gradient ({})".format(u'\N{DEGREE SIGN}C'))
+    return ax
+
+
+def spearman_correlation_plot_sea_level(ax: plt.axis) -> plt.axis:
+    ax.plot(rolling_corr_spear.age_ka, (rolling_corr_spear.r ** 2), c="k")  # Plot the correlation
+    ax.set(ylabel="Rolling Correlation ({})".format(r'R$^2$'))
+    return ax
+
+
+def spearman_significance_plot_sea_level(ax: plt.axis) -> plt.axis:
+    ax.plot(rolling_corr_spear.age_ka, rolling_corr_spear.p, c="k")  # Plot the significance
+    ax.axhline(0.05, c='r', ls="--", label="p = 0.05")
+    ax.invert_yaxis()
+    ax.set(ylabel="Significance (p-value)", yscale="log")
+    return ax
+
+
+def pearson_correlation_plot_sea_level(ax: plt.axis) -> plt.axis:
+    ax.plot(rolling_corr_pears.age_ka, (rolling_corr_pears.r ** 2), c="k")  # Plot the correlation
+    ax.set(ylabel="Rolling Correlation ({})".format(r'R$^2$'))
+    return ax
+
+
+def pearson_significance_plot_sea_level(ax: plt.axis) -> plt.axis:
+    ax.plot(rolling_corr_pears.age_ka, rolling_corr_pears.p, c="k")  # Plot the significance
+    ax.axhline(0.05, c='r', ls="--", label="p = 0.05")
+    ax.invert_yaxis()
+    ax.set(ylabel="Rolling Significance (p-value)", yscale="log")
     return ax

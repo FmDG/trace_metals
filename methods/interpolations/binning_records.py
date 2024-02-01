@@ -49,3 +49,29 @@ def binning_frame(database: DataFrame, age_min: int = 2300, age_max: int = 3600,
         raw_values.append({"age_ka": age, value: value_avg})
 
     return DataFrame.from_records(raw_values)
+
+
+def ideal_binning_interval(
+        *data_series: DataFrame,
+        names: list[str] = None,
+        start: int = 2400,
+        end: int = 3600,
+        value: str = "d18O_unadj",
+        upper_value: int = 50) -> tuple[int, float]:
+    max_size, interval = 0, 0
+    for i in range(upper_value):
+        try_series = binning_multiple_series(*data_series, names=names, start=start, end=end,
+                                             fs=float((i+1)/10), value=value)
+        series_size = try_series.dropna().size
+        if series_size > max_size:
+            max_size = series_size
+            interval = float(i/10)
+    return max_size, interval
+
+
+if __name__ == "__main__":
+    pass
+    #  IDEAL BINNING INTERVALS  (No. Records, Interval in ka)
+    #  Isotope = (1008, 1.9)
+    #  PSU = (264, 1.5)
+    #  Isotopes and Sea Levels = (1344, 1.9)

@@ -1417,6 +1417,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/1209_psu_mPWP.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/1209_te.csv">
           <value>
             <Attribute>

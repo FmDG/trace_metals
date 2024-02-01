@@ -6,7 +6,7 @@ from objects.misc.sea_level import sea_level
 from methods.interpolations.rolling_pearson import rolling_spearman, rolling_pearson
 
 
-resampling_freq = 3.0  # Resampling frequency in ka
+resampling_freq = 2.0  # Resampling frequency in ka
 age_min, age_max = 2350, 3450  # Minimum and maximum ages in ka
 sea_level_d18 = sea_level.rename(columns={"SL_m": "d18O_unadj"})
 resampled_data = binning_multiple_series(

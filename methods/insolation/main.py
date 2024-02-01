@@ -65,3 +65,7 @@ def insolation_plots(age_min: float = 2300, age_max: float = 3600, save_fig: boo
         plt.savefig("figures/Correlation_Insolation_d18O_Difference.pdf", format="pdf")
     else:
         plt.show()
+
+
+if __name__ == "__main__":
+    insolation_plots(age_min=2350, age_max=3600, save_fig=False)

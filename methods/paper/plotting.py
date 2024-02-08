@@ -7,8 +7,8 @@ from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
 from objects.core_data.misc_proxies import opal_882
 from objects.core_data.alkenones import sst_846, sst_1208
-from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients
-
+from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
+from methods.figures.arrows import draw_arrows
 
 def isotope_plot(ax: plt.axis) -> plt.axis:
     ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
@@ -61,7 +61,7 @@ def sea_level_plot(ax: plt.axis, colour: str = None,  age_min: int = 2400, age_m
     return ax
 
 
-def difference_plot(ax: plt.axis, colour: str = None, centre_line: bool = False) -> plt.axis:
+def difference_plot(ax: plt.axis, colour: str = None, centre_line: bool = False, left: int = 1) -> plt.axis:
     if colour:
         args = {"marker": None, "color": colour}
     else:
@@ -71,12 +71,14 @@ def difference_plot(ax: plt.axis, colour: str = None, centre_line: bool = False)
     ax.plot(resampled_data.age_ka, resampled_data.difference_d18O, **args)
     ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
+    ratio_arrows = (abs(resampled_data.difference_d18O.min())/(abs(resampled_data.difference_d18O.min()) + resampled_data.difference_d18O.max()) - 1)
+    ax = draw_arrows(ax, ratio_arrows, left=left)
     return ax
 
 
-def filtered_difference_plot(ax: plt.axis, colour: str = None) -> plt.axis:
+def filtered_difference_plot(ax: plt.axis, colour: str = None, left: int = 1) -> plt.axis:
     if colour:
-        args = {"marker": None, "color": colour, "label": "5-ka filtered data"}
+        args = {"marker": None, "color": colour, "label": "10-ka filtered data"}
     else:
         args = {"marker": None, "label": "5-ka filtered data"}
     filter_diff = resampled_data[resampled_data.age_ka.between(2400, 3400)]
@@ -84,6 +86,8 @@ def filtered_difference_plot(ax: plt.axis, colour: str = None) -> plt.axis:
     ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O (1208 - 1209)', u"\u2030"))
     ax.plot(filter_diff.age_ka, filter_diff.filtered_difference, **args)
     ax.fill_between(filter_diff.age_ka, filter_diff.filtered_difference, alpha=0.1)
+    ratio_arrows = (abs(filter_diff.filtered_difference.min())/(abs(filter_diff.filtered_difference.min()) + filter_diff.filtered_difference.max()) - 1)
+    ax = draw_arrows(ax, ratio_arrows, left=left)
     ax.invert_yaxis()
     return ax
 
@@ -144,4 +148,25 @@ def pearson_significance_plot_sea_level(ax: plt.axis) -> plt.axis:
     ax.axhline(0.05, c='r', ls="--", label="p = 0.05")
     ax.invert_yaxis()
     ax.set(ylabel="Rolling Significance (p-value)", yscale="log")
+    return ax
+
+
+def difference_plot_glacials(ax: plt.axis, left: int = 1) -> plt.axis:
+    filter_diff = resampled_data[resampled_data.age_ka.between(2400, 3400)]
+    ax.plot(filter_diff.age_ka, filter_diff.difference_d18O, marker="+", color="tab:grey", label=None,
+            alpha=0.7)
+    ax.plot(glacial_means.age_ka, (glacial_means.value_1208 - glacial_means.value_1209), label="Glacial Mean", marker="o")
+    ax.plot(interglacial_means.age_ka, (interglacial_means.value_1208 - interglacial_means.value_1209), label="Interglacial Mean", marker="^")
+    ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
+    ax.invert_yaxis()
+    ratio_arrows = (abs(filter_diff.filtered_difference.min())/(abs(filter_diff.filtered_difference.min()) + filter_diff.filtered_difference.max()) - 1)
+    ax = draw_arrows(ax, ratio_arrows, left=left)
+    ax.legend(frameon=False)
+    ax.axhline(0, c="k")
+
+    return ax
+
+
+def imperfect_difference_plot(ax: plt.axis) -> plt.axis:
+
     return ax

@@ -2,21 +2,21 @@ import os
 
 import pandas as pd
 
-os.chdir("../../data/PSU_Solver/sets/")
-traces = pd.read_csv("1208_te.csv")
-isotopes = pd.read_csv("1208_d18O_cibs.csv")
+def merge_1208_files():
+    traces = pd.read_csv("data/cores/1208_te.csv")
+    isotopes = pd.read_csv("data/cores/1208_cibs.csv")
 
-# Turn the age into integers
-traces.age_ka = traces.age_ka.astype(int)
-isotopes.age_ka = isotopes.age_ka.astype(int)
+    # Merge the two datasets
+    final = pd.merge(traces, isotopes, on='mcd', how='outer')
 
-# Merge the two datasets
-final = pd.merge(traces, isotopes, on='age_ka', how='outer')
+    final.to_csv("data/1208_merged.csv")
 
-#  Sort the values by a certain value
-final = final.sort_values(by="age_ka")
-final = final.reset_index()
 
+if __name__ == "__main__":
+    os.chdir("../..")
+    merge_1208_files()
+
+'''
 age = []
 iso = []
 tel = []
@@ -35,4 +35,4 @@ for x in range(final.shape[0]):
 
 newly = pd.DataFrame(list(zip(age, iso, tel)), columns=['age_ka', 'd18O', 'MgCa'])
 
-newly.to_csv("1208_together_cibs_02.csv")
+newly.to_csv("1208_together_cibs_02.csv")'''

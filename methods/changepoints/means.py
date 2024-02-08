@@ -1,15 +1,18 @@
 import matplotlib.pyplot as plt
 
-from methods.changepoints.age_split import age_split
+from methods.changepoints.age_split import age_split, plot_split
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.psu import psu_1208, psu_1209
 from objects.arguments.met_brewer import Juarez as addColours
-
+from objects.arguments.args_Nature import args_1209, args_1208
+from methods.figures.highlight_mis import highlight_all_mis_greyscale
 
 def change_points_mean(save_fig: bool = False):
     # Limit the 1209 PSU data to the last 3.0 Ma
     psu_1209_use = psu_1209[psu_1209.age_ka < 2900]
 
+    changepoint_G6 = 2.730
+    changepoint_G6 = 2.704
     # Load the datasets
     te_1209 = {
         "data": psu_1209_use,
@@ -130,5 +133,52 @@ def change_points_mean(save_fig: bool = False):
         plt.show()
 
 
+
+def bayesian_changepoint(save_fig: bool = False) -> None:
+
+    fig, axs = plt.subplots(
+        nrows=1,
+        ncols=2,
+        figsize=(8, 4),
+        sharex="all",
+        sharey="row"
+    )
+    '''
+    axs[0, 0].plot(iso_1208.age_ka, iso_1208.d18O_unadj, alpha=0.5, **args_1208)
+    print("-----\n1208 d18O")
+    plot_split(axs[0, 0], iso_1208, 2725, "d18O_unadj")
+    axs[0, 0].set(ylabel="{} ({})".format(r'$\delta^{18}$O', u'\u2030'), title="1208")
+
+    axs[0, 1].plot(iso_1209.age_ka, iso_1209.d18O_unadj, alpha=0.5, **args_1209)
+    print("-----\n1209 d18O")
+    plot_split(axs[0, 1], iso_1209, 2725, "d18O_unadj")
+    axs[0, 1].set(title="1209", xlim=[2400, 3300])
+    axs[0, 1].invert_yaxis()'''
+    for ax in axs:
+        ax = highlight_all_mis_greyscale(ax)
+
+    max_age = 3000
+    psu_1208_new = psu_1208[psu_1208.age_ka < max_age]
+
+    axs[0].plot(psu_1208_new.age_ka, psu_1208_new.temp, alpha=0.5, **args_1208)
+    print("-----\n1208 BWT")
+    plot_split(axs[0], psu_1208_new, 2725, "temp")
+    axs[0].set(ylabel=r'BWT ($\degree$C)', xlabel="Age (ka)")
+
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, alpha=0.5, **args_1209)
+    print("-----\n1209 BWT")
+    plot_split(axs[1], psu_1209, 2725, "temp")
+    axs[1].set(xlabel="Age (ka)", xlim=[2400, max_age])
+
+
+    fig.tight_layout()
+
+    if save_fig:
+        plt.savefig("figures/changepoints/bayesian_changepoints.png", format="png", dpi=300)
+    else:
+        plt.show()
+
+
 if __name__ == "__main__":
-    change_points_mean(save_fig=True)
+    # change_points_mean(save_fig=False)
+    bayesian_changepoint(save_fig=False)

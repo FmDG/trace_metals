@@ -1,27 +1,31 @@
 import matplotlib.pyplot as plt
 
-from methods.figures.tick_dirs import tick_dirs_single, tick_dirs
-from methods.figures.highlight_mis import highlight_mis_single, highlight_mis
+from methods.figures.tick_dirs import tick_dirs
+from methods.figures.highlight_mis import highlight_mis, highlight_all_mis_greyscale
 from methods.paper.plotting import (isotope_plot, iso_607_plot, psu_bwt_plot, psu_d18sw_plot, psu_607_plot, opal_plot,
                                     alkenone_plot, alkenone_gradient_plot, sea_level_plot, filtered_difference_plot,
-                                    pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level)
+                                    pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level, difference_plot_glacials)
 
 
 def figure_1(save_fig: bool = False) -> None:
     """First figure. Showing d18O_c for 1208 and 1209 between 2400 - 3600 ka."""
     # ------------- INIT FIGURE ----------------
-    fig, ax = plt.subplots(
-        nrows=1,
+    fig, axs = plt.subplots(
+        nrows=2,
         ncols=1,
-        figsize=(13, 7)
+        figsize=(13, 14),
+        sharex="all"
     )
-    highlight_mis_single(ax)
-    ax = isotope_plot(ax)
-    tick_dirs_single(ax, min_age=2400, max_age=3600, legend=True)
+    fig.subplots_adjust(hspace=0)
+    highlight_all_mis_greyscale(axs[0])
+    highlight_all_mis_greyscale(axs[1])
+    axs[0] = isotope_plot(axs[0])
+    axs[1] = filtered_difference_plot(axs[1], left=1)
+    tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=True)
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_1.pdf", transparent=True)
+        plt.savefig("figures/paper/Figure_1.pdf", transparent=False)
     else:
         plt.show()
 
@@ -30,7 +34,7 @@ def figure_2(save_fig: bool = False) -> None:
     """Second figure. Showing d18O_c, BWT, and d18O_sw for 1208 and 1209 between 2400 - 2900 ka."""
     # ------------- INIT FIGURE ----------------
     fig, axs = plt.subplots(
-        nrows=3,
+        nrows=4,
         ncols=1,
         sharex="all",
         figsize=(7, 12)
@@ -39,7 +43,8 @@ def figure_2(save_fig: bool = False) -> None:
     fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    highlight_mis(axs)
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
 
     # ------------- PLOT DATA -------------------
     # d18O original data
@@ -51,8 +56,11 @@ def figure_2(save_fig: bool = False) -> None:
     # PSU d18O_sw estimates
     axs[2] = psu_d18sw_plot(axs[2])
 
+    # DIF on glacial-interglacial cycles
+    axs[3] = difference_plot_glacials(axs[3], left=3)
+
     # ------------- FORMAT AXES -------------------
-    tick_dirs(axs=axs, num_plots=3, min_age=2400, max_age=2900, legend=False)
+    tick_dirs(axs=axs, num_plots=4, min_age=2450, max_age=2850, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
@@ -79,7 +87,8 @@ def figure_4(save_fig: bool = False) -> None:
     fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    highlight_mis(axs)
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
 
     # ------------- PLOT DATA -------------------
     # d18O original data
@@ -91,7 +100,7 @@ def figure_4(save_fig: bool = False) -> None:
     axs[1] = psu_607_plot(axs[1])
 
     # ------------- FORMAT AXES ----------------
-    tick_dirs(axs=axs, num_plots=2, min_age=2400, max_age=2900, legend=False)
+    tick_dirs(axs=axs, num_plots=2, min_age=2450, max_age=2850, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
@@ -140,7 +149,7 @@ def figure_s4(save_fig: bool = False) -> None:
 
     highlight_mis(axs)
     axs[0] = isotope_plot(axs[0])
-    axs[1] = filtered_difference_plot(axs[1])
+    axs[1] = filtered_difference_plot(axs[1], left=1)
     tick_dirs(axs, num_plots=n_plots, min_age=2400, max_age=3400, legend=True)
 
     # Save the figure or show it
@@ -150,27 +159,29 @@ def figure_s4(save_fig: bool = False) -> None:
         plt.show()
 
 
-def figure_s5(save_fig: bool = False) -> None:
+def figure_alkenone_SSTs(save_fig: bool = False) -> None:
     """Figure showing the Alkenone SST gradient"""
     n_plots = 3
     fig, axs = plt.subplots(
         nrows=n_plots,
         ncols=1,
-        figsize=(10, 9),
+        figsize=(10, 14),
         sharex="all"
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
 
-    highlight_mis(axs)
-    axs[0] = psu_bwt_plot(axs[0])
-    axs[1] = alkenone_plot(axs[1])
-    axs[2] = alkenone_gradient_plot(axs[2])
-    tick_dirs(axs, num_plots=n_plots, min_age=2400, max_age=2900, legend=True)
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+    axs[0] = alkenone_plot(axs[0])
+    axs[1] = alkenone_gradient_plot(axs[1])
+    axs[2] = filtered_difference_plot(axs[2], left=2)
+    axs[0].legend(frameon=False)
+    tick_dirs(axs, num_plots=n_plots, min_age=2400, max_age=2900, legend=False)
 
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure_S5.pdf", transparent=False)
+        plt.savefig("figures/paper/Figure_ALKENONE_SST.pdf", transparent=False)
     else:
         plt.show()
 
@@ -190,7 +201,7 @@ def figure_s6(save_fig: bool = False) -> None:
     highlight_mis(axs)
     # --------------- PLOT FIGURE ---------------
     axs[0] = sea_level_plot(axs[0], colour="k")  # Sea Level Plot
-    axs[1] = filtered_difference_plot(axs[1])  # Filtered difference plot
+    axs[1] = filtered_difference_plot(axs[1], left=1)  # Filtered difference plot
     axs[2] = pearson_correlation_plot_sea_level(axs[2])  # Correlation Plot
     axs[3] = pearson_significance_plot_sea_level(axs[3])  # Significance Plot
 
@@ -198,6 +209,50 @@ def figure_s6(save_fig: bool = False) -> None:
 
     # --------------- EXPORT FIGURE ---------------
     if save_fig:
-        plt.savefig("figures/paper/Figure_S6.pdf", format='pdf')
+        plt.savefig("figures/paper/Figure_S6_new.pdf", format='pdf', transparent=False)
     else:
         plt.show()
+
+
+def figure_glacial_interglacial_diff(save_fig: bool = False) -> None:
+    """Second figure. Showing d18O_c, BWT, and d18O_sw for 1208 and 1209 between 2400 - 2900 ka."""
+    # ------------- INIT FIGURE ----------------
+    fig, axs = plt.subplots(
+        nrows=3,
+        ncols=1,
+        sharex="all",
+        figsize=(7, 12)
+    )
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # ------------- HIGHLIGHT MIS ---------------
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+
+    # ------------- PLOT DATA -------------------
+    # d18O original data
+    axs[0] = isotope_plot(axs[0])
+
+    # PSU BWT estimates
+    axs[1] = psu_bwt_plot(axs[1])
+
+    # PSU d18O_sw estimates
+    axs[2] = difference_plot_glacials(axs[2], left=2)
+
+
+    # ------------- FORMAT AXES -------------------
+    tick_dirs(axs=axs, num_plots=3, min_age=2450, max_age=2850, legend=False)
+
+    # Add a legend
+    axs[0].legend(shadow=False, frameon=False)
+
+    # Save the figure or show it
+    if save_fig:
+        plt.savefig("figures/paper/Figure_GLACIAL_DIFF.pdf", transparent=False)
+    else:
+        plt.show()
+
+
+if __name__ == "__main__":
+    figure_1(save_fig=False)

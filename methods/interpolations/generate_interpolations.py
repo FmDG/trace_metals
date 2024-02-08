@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import scipy.interpolate as interpol
 from pandas import DataFrame
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
 
 from objects.core_data.isotopes import iso_1208, iso_1209
 
@@ -9,6 +11,8 @@ from objects.core_data.isotopes import iso_1208, iso_1209
 # Make an array with a spacing of 5 ka, starting at a known start point
 # For each point in the array, find the mean of all the points that are within ± 2.5 ka.
 # Result
+
+
 
 def generate_interpolation(data_series, fs=1.0, start=2400, end=3400, pchip=False, value="d18O_unadj"):
     # Define the age array
@@ -121,3 +125,77 @@ def resample_both(fs: float = 5.0, min_age: int = 2300, max_age: int = 3700, val
             {"age_ka": age, "d18O_1208": avg_1208, "d18O_1209": avg_1209, "d18O_difference": difference})
 
     return DataFrame.from_records(interpolated_values)
+
+
+def linear_regression(dataset: pd.DataFrame, value_1: str = "d13C", value_2: str = "BCa"):
+    """
+    Perform linear regression analysis on two variables within a given dataset.
+
+    Parameters:
+    - dataset (pd.DataFrame): The Pandas DataFrame containing the data for linear regression analysis.
+    - value_1 (str): The name of the independent variable for the regression analysis. Default is 'd13C'.
+    - value_2 (str): The name of the dependent variable for the regression analysis. Default is 'BCa'.
+
+    Returns:
+    - new_x (np.ndarray): The array of independent variable values for the regression line.
+    - new_y (np.ndarray): The array of predicted dependent variable values for the regression line.
+    - m (np.ndarray): The slope of the regression line.
+    - c (float): The y-intercept of the regression line.
+    - r_sq (float): The coefficient of determination (R-squared) for the regression analysis.
+
+    The function performs linear regression analysis on the specified variables ('value_1' and 'value_2') within the
+    provided dataset. It returns the arrays of new x and y values for the regression line, as well as the slope ('m'),
+    y-intercept ('c'), and coefficient of determination ('r_sq').
+
+    The default variables for regression are 'd13C' as the independent variable and 'BCa' as the dependent variable.
+
+    Usage:
+    new_x, new_y, slope, intercept, r_squared = linear_regression(dataset, 'variable1', 'variable2')
+    """
+    old_x = dataset[value_1].to_numpy().reshape(-1, 1)
+    old_y = dataset[value_2].to_numpy().reshape(-1, 1)
+    new_x = np.linspace(dataset[value_1].min(), dataset[value_1].max(), num=100).reshape(-1, 1)
+    model = LinearRegression().fit(old_x, old_y)
+    new_y = model.predict(new_x)
+    m, c = model.coef_, model.intercept_
+    r_sq = model.score(old_x, old_y)
+    return new_x, new_y, m, c, r_sq
+
+
+def linear_relations(ax: plt.axis, dataset: pd.DataFrame, value_1: str, value_2: str, age_cutoff: bool = False):
+    """
+    Plot linear regression lines between two variables from a given dataset.
+
+    Parameters:
+    - ax (matplotlib.axis.Axis): The matplotlib axis where the plot will be drawn.
+    - dataset (pd.DataFrame): The Pandas DataFrame containing the data for analysis.
+    - value_1 (str): The name of the independent variable for the regression analysis.
+    - value_2 (str): The name of the dependent variable for the regression analysis.
+    - age_cutoff (bool): If True, perform separate linear regressions for data above and below a specified age threshold.
+                        Default is False.
+
+    Returns:
+    - ax (matplotlib.axis.Axis): The updated matplotlib axis with linear regression lines.
+
+    The function performs linear regression analysis on the specified variables ('value_1' and 'value_2') within the
+    provided dataset. It then plots the regression lines on the given axis ('ax').
+
+    If 'age_cutoff' is True, the dataset is split into two frames based on an age threshold (3000 ka by default),
+    and separate regression lines are plotted for each frame. If False, a single regression line is plotted for
+    the entire dataset.
+
+    The linear regression results, including the equation of the regression line and the coefficient of determination
+    (R-squared), are displayed in the legend for each line.
+
+    Usage:
+    linear_relations(ax, dataset, 'variable1', 'variable2', age_cutoff=True)
+    """
+    if age_cutoff:
+        threshold = 2700  # cut-off in ka
+        frames = [dataset[dataset.age_ka < threshold], dataset[dataset.age_ka > threshold]]
+    else:
+        frames = [dataset]
+    for frame in frames:
+        x_new, y_new, m, c, r_sq = linear_regression(frame, value_1, value_2)
+        ax.plot(x_new, y_new, label="y={:.2f}x + {:.2f} ({} = {:.2f})".format(m[0][0], c[0], r'$R^2$', r_sq))
+    return ax

@@ -1,6 +1,8 @@
 from numpy import arange
 from pandas import DataFrame
 
+from objects.core_data.isotopes import iso_1208, iso_1209
+
 
 def binning_multiple_series(
         *data_series: DataFrame,
@@ -70,7 +72,7 @@ def ideal_binning_interval(
 
 
 if __name__ == "__main__":
-    pass
+    print(ideal_binning_interval(iso_1208, iso_1209, names=["1208", "1209"], upper_value=70))
     #  IDEAL BINNING INTERVALS  (No. Records, Interval in ka)
     #  Isotope = (1008, 1.9)
     #  PSU = (264, 1.5)

@@ -18,3 +18,14 @@ def filter_difference(resampled_data: DataFrame, filter_period: float = 10.0):
     filtered_1209 = butter_lowpass_filter(resampled_1209, cutoff, fs, order, nyq)
     filtered_1208 = butter_lowpass_filter(resampled_1208, cutoff, fs, order, nyq)
     return filtered_1208, filtered_1209
+
+
+def filter_series(interpolated_data, filter_period):
+    # --------------- FILTER PARAMETERS ---------------
+    fs = 1.0
+    cutoff = 1.0 / filter_period  # Desired cutoff frequency of the filter, in 1\ka
+    nyq = 0.5 * fs  # Nyquist Frequency
+    order = 2  # Order of the filter
+    # --------------- FILTER DATA ---------------
+    filtered_data = butter_lowpass_filter(interpolated_data, cutoff, fs, order, nyq)
+    return filtered_data

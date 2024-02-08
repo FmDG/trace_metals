@@ -27,7 +27,7 @@ def highlight_mis_single(ax) -> None:
 
 
 def highlight_all_mis(ax: plt.axis) -> plt.axis:
-    for index, row in mis_boundaries.iterrows():
+    for _, row in mis_boundaries.iterrows():
         if row["glacial"] == "glacial":
             ax.axvspan(row["age_start"], row["age_end"], fc='tab:blue', ec=None, alpha=0.1)
         else:
@@ -37,10 +37,10 @@ def highlight_all_mis(ax: plt.axis) -> plt.axis:
 
 
 def highlight_all_mis_greyscale(ax: plt.axis, annotate: bool = False) -> plt.axis:
-    for index, row in mis_boundaries.iterrows():
+    for _, row in mis_boundaries.iterrows():
         if row["glacial"] == "glacial":
             ax.axvspan(row["age_start"], row["age_end"], fc='tab:grey', ec=None, alpha=0.1)
         mid_point = ((row["age_start"] + row["age_end"])/2) - 3
         if annotate:
-            ax.annotate(row["interval"], xy=[mid_point, -1.3])
+            ax.annotate(row["interval"], xy=[mid_point, -52])
     return ax

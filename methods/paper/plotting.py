@@ -167,6 +167,12 @@ def difference_plot_glacials(ax: plt.axis, left: int = 1) -> plt.axis:
     return ax
 
 
-def imperfect_difference_plot(ax: plt.axis) -> plt.axis:
-
+def average_difference_plot(ax: plt.axis, start=2700, end=3300) -> plt.axis:
+    ax.plot(resampled_data.age_ka, resampled_data.difference_d18O, marker=None)
+    avg_pre = resampled_data[resampled_data.age_ka.between(start, end)].difference_d18O.mean()
+    std_pre = resampled_data[resampled_data.age_ka.between(start, end)].difference_d18O.std()
+    ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
+    print(f'Difference = {avg_pre:.4f} ± {std_pre:.4f}')
+    ax.plot([start, end], [avg_pre, avg_pre], label=f'Mean = {avg_pre:.2f}')
+    ax.invert_yaxis()
     return ax

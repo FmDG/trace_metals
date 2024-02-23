@@ -4,7 +4,8 @@ from methods.figures.tick_dirs import tick_dirs
 from methods.figures.highlight_mis import highlight_mis, highlight_all_mis_greyscale
 from methods.paper.plotting import (isotope_plot, iso_607_plot, psu_bwt_plot, psu_d18sw_plot, psu_607_plot, opal_plot,
                                     alkenone_plot, alkenone_gradient_plot, sea_level_plot, filtered_difference_plot,
-                                    pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level, difference_plot_glacials)
+                                    pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level,
+                                    difference_plot_glacials, average_difference_plot)
 
 
 def figure_1(save_fig: bool = False) -> None:
@@ -13,7 +14,7 @@ def figure_1(save_fig: bool = False) -> None:
     fig, axs = plt.subplots(
         nrows=2,
         ncols=1,
-        figsize=(13, 14),
+        figsize=(12, 7.3),
         sharex="all"
     )
     fig.subplots_adjust(hspace=0)
@@ -21,7 +22,7 @@ def figure_1(save_fig: bool = False) -> None:
     highlight_all_mis_greyscale(axs[1])
     axs[0] = isotope_plot(axs[0])
     axs[1] = filtered_difference_plot(axs[1], left=1)
-    tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=True)
+    tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=False)
 
     # Save the figure or show it
     if save_fig:
@@ -215,13 +216,13 @@ def figure_s6(save_fig: bool = False) -> None:
 
 
 def figure_glacial_interglacial_diff(save_fig: bool = False) -> None:
-    """Second figure. Showing d18O_c, BWT, and d18O_sw for 1208 and 1209 between 2400 - 2900 ka."""
+    """Showing d18O_c, BWT, and difference for glacials and interglacials for 1208 and 1209 between 2400 - 2900 ka."""
     # ------------- INIT FIGURE ----------------
     fig, axs = plt.subplots(
         nrows=3,
         ncols=1,
         sharex="all",
-        figsize=(7, 12)
+        figsize=(7, 18)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -242,7 +243,7 @@ def figure_glacial_interglacial_diff(save_fig: bool = False) -> None:
 
 
     # ------------- FORMAT AXES -------------------
-    tick_dirs(axs=axs, num_plots=3, min_age=2450, max_age=2850, legend=False)
+    tick_dirs(axs=axs, num_plots=3, min_age=2450, max_age=2950, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)
@@ -254,5 +255,37 @@ def figure_glacial_interglacial_diff(save_fig: bool = False) -> None:
         plt.show()
 
 
+def figure_average_diff(save_fig: bool = False) -> None:
+    """Showing d18O and AVG diff for 1208 and 1209 between 2400 - 3400 ka."""
+    # ------------- INIT FIGURE ----------------
+    fig, axs = plt.subplots(
+        nrows=2,
+        ncols=1,
+        sharex="all",
+        figsize=(12, 8)
+    )
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # ------------- HIGHLIGHT MIS ---------------
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+
+    # ------------- PLOT DATA -------------------
+    # d18O original data
+    axs[0] = isotope_plot(axs[0])
+    # PSU BWT estimates
+    axs[1] = average_difference_plot(axs[1], start=2800, end=3300)
+
+    # ------------- FORMAT AXES -------------------
+    tick_dirs(axs=axs, num_plots=2, min_age=2400, max_age=3400, legend=True)
+
+    # Save the figure or show it
+    if save_fig:
+        plt.savefig("figures/paper/Figure_AVERAGE_DIFF.pdf", transparent=False)
+    else:
+        plt.show()
+
+
 if __name__ == "__main__":
-    figure_1(save_fig=False)
+    figure_1(save_fig=True)

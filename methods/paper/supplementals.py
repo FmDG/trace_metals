@@ -1,4 +1,4 @@
-from compiling import figure_s4, figure_s6
+from compiling import figure_s4, figure_sea_level_correlation
 
 
 if __name__ == "__main__":

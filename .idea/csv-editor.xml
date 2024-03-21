@@ -1312,6 +1312,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/planktics/planktics_1208.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/probStack.csv">
           <value>
             <Attribute>
@@ -1558,6 +1565,13 @@
           </value>
         </entry>
         <entry key="/data/misc/rohling_SL_LR04.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/modern_pacific_data.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

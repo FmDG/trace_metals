@@ -7,6 +7,7 @@ from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
 from objects.core_data.misc_proxies import opal_882
 from objects.core_data.alkenones import sst_846, sst_1208
+from objects.core_data.planktics import planktics_1208, planktics_1209, planktics_1207
 from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
 from methods.figures.arrows import draw_arrows
 
@@ -174,5 +175,14 @@ def average_difference_plot(ax: plt.axis, start=2700, end=3300) -> plt.axis:
     ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"))
     print(f'Difference = {avg_pre:.4f} ± {std_pre:.4f}')
     ax.plot([start, end], [avg_pre, avg_pre], label=f'Mean = {avg_pre:.2f}')
+    ax.invert_yaxis()
+    return ax
+
+
+def planktic_difference_plot(ax: plt.axis) -> plt.axis:
+    ax.plot(planktics_1207.age_ka, planktics_1207.d18O, label="1207")
+    ax.plot(planktics_1208.age_ka, planktics_1208.d18O, label="1208")
+    ax.plot(planktics_1209.age_ka, planktics_1209.d18O, label="1209")
+    ax.set(ylabel="Planktic {} ({})".format(r'$\delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
     return ax

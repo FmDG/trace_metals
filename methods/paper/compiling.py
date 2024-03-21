@@ -5,7 +5,8 @@ from methods.figures.highlight_mis import highlight_mis, highlight_all_mis_greys
 from methods.paper.plotting import (isotope_plot, iso_607_plot, psu_bwt_plot, psu_d18sw_plot, psu_607_plot, opal_plot,
                                     alkenone_plot, alkenone_gradient_plot, sea_level_plot, filtered_difference_plot,
                                     pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level,
-                                    difference_plot_glacials, average_difference_plot)
+                                    difference_plot_glacials, average_difference_plot, difference_plot,
+                                    planktic_difference_plot)
 
 
 def figure_1(save_fig: bool = False) -> None:
@@ -187,30 +188,31 @@ def figure_alkenone_SSTs(save_fig: bool = False) -> None:
         plt.show()
 
 
-def figure_s6(save_fig: bool = False) -> None:
+def figure_sea_level_correlation(save_fig: bool = False) -> None:
     # Calculates the rolling correlation between difference in d18O and Sea Levels
     num_rows = 4
     fig, axs = plt.subplots(
         nrows=num_rows,
         sharex="all",
-        figsize=(12, 16)
+        figsize=(10, 10)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
 
     # --------------- HIGHLIGHT SECTIONS ---------------
-    highlight_mis(axs)
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
     # --------------- PLOT FIGURE ---------------
     axs[0] = sea_level_plot(axs[0], colour="k")  # Sea Level Plot
     axs[1] = filtered_difference_plot(axs[1], left=1)  # Filtered difference plot
     axs[2] = pearson_correlation_plot_sea_level(axs[2])  # Correlation Plot
     axs[3] = pearson_significance_plot_sea_level(axs[3])  # Significance Plot
 
-    tick_dirs(axs, num_plots=num_rows, min_age=2400, max_age=3400, legend=True)
+    tick_dirs(axs, num_plots=num_rows, min_age=2400, max_age=3400, legend=False)
 
     # --------------- EXPORT FIGURE ---------------
     if save_fig:
-        plt.savefig("figures/paper/Figure_S6_new.pdf", format='pdf', transparent=False)
+        plt.savefig("figures/paper/figure_sea_level_correlation.pdf", format='pdf', transparent=False)
     else:
         plt.show()
 
@@ -287,5 +289,64 @@ def figure_average_diff(save_fig: bool = False) -> None:
         plt.show()
 
 
+def figure_bwt_long(save_fig: bool = False) -> None:
+    # ------------- INIT FIGURE ----------------
+    fig, axs = plt.subplots(
+        nrows=2,
+        ncols=1,
+        sharex="all",
+        figsize=(10, 7)
+    )
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # ------------- HIGHLIGHT MIS ---------------
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+
+    # ------------- PLOT FIGURES -------------
+    axs[0] = isotope_plot(axs[0])
+    axs[1] = psu_bwt_plot(axs[1])
+
+    tick_dirs(axs, 2, min_age=2400, max_age=3400, legend=False)
+
+    # ------------- EXPORT FIGURES -------------
+    # Save the figure or show it
+    if save_fig:
+        plt.savefig("figures/paper/Figure BWT LONG.pdf", transparent=False)
+    else:
+        plt.show()
+
+
+def figure_planktics(save_fig: bool = False) -> None:
+    # ------------- INIT FIGURE ----------------
+    fig, axs = plt.subplots(
+        nrows=3,
+        ncols=1,
+        sharex="all",
+        figsize=(10, 7)
+    )
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # ------------- HIGHLIGHT MIS ---------------
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+
+    # ------------- PLOT FIGURES -------------
+    axs[0] = isotope_plot(axs[0])
+    axs[1] = planktic_difference_plot(axs[1])
+    axs[2] = psu_bwt_plot(axs[2])
+
+    tick_dirs(axs, 3, min_age=2400, max_age=3400, legend=True)
+
+    # ------------- EXPORT FIGURES -------------
+    # Save the figure or show it
+    if save_fig:
+        plt.savefig("figures/paper/Figure PLANKTICS.pdf", transparent=False)
+    else:
+        plt.show()
+
+
 if __name__ == "__main__":
-    figure_1(save_fig=True)
+    figure_planktics(save_fig=False)

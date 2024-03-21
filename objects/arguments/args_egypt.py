@@ -1,4 +1,4 @@
-import objects.met_brewer as mb
+import objects.arguments.met_brewer as mb
 
 colour = mb.Egypt
 

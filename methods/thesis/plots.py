@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 
 from objects.core_data.psu import psu_1208, psu_1209
+from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209
 
 
@@ -17,4 +18,12 @@ def d18o_sw_plot_1209(ax: plt.axis, colour: str = "k") -> plt.axis:
     ax.fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, alpha=0.1, facecolor=colour)
     ax.set_ylabel('Derived {} ({} VPDB)'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"), color=colour)
     ax.tick_params(axis='y', labelcolor=colour)
+    return ax
+
+
+def isotope_plot(ax: plt.axis) -> plt.axis:
+    ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
+    ax.plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_1209)
+    ax.set(ylabel='Cibicidoides {} ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    ax.invert_yaxis()
     return ax

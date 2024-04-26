@@ -1130,6 +1130,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/bordiga_age_model.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/ceara_rise/925_d18O.csv">
           <value>
             <Attribute>
@@ -1194,6 +1201,13 @@
           </value>
         </entry>
         <entry key="/data/comparisons/1208_core_tops_uvi.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/1209_bordiga.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

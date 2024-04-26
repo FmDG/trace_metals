@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.ticker import AutoMinorLocator
 
-from objects.arguments.args_egypt import colour
+from objects.arguments.colours import colours_extra as colour
 
 os.chdir("../..")
 

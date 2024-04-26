@@ -2,16 +2,27 @@ import matplotlib.pyplot as plt
 
 
 from objects.misc.sea_level import sea_level
-from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607
+from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607, colours, args_1207
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
-from objects.core_data.isotopes import iso_1208, iso_1209, iso_607
+from objects.core_data.isotopes import iso_1208, iso_1209, iso_607, iso_1207
+from objects.core_data.lr04 import iso_probstack
 from objects.core_data.misc_proxies import opal_882
 from objects.core_data.alkenones import sst_846, sst_1208
 from objects.core_data.planktics import planktics_1208, planktics_1209, planktics_1207
 from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
 from methods.figures.arrows import draw_arrows
 
+
 def isotope_plot(ax: plt.axis) -> plt.axis:
+    ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
+    ax.plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_1209)
+    ax.set(ylabel='Cibicidoides {} ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    ax.invert_yaxis()
+    return ax
+
+
+def isotope_plot_1207(ax: plt.axis) -> plt.axis:
+    ax.plot(iso_1207.age_ka, iso_1207.d18O_unadj, **args_1207)
     ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
     ax.plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_1209)
     ax.set(ylabel='Cibicidoides {} ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
@@ -126,7 +137,7 @@ def alkenone_gradient_plot(ax: plt.axis) -> plt.axis:
 
 def spearman_correlation_plot_sea_level(ax: plt.axis) -> plt.axis:
     ax.plot(rolling_corr_spear.age_ka, (rolling_corr_spear.r ** 2), c="k")  # Plot the correlation
-    ax.set(ylabel="Rolling Correlation ({})".format(r'R$^2$'))
+    ax.set(ylabel="Rolling Correlation ({})".format(r'r$^2$'))
     return ax
 
 
@@ -140,7 +151,7 @@ def spearman_significance_plot_sea_level(ax: plt.axis) -> plt.axis:
 
 def pearson_correlation_plot_sea_level(ax: plt.axis) -> plt.axis:
     ax.plot(rolling_corr_pears.age_ka, (rolling_corr_pears.r ** 2), c="k")  # Plot the correlation
-    ax.set(ylabel="Rolling Correlation ({})".format(r'R$^2$'))
+    ax.set(ylabel="Rolling Correlation ({})".format(r'r$^2$'))
     return ax
 
 
@@ -180,9 +191,16 @@ def average_difference_plot(ax: plt.axis, start=2700, end=3300) -> plt.axis:
 
 
 def planktic_difference_plot(ax: plt.axis) -> plt.axis:
-    ax.plot(planktics_1207.age_ka, planktics_1207.d18O, label="1207")
-    ax.plot(planktics_1208.age_ka, planktics_1208.d18O, label="1208")
-    ax.plot(planktics_1209.age_ka, planktics_1209.d18O, label="1209")
+    ax.plot(planktics_1207.age_ka, planktics_1207.d18O, label="1207", c=colours[2], marker="+")
+    ax.plot(planktics_1208.age_ka, planktics_1208.d18O, label="1208", c=colours[0], marker="+")
+    ax.plot(planktics_1209.age_ka, planktics_1209.d18O, label="1209", c=colours[1], marker="+")
     ax.set(ylabel="Planktic {} ({})".format(r'$\delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
+    return ax
+
+
+def probStack_plot(ax: plt.axis, colour=colours[2]) -> plt.axis:
+    ax.plot(iso_probstack.age_ka, iso_probstack.d18O_unadj, c=colour)
+    ax.invert_yaxis()
+    ax.set(ylabel='Probabilistic {} stack ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     return ax

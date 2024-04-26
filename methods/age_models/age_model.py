@@ -14,5 +14,12 @@ def def_age_model(site: str = "1209"):
     return age_model
 
 
+def bordiga_age_model():
+    site_data = pd.read_csv("data/bordiga_age_model.csv")
+    age_model = interpol.interp1d(x=site_data.mbsf, y=site_data.age_ka, fill_value="extrapolate")
+    bordiga_data = pd.read_csv("data/comparisons/1209_core_tops_bordiga.csv")
+    bordiga_data["age_ka"] = age_model(bordiga_data["mbsf"])
+    bordiga_data.to_csv("data/comparisons/1209_core_tops_bordiga_new.csv")
+
 if __name__ == "__main__":
     pass

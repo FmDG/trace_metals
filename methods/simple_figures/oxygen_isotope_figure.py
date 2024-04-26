@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-import objects.arguments.args_brewer as args
+import objects.arguments.args_Nature as args
 from objects.core_data.isotopes import iso_1208, iso_1209
 
 

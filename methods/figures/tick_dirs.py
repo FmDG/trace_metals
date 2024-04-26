@@ -11,7 +11,7 @@ def tick_dirs(axs: list[plt.Axes], num_plots: int, min_age: int, max_age: int, l
             axs[q].spines['left'].set_visible(False)
         else:
             axs[q].spines['right'].set_visible(False)
-        axs[q].set_title(alphabet[q], y=0.9, x=-0.05)
+        # axs[q].set_title(alphabet[q], y=0.9, x=-0.05)
         axs[q].spines['top'].set_visible(False)
         axs[q].spines['bottom'].set_visible(False)
         axs[q].xaxis.set_minor_locator(AutoMinorLocator(20))

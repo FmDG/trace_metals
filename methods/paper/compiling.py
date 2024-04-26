@@ -6,7 +6,7 @@ from methods.paper.plotting import (isotope_plot, iso_607_plot, psu_bwt_plot, ps
                                     alkenone_plot, alkenone_gradient_plot, sea_level_plot, filtered_difference_plot,
                                     pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level,
                                     difference_plot_glacials, average_difference_plot, difference_plot,
-                                    planktic_difference_plot)
+                                    planktic_difference_plot, isotope_plot_1207)
 
 
 def figure_1(save_fig: bool = False) -> None:
@@ -320,8 +320,9 @@ def figure_bwt_long(save_fig: bool = False) -> None:
 
 def figure_planktics(save_fig: bool = False) -> None:
     # ------------- INIT FIGURE ----------------
+    n_plots = 3
     fig, axs = plt.subplots(
-        nrows=3,
+        nrows=n_plots,
         ncols=1,
         sharex="all",
         figsize=(10, 7)
@@ -338,15 +339,15 @@ def figure_planktics(save_fig: bool = False) -> None:
     axs[1] = planktic_difference_plot(axs[1])
     axs[2] = psu_bwt_plot(axs[2])
 
-    tick_dirs(axs, 3, min_age=2400, max_age=3400, legend=True)
+    tick_dirs(axs, n_plots, min_age=2400, max_age=2900, legend=True)
 
     # ------------- EXPORT FIGURES -------------
     # Save the figure or show it
     if save_fig:
-        plt.savefig("figures/paper/Figure PLANKTICS.pdf", transparent=False)
+        plt.savefig("figures/paper/Figure PLANKTICS PSU.pdf", transparent=False)
     else:
         plt.show()
 
 
 if __name__ == "__main__":
-    figure_planktics(save_fig=False)
+    figure_planktics(save_fig=True)

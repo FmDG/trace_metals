@@ -3,7 +3,7 @@ from scipy.signal import savgol_filter
 
 from methods.figures.tick_dirs import tick_dirs
 from methods.interpolations.generate_interpolations import generate_interpolation
-from objects.arguments.args_brewer import args_1209, args_1208, args_diff
+from objects.arguments.args_Nature import args_1209, args_1208, args_diff
 from objects.core_data.isotopes import iso_1209, iso_1208
 
 

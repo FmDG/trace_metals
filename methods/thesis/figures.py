@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
-from plots import (bwt_plot_1209, d18o_sw_plot_1209)
+from plots import (bwt_plot_1209, d18o_sw_plot_1209, isotope_plot)
 from methods.figures.tick_dirs import tick_dirs
 from methods.figures.highlight_mis import highlight_all_mis_greyscale
-from objects.arguments.args_egypt import colour
+from objects.arguments.args_Nature import colours as colour
 
 def figure_1209_only(save_fig: bool = False) -> None:
     n_plots = 2
@@ -29,5 +29,25 @@ def figure_1209_only(save_fig: bool = False) -> None:
         plt.show()
 
 
+def figure_1209_1208_d18O(save_fig: bool = False) -> None:
+    fig, ax = plt.subplots(
+        nrows=1,
+        sharex="all",
+        figsize=(19, 8)
+    )
+
+    highlight_all_mis_greyscale(ax)
+
+    ax = isotope_plot(ax)
+    ax.set(xlabel="Age (ka)", xlim=[2400, 3600])
+
+    if save_fig:
+        plt.savefig("figures/thesis/Figure_1209_1208_d18O.png", format="png", dpi=300)
+    else:
+        plt.show()
+
+
 if __name__ == "__main__":
-    figure_1209_only(save_fig=True)
+    # figure_1209_only(save_fig=False)
+    # figure_1209_1208_d18O(save_fig=True)
+    pass

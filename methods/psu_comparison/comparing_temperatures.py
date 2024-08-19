@@ -1,4 +1,4 @@
-from objects.core_data.psu import psu_1208, psu_mPWP_1209
+from objects.core_data.psu import psu_1208, psu_1209
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 from methods.interpolations.binning_records import binning_multiple_series
@@ -6,7 +6,7 @@ from methods.interpolations.generate_interpolations import linear_relations
 
 def compare_psu(save_fig: bool = False) -> None:
     temp_comparator = binning_multiple_series(
-        psu_1208, psu_mPWP_1209,
+        psu_1208, psu_1209,
         names=["1208", "1209"],
         start=2000,
         end=3600,

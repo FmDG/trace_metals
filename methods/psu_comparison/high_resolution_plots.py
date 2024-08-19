@@ -1,4 +1,4 @@
-from objects.core_data.psu import psu_1208, psu_mPWP_1209
+from objects.core_data.psu import psu_1208, psu_1209
 from objects.core_data.isotopes import iso_1209, iso_1208
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
@@ -38,9 +38,9 @@ def plot_high_res_bwt_d18o_sw(save_fig: bool = False) -> None:
     axs[0].invert_yaxis()
 
     axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args_1208)
-    axs[1].plot(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp, **args_1209)
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args_1209)
     axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **fill_1208)
-    axs[1].fill_between(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp_min1, psu_mPWP_1209.temp_plus1, **fill_1209)
+    axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **fill_1209)
     axs[1].xaxis.set_minor_locator(AutoMinorLocator(10))
     axs[1].yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[1].legend(frameon=True)
@@ -50,9 +50,9 @@ def plot_high_res_bwt_d18o_sw(save_fig: bool = False) -> None:
     axs[1].spines["bottom"].set_visible(False)
 
     axs[2].plot(psu_1208.age_ka, psu_1208.d18O_sw, **args_1208)
-    axs[2].plot(psu_mPWP_1209.age_ka, psu_mPWP_1209.d18O_sw, **args_1209)
+    axs[2].plot(psu_1209.age_ka, psu_1209.d18O_sw, **args_1209)
     axs[2].fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **fill_1208)
-    axs[2].fill_between(psu_mPWP_1209.age_ka, psu_mPWP_1209.d18O_min1, psu_mPWP_1209.d18O_plus1, **fill_1209)
+    axs[2].fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **fill_1209)
     axs[2].xaxis.set_minor_locator(AutoMinorLocator(10))
     axs[2].yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[2].legend(frameon=True)
@@ -94,9 +94,9 @@ def plot_high_res_bwt_d18o(save_fig: bool = False) -> None:
     axs[0].invert_yaxis()
 
     axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args_1208)
-    axs[1].plot(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp, **args_1209)
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args_1209)
     axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **fill_1208)
-    axs[1].fill_between(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp_min1, psu_mPWP_1209.temp_plus1, **fill_1209)
+    axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **fill_1209)
     axs[1].xaxis.set_minor_locator(AutoMinorLocator(10))
     axs[1].yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[1].legend(frameon=True)
@@ -149,9 +149,9 @@ def plot_high_res_bwt_diff(save_fig: bool = False) -> None:
     axs[1].invert_yaxis()
 
     axs[2].plot(psu_1208.age_ka, psu_1208.temp, **args_1208)
-    axs[2].plot(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp, **args_1209)
+    axs[2].plot(psu_1209.age_ka, psu_1209.temp, **args_1209)
     axs[2].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **fill_1208)
-    axs[2].fill_between(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp_min1, psu_mPWP_1209.temp_plus1, **fill_1209)
+    axs[2].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **fill_1209)
     axs[2].xaxis.set_minor_locator(AutoMinorLocator(10))
     axs[2].yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[2].legend(frameon=True)
@@ -242,9 +242,9 @@ def plot_high_res_bwt_d18o_sl(save_fig: bool = False) -> None:
     axs[0].invert_yaxis()
 
     axs[1].plot(psu_1208.age_ka, psu_1208.temp, **args_1208)
-    axs[1].plot(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp, **args_1209)
+    axs[1].plot(psu_1209.age_ka, psu_1209.temp, **args_1209)
     axs[1].fill_between(psu_1208.age_ka, psu_1208.temp_min1, psu_1208.temp_plus1, **fill_1208)
-    axs[1].fill_between(psu_mPWP_1209.age_ka, psu_mPWP_1209.temp_min1, psu_mPWP_1209.temp_plus1, **fill_1209)
+    axs[1].fill_between(psu_1209.age_ka, psu_1209.temp_min1, psu_1209.temp_plus1, **fill_1209)
     axs[1].xaxis.set_minor_locator(AutoMinorLocator(10))
     axs[1].yaxis.set_minor_locator(AutoMinorLocator(5))
     axs[1].set(ylabel=r'BWT ($\degree$C)')

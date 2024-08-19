@@ -14,13 +14,13 @@ def temp_from_mgca(x):
 def mgca_from_temp(x):
     return (0.1 * x) + 0.9
 
-def core_tops():
+def core_tops(save_fig: bool = False) -> None:
     # -- Define the figure --
     n_plots = 3
     fig, axs = plt.subplots(
         nrows=n_plots,
         sharex="all",
-        figsize=(12, 8)
+        figsize=(8, 8)
     )
     ## - Reduce the space between axes to 0 -
     fig.subplots_adjust(hspace=0)
@@ -49,18 +49,20 @@ def core_tops():
     for ax in axs:
         highlight_all_mis_greyscale(ax)
     axs[0].set_ylabel('Cibicidoides {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"), color=colours[2])
+    axs[0].tick_params(axis='y', labelcolor=colours[2])
     axs[1].set_ylabel('Uvigerina {} ({} VPDB)'.format(r'$\delta^{18}$O', u"\u2030"), color=colours[3])
+    axs[1].tick_params(axis='y', labelcolor=colours[3])
     axs[2].set_ylabel('Uvigerina Mg/Ca ({}mol/mol)'.format(r'$\mu$'), color=colours[2])
+    axs[2].tick_params(axis='y', labelcolor=colours[2])
     ## - Set up Tick Dirs -
-    tick_dirs(axs, n_plots, -5, 80, True)
+    tick_dirs(axs, n_plots, -5, 45, True)
 
-    print(temp_from_mgca(1.09))
-    print(mgca_from_temp(1.805))
-
-    print(mgca_from_temp(1.525))
-
-    plt.show()
+    # -- Export Figure --
+    if save_fig:
+        plt.savefig("figures/core_top_comparison.png", dpi=300)
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
-    core_tops()
+    core_tops(save_fig=False)

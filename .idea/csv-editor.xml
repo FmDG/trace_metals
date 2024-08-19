@@ -374,7 +374,49 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/PSU_Solver/RUN_14/1208_run_01.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/PSU_Solver/RUN_14/1209_run.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/1209_run_mPWP.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1208_ages.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1208_d18O_sw.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1208_sal.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1208_temp.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -389,6 +431,34 @@
           </value>
         </entry>
         <entry key="/data/PSU_Solver/RUN_14/raw_data/1209_d18O_sw.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1209_mPWP_ages.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1209_mPWP_d18O_sw.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1209_mPWP_sal.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/PSU_Solver/RUN_14/raw_data/1209_mPWP_temp.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -1291,6 +1361,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/alkenones/806_alkenones.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/alkenones/846_alkenones.csv">
           <value>
             <Attribute>
@@ -1326,7 +1403,35 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/comparisons/planktics/planktics_1207A.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/comparisons/planktics/planktics_1208.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/planktics/planktics_1208A.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/planktics/planktics_1208A_early.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/comparisons/planktics/planktics_1209A.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -1368,7 +1473,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/1207_cibs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/1208_cibs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/cores/1208_cibs_oldAM.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -1586,6 +1705,13 @@
           </value>
         </entry>
         <entry key="/data/modern_pacific_data.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/methods/psu_comparison/optimum_data.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

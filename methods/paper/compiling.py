@@ -35,8 +35,9 @@ def figure_1(save_fig: bool = False) -> None:
 def figure_2(save_fig: bool = False) -> None:
     """Second figure. Showing d18O_c, BWT, and d18O_sw for 1208 and 1209 between 2400 - 2900 ka."""
     # ------------- INIT FIGURE ----------------
+    n_plots = 4
     fig, axs = plt.subplots(
-        nrows=4,
+        nrows=n_plots,
         ncols=1,
         sharex="all",
         figsize=(7, 12)
@@ -62,7 +63,7 @@ def figure_2(save_fig: bool = False) -> None:
     axs[3] = difference_plot_glacials(axs[3], left=3)
 
     # ------------- FORMAT AXES -------------------
-    tick_dirs(axs=axs, num_plots=4, min_age=2450, max_age=2850, legend=False)
+    tick_dirs(axs=axs, num_plots=n_plots, min_age=2450, max_age=2850, legend=False)
 
     # Add a legend
     axs[0].legend(shadow=False, frameon=False)

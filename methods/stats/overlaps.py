@@ -9,11 +9,8 @@ from methods.figures.tick_dirs import tick_dirs
 import matplotlib.pyplot as plt
 import pandas as pd
 
-resampling_freq = 2  # Resampling frequency in ka
-age_min, age_max = 2200, 3600  # Minimum and maximum ages in ka
 
-
-def generate_differences():
+def generate_differences(resampling_freq:float = 2.0,  age_min:int = 2200, age_max:int = 3600) -> pd.DataFrame:
     ## ------------- GENERATE DIFFERENCES  -------------
     resampled_data_iso = binning_multiple_series(
         iso_1208, iso_1209,

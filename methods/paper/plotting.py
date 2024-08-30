@@ -15,7 +15,9 @@ from methods.figures.arrows import draw_arrows
 
 def isotope_plot(ax: plt.axis) -> plt.axis:
     ax.plot(iso_1208.age_ka, iso_1208.d18O_unadj, **args_1208)
+    ax.fill_between(iso_1208.age_ka, iso_1208.d18O_unadj - 0.05, iso_1208.d18O_unadj + 0.05, **fill_1208)
     ax.plot(iso_1209.age_ka, iso_1209.d18O_unadj, **args_1209)
+    ax.fill_between(iso_1209.age_ka, iso_1209.d18O_unadj - 0.05, iso_1209.d18O_unadj + 0.05, **fill_1209)
     ax.set(ylabel='Cibicidoides {} ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
     ax.invert_yaxis()
     return ax

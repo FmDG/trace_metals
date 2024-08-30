@@ -46,7 +46,7 @@ resampled_SST_1208 = binning_multiple_series(
     start=age_min,
     end=age_max,
     value="SST",
-    fs=2
+    fs=resampling_freq
 ).dropna()
 resampled_SST_1208["difference_SST"] = resampled_SST_1208.SST_mean_846 - resampled_SST_1208.SST_mean_1208
 sst_post = resampled_SST_1208[resampled_SST_1208.age_ka.between(2490, 2730)].difference_SST
@@ -71,3 +71,23 @@ for _, row in mis_boundaries.iterrows():
 
 glacial_means = DataFrame.from_records(input_raw_values_glacials)
 interglacial_means = DataFrame.from_records(input_raw_values_interglacials)
+
+
+## ------------- COMPARE DIFFERENCES IN SST AND d18O -------------
+
+input_01 = resampled_SST_1208.rename(columns={'difference_SST': 'values'})
+input_02 = resampled_data.rename(columns={'difference_d18O': 'values'})
+
+resampled_SST_d18O = binning_multiple_series(
+    input_01, input_02,
+    names=["SST", "Dd18O"],
+    start=age_min,
+    end=age_max,
+    value="values",
+    fs=resampling_freq
+).dropna()
+
+
+
+rolling_corr_SST_d18O = rolling_pearson(resampled_SST_d18O, "values_mean_Dd18O", "values_mean_SST",
+                                     window=100, start=2500, end=3300)

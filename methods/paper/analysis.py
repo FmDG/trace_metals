@@ -40,7 +40,7 @@ rolling_corr_pears = rolling_pearson(correlate_data, "difference_d18O", "d18O_un
                                      window=100, start=2400, end=3400)
 
 ## ------------- RESAMPLE AND LOOK AT DIFFERENCES IN SST RECORDS -------------
-resampled_SST_1208 = binning_multiple_series(
+resampled_SST = binning_multiple_series(
     sst_846, sst_1208,
     names=["846", "1208"],
     start=age_min,
@@ -48,11 +48,35 @@ resampled_SST_1208 = binning_multiple_series(
     value="SST",
     fs=resampling_freq
 ).dropna()
-resampled_SST_1208["difference_SST"] = resampled_SST_1208.SST_mean_846 - resampled_SST_1208.SST_mean_1208
-sst_post = resampled_SST_1208[resampled_SST_1208.age_ka.between(2490, 2730)].difference_SST
-sst_pre = resampled_SST_1208[resampled_SST_1208.age_ka.between(2730, 2900)].difference_SST
+resampled_SST["difference_SST"] = resampled_SST.SST_mean_846 - resampled_SST.SST_mean_1208
 
-sst_gradients = {"sst_grad_1": [sst_post.mean(), sst_post.std()], "sst_grad_2": [sst_pre.mean(), sst_pre.std()]}
+resampled_SST['glacial'] = False
+for _, row in mis_boundaries.iterrows():
+    lower_age = row["age_start"]
+    upper_age = row['age_end']
+    if row["glacial"] == "glacial":
+        resampled_SST.loc[(resampled_SST.age_ka >= lower_age) & (resampled_SST.age_ka < upper_age), 'glacial'] = True
+
+SST_glacials = resampled_SST.loc[resampled_SST.glacial]
+SST_interglacials = resampled_SST.loc[~resampled_SST.glacial]
+
+sst_post = resampled_SST[resampled_SST.age_ka.between(2490, 2730)].difference_SST
+sst_pre = resampled_SST[resampled_SST.age_ka.between(2730, 2900)].difference_SST
+
+sst_glacial_post = SST_glacials[SST_glacials.age_ka.between(2490, 2730)].difference_SST
+sst_glacial_pre = SST_glacials[SST_glacials.age_ka.between(2730, 2900)].difference_SST
+
+sst_interglacial_post = SST_interglacials[SST_interglacials.age_ka.between(2490, 2730)].difference_SST
+sst_interglacial_pre = SST_interglacials[SST_interglacials.age_ka.between(2730, 2900)].difference_SST
+
+sst_gradients = {
+    "sst_grad_1": [sst_post.mean(), sst_post.std()],
+    "sst_grad_2": [sst_pre.mean(), sst_pre.std()],
+    "glacial_sst_grad_1": [sst_glacial_post.mean(), sst_glacial_post.std()],
+    "glacial_sst_grad_2": [sst_glacial_pre.mean(), sst_glacial_pre.std()],
+    "interglacial_sst_grad_1": [sst_interglacial_post.mean(), sst_interglacial_post.std()],
+    "interglacial_sst_grad_2": [sst_interglacial_pre.mean(), sst_interglacial_pre.std()]
+}
 
 
 ## ------------- GENERATE DIFFERENCES ACCORDING TO GLACIALS OR INTERGLACIALS -------------
@@ -75,7 +99,7 @@ interglacial_means = DataFrame.from_records(input_raw_values_interglacials)
 
 ## ------------- COMPARE DIFFERENCES IN SST AND d18O -------------
 
-input_01 = resampled_SST_1208.rename(columns={'difference_SST': 'values'})
+input_01 = resampled_SST.rename(columns={'difference_SST': 'values'})
 input_02 = resampled_data.rename(columns={'difference_d18O': 'values'})
 
 resampled_SST_d18O = binning_multiple_series(

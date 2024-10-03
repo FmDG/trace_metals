@@ -32,6 +32,9 @@ def bwt_stats():
     pliocene_1208 = psu_1208.loc[(psu_1208.age_ka < 3000) & (psu_1208.age_ka > 2700)].temp.values
     pliocene_1209 = psu_1209.loc[(psu_1209.age_ka < 3000) & (psu_1209.age_ka > 2700)].dropna(subset='temp').temp.values
 
+    pleistocene_1209 = psu_1209.loc[(psu_1209.age_ka < 2700)].dropna(subset='temp').temp.values
+    pleistocene_1208 = psu_1208.loc[(psu_1208.age_ka < 2700)].dropna(subset='temp').temp.values
+
 
 
     print('Welch T-test')
@@ -61,15 +64,14 @@ def bwt_stats():
 
 
     print("Is the BWT at 1208 during Late Pliocene different to Pleistocene?")
-    print(f'Yes, p value = {ttest_ind(pliocene_1208, pleistocene_glacial_1208, equal_var=False).pvalue:.4g}')
-    print(f'Late Pliocene 1208 Mean: {pliocene_1208.mean():.4f}, Pleistocene Glacial 1208 Mean: {pleistocene_glacial_1208.mean():.4f}')
-    print(f'Difference in Means: {(pliocene_1208.mean() - pleistocene_glacial_1208.mean()):.4f}')
+    print(f'Yes, p value = {ttest_ind(pliocene_1208, pleistocene_1208, equal_var=False).pvalue:.4g}')
+    print(f'Late Pliocene 1208 Mean: {pliocene_1208.mean():.4f}, Pleistocene 1208 Mean: {pleistocene_1208.mean():.4f}')
+    print(f'Difference in Means: {(pliocene_1208.mean() - pleistocene_1208.mean()):.4f}')
 
     print("Is the BWT at 1209 during Late Pliocene different to Pleistocene?")
-    print(f'Yes, p value = {ttest_ind(pliocene_1209, pleistocene_glacial_1209, equal_var=False).pvalue:.4g}')
-    print(f'Late Pliocene 1209 Mean: {pliocene_1209.mean():.4f}, Pleistocene Glacial 1209 Mean: {pleistocene_glacial_1209.mean():.4f}')
-    print(f'Difference in Means: {(pliocene_1209.mean() - pleistocene_glacial_1209.mean()):.4f}')
-
+    print(f'Yes, p value = {ttest_ind(pliocene_1209, pleistocene_1209, equal_var=False).pvalue:.4g}')
+    print(f'Late Pliocene 1209 Mean: {pliocene_1209.mean():.4f}, Pleistocene 1209 Mean: {pleistocene_1209.mean():.4f}')
+    print(f'Difference in Means: {(pliocene_1209.mean() - pleistocene_1209.mean()):.4f}')
 
 
     fig, axs = plt.subplots(
@@ -168,4 +170,4 @@ def seawater_stats():
     plt.show()
 
 if __name__ == "__main__":
-    seawater_stats()
+    bwt_stats()

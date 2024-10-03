@@ -80,20 +80,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/data/PSU_Solver/PSU_data_1208.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/PSU_Solver/PSU_data_1209.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/data/PSU_Solver/RUN_1/raw_data/1208_ages.csv">
           <value>
             <Attribute>
@@ -1698,13 +1684,6 @@
           </value>
         </entry>
         <entry key="/data/misc/rohling_SL_LR04.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/data/modern_pacific_data.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

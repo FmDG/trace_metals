@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 
 from objects.misc.sea_level import sea_level
+from objects.misc.mis_boundaries import mis_boundaries
 from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607, colours, args_1207
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607, iso_1207
@@ -9,7 +10,7 @@ from objects.core_data.lr04 import iso_probstack
 from objects.core_data.misc_proxies import opal_882
 from objects.core_data.alkenones import sst_846, sst_1208
 from objects.core_data.planktics import planktics_1208, planktics_1209, planktics_1207
-from analysis import resampled_data, resampled_SST_1208, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
+from analysis import resampled_data, resampled_SST, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
 from methods.figures.arrows import draw_arrows
 
 
@@ -46,7 +47,7 @@ def psu_d18sw_plot(ax: plt.axis) -> plt.axis:
     ax.fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **fill_1208)
     ax.plot(psu_1209.age_ka, psu_1209.d18O_sw, **args_1209)
     ax.fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **fill_1209)
-    ax.set(ylabel='Derived {} ({} VPDB)'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
+    ax.set(ylabel='Derived {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
     ax.invert_yaxis()
     return ax
 
@@ -126,7 +127,7 @@ def alkenone_plot(ax: plt.axis) -> plt.axis:
 
 def alkenone_gradient_plot(ax: plt.axis) -> plt.axis:
     args = {"marker": "+", "label": "846 - 1208", "color": "k", "lw": 1.2}
-    ax.plot(resampled_SST_1208.age_ka, resampled_SST_1208.difference_SST, **args)
+    ax.plot(resampled_SST.age_ka, resampled_SST.difference_SST, **args)
     ax.plot([2490, 2730], [sst_gradients["sst_grad_1"][0], sst_gradients["sst_grad_1"][0]], color='g')
     ax.plot([2730, 2900], [sst_gradients["sst_grad_2"][0], sst_gradients["sst_grad_2"][0]], color='g')
     ax.fill_between([2490, 2730], [sst_gradients["sst_grad_1"][0] + sst_gradients["sst_grad_1"][1], sst_gradients["sst_grad_1"][0] + sst_gradients["sst_grad_1"][1]], [sst_gradients["sst_grad_1"][0] - sst_gradients["sst_grad_1"][1], sst_gradients["sst_grad_1"][0] - sst_gradients["sst_grad_1"][1]],
@@ -136,6 +137,24 @@ def alkenone_gradient_plot(ax: plt.axis) -> plt.axis:
     ax.set(ylabel="Alkenone SST Gradient ({})".format(u'\N{DEGREE SIGN}C'))
     return ax
 
+
+def alkenone_gradient_plot_glacial_interglacials(ax: plt.axis) -> plt.axis:
+    args = {"marker": "+", "label": "846 - 1208", "color": "k", "lw": 1.2}
+    ax.plot(resampled_SST.age_ka, resampled_SST.difference_SST, **args)
+    ax.plot([2490, 2730], [sst_gradients["glacial_sst_grad_1"][0], sst_gradients["glacial_sst_grad_1"][0]], color='b')
+    ax.plot([2730, 2900], [sst_gradients["glacial_sst_grad_2"][0], sst_gradients["glacial_sst_grad_2"][0]], color='b')
+    ax.plot([2490, 2730], [sst_gradients["interglacial_sst_grad_1"][0], sst_gradients["interglacial_sst_grad_1"][0]], color='r')
+    ax.plot([2730, 2900], [sst_gradients["interglacial_sst_grad_2"][0], sst_gradients["interglacial_sst_grad_2"][0]], color='r')
+    ax.fill_between([2490, 2730], [sst_gradients["glacial_sst_grad_1"][0] + sst_gradients["glacial_sst_grad_1"][1], sst_gradients["glacial_sst_grad_1"][0] + sst_gradients["glacial_sst_grad_1"][1]], [sst_gradients["glacial_sst_grad_1"][0] - sst_gradients["glacial_sst_grad_1"][1], sst_gradients["glacial_sst_grad_1"][0] - sst_gradients["glacial_sst_grad_1"][1]],
+                    color='b', alpha=0.1, ec=None)
+    ax.fill_between([2730, 2900], [sst_gradients["glacial_sst_grad_2"][0] + sst_gradients["glacial_sst_grad_2"][1], sst_gradients["glacial_sst_grad_2"][0] + sst_gradients["glacial_sst_grad_2"][1]], [sst_gradients["glacial_sst_grad_2"][0] - sst_gradients["glacial_sst_grad_2"][1], sst_gradients["glacial_sst_grad_2"][0] - sst_gradients["glacial_sst_grad_2"][1]],
+                    color='b', alpha=0.1, ec=None)
+    ax.fill_between([2490, 2730], [sst_gradients["interglacial_sst_grad_1"][0] + sst_gradients["interglacial_sst_grad_1"][1], sst_gradients["interglacial_sst_grad_1"][0] + sst_gradients["interglacial_sst_grad_1"][1]], [sst_gradients["interglacial_sst_grad_1"][0] - sst_gradients["interglacial_sst_grad_1"][1], sst_gradients["interglacial_sst_grad_1"][0] - sst_gradients["interglacial_sst_grad_1"][1]],
+                    color='r', alpha=0.1, ec=None)
+    ax.fill_between([2730, 2900], [sst_gradients["interglacial_sst_grad_2"][0] + sst_gradients["interglacial_sst_grad_2"][1], sst_gradients["interglacial_sst_grad_2"][0] + sst_gradients["interglacial_sst_grad_2"][1]], [sst_gradients["interglacial_sst_grad_2"][0] - sst_gradients["interglacial_sst_grad_2"][1], sst_gradients["interglacial_sst_grad_2"][0] - sst_gradients["interglacial_sst_grad_2"][1]],
+                    color='r', alpha=0.1, ec=None)
+    ax.set(ylabel="Alkenone SST Gradient ({})".format(u'\N{DEGREE SIGN}C'))
+    return ax
 
 def spearman_correlation_plot_sea_level(ax: plt.axis) -> plt.axis:
     ax.plot(rolling_corr_spear.age_ka, (rolling_corr_spear.r ** 2), c="k")  # Plot the correlation

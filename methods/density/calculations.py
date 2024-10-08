@@ -12,7 +12,7 @@ def age_d18o_correction(d18o_sw: float, age: float) -> float:
     age_round = round(age)
     # Find the associated d18O change on the sea level expected for that age.
     age_info = sea_level.loc[sea_level.age_ka == age_round]
-    return d18o_sw - age_info.Dd18O_ice
+    return d18o_sw - age_info.d18Ow_IV
 
 
 def salinity_calculation_np(d18o: float) -> float:
@@ -38,7 +38,7 @@ def inverse_age_d18o_correction(salinity: float, age: float) -> float:
     age_round = round(age)
     # Find the associated d18O change on the sea level expected for that age.
     age_info = sea_level.loc[sea_level.age_ka == age_round]
-    add_salinity = age_info.Dd18O_ice * 1.1
+    add_salinity = age_info.d18Ow_IV * 1.1
     return salinity + add_salinity
 
 

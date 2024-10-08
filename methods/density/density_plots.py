@@ -29,7 +29,7 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, lv=9):
     densities = gsw.sigma2(ab_sal, temp)
 
     # Create the figure
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(7, 6))
     # Generate contours in density space for each T and S point
     contours = ax.contour(sal, temp, densities, colors="grey", zorder=1, levels=lv)
     # Label the density contours

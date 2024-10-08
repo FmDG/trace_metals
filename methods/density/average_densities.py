@@ -5,14 +5,15 @@ from methods.density.calculations import full_inverse_salinity
 from methods.density.density_plots import density_plot
 from objects.arguments.args_Nature import colours as colour
 from objects.arguments.colours import colours_extra
-from objects.core_data.psu import psu_1208, psu_1209, psu_core_tops_1209
+from objects.core_data.psu import psu_1208, psu_1209, psu_core_tops_1209, psu_core_tops_1208
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208 = 1.805, 1.525
 mod_sal_1209, mod_sal_1208 = 34.61, 34.65
 
-glacial_interval = [2798, 2820, "G10"]
-interglacial_interval = [2730, 2759, "G7"]
+ep_glacial_interval = [2510, 2540, "100"]
+ep_interglacial_interval = [2575, 2595, "103"]
+late_pliocene_interval = [2777 , 2798 , 'G9']
 
 
 def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tuple[float, float]:
@@ -65,30 +66,45 @@ def plot_density_diff(ax: plt.axes, age_lower: int, age_higher: int, name: str =
 
 def plot_palaeo_densities(save_fig: bool = False):
     # Generate the density plot
-    ax = density_plot(min_sal=32.0, max_sal=35.0, min_temp=-4, max_temp=10, lv=15)
+    ax = density_plot(min_sal=32, max_sal=35.5, min_temp=-2, max_temp=6, lv=15)
+
+    # add_modern_fill(ax, True, True, True, True, False)
 
     # Plot up glacial and interglacial intervals
-    ax = plot_density_diff(ax, age_lower=glacial_interval[0], age_higher=glacial_interval[1], name=glacial_interval[2],
-                           marker="o")
-    ax = plot_density_diff(ax, age_lower=interglacial_interval[0], age_higher=interglacial_interval[1],
-                           name=interglacial_interval[2], marker="^")
-
+    '''ax = plot_density_diff(ax, age_lower=ep_glacial_interval[0], age_higher=ep_glacial_interval[1],
+                           name=ep_glacial_interval[2], marker="o")
+    ax = plot_density_diff(ax, age_lower=ep_interglacial_interval[0], age_higher=ep_interglacial_interval[1],
+                           name=ep_interglacial_interval[2], marker="^")
+    ax = plot_density_diff(ax, age_lower=late_pliocene_interval[0], age_higher=late_pliocene_interval[1],
+                           name=late_pliocene_interval[2], marker="*")
+    '''
     # -- Add modern densities
+    ax.scatter(*average_cdt(psu_1208, ep_glacial_interval[0], ep_glacial_interval[1]), marker='o',
+               label=f'1208 (MIS {ep_glacial_interval[2]})', color=colour[0])
+    ax.scatter(*average_cdt(psu_1208, ep_interglacial_interval[0], ep_interglacial_interval[1]), marker='^',
+               label=f'1208 (MIS {ep_interglacial_interval[2]})', color=colour[0])
+    ax.scatter(*average_cdt(psu_1208, late_pliocene_interval[0], late_pliocene_interval[1]), marker='*',
+               label=f'1208 (MIS {late_pliocene_interval[2]})', color=colour[0])
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
-    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
+    ax.scatter(*average_cdt(psu_core_tops_1208, 0, 12), marker='s', color=colour[0], label='1208 (Holocene)')
 
-    holocene_sal, holocene_temp = average_cdt(psu_core_tops_1209, 0, 12)
-    lgm_sal, lgm_temp = average_cdt(psu_core_tops_1209, 12, 120)
-    ax.scatter(holocene_sal, holocene_temp, marker='s', label='1209 (Holocene)', color=colour[2])
-    ax.scatter(lgm_sal, lgm_temp, marker='s', label='1209 (LGM)', color=colour[2])
+    ax.scatter(*average_cdt(psu_1209, ep_glacial_interval[0], ep_glacial_interval[1]), marker='o',
+               label=f'1209 (MIS {ep_glacial_interval[2]})', color=colour[1])
+    ax.scatter(*average_cdt(psu_1209, ep_interglacial_interval[0], ep_interglacial_interval[1]), marker='^',
+               label=f'1209 (MIS {ep_interglacial_interval[2]})', color=colour[1])
+    ax.scatter(*average_cdt(psu_1209, late_pliocene_interval[0], late_pliocene_interval[1]), marker='*',
+               label=f'1209 (MIS {late_pliocene_interval[2]})', color=colour[1])
+    ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
+    ax.scatter(*average_cdt(psu_core_tops_1209, 0, 12), marker='s', color=colour[1], label='1209 (Holocene)')
+
 
     ax.legend(frameon=True, ncol=2)
 
     if save_fig:
-        plt.savefig("figures/densities/past_densities_fills.png", format='png', dpi=150)
+        plt.savefig("figures/paper/Figure_2_density.png", format='png', dpi=300)
     else:
         plt.show()
 
 
 if __name__ == "__main__":
-    plot_palaeo_densities(save_fig=False)
+    plot_palaeo_densities(save_fig=True)

@@ -102,7 +102,7 @@ def filtered_difference_plot(ax: plt.axis, colour: str = None, left: int = 1) ->
     ax.plot(filter_diff.age_ka, filter_diff.filtered_difference, **args)
     ax.fill_between(filter_diff.age_ka, filter_diff.filtered_difference, alpha=0.1)
     ratio_arrows = (abs(filter_diff.filtered_difference.min())/(abs(filter_diff.filtered_difference.min()) + filter_diff.filtered_difference.max()) - 1)
-    ax = draw_arrows(ax, ratio_arrows, left=left)
+    # ax = draw_arrows(ax, ratio_arrows, left=left)
     ax.invert_yaxis()
     return ax
 

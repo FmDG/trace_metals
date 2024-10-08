@@ -23,7 +23,8 @@ def figure_1(save_fig: bool = False) -> None:
     highlight_all_mis_greyscale(axs[1])
     axs[0] = isotope_plot(axs[0])
     axs[1] = filtered_difference_plot(axs[1], left=1)
-    tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=False)
+    # axs[0].legend(frameon=False)
+    tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=True)
 
     # Save the figure or show it
     if save_fig:
@@ -42,7 +43,7 @@ def figure_1_simple(save_fig: bool = False) -> None:
     fig.subplots_adjust(hspace=0)
     highlight_all_mis_greyscale(ax)
     ax = isotope_plot(ax)
-    tick_dirs_single(ax, min_age=2400, max_age=3400, legend=False)
+    tick_dirs_single(ax, min_age=2400, max_age=3400, legend=True)
 
     # Save the figure or show it
     if save_fig:
@@ -59,7 +60,7 @@ def figure_2(save_fig: bool = False) -> None:
         nrows=n_plots,
         ncols=1,
         sharex="all",
-        figsize=(7, 10)
+        figsize=(6, 9)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -100,7 +101,7 @@ def figure_4(save_fig: bool = False) -> None:
         nrows=2,
         ncols=1,
         sharex="all",
-        figsize=(7, 7)
+        figsize=(6, 7)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -368,4 +369,4 @@ def figure_planktics(save_fig: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    figure_planktics(save_fig=True)
+    pass

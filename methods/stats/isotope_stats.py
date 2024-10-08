@@ -281,7 +281,7 @@ def isotope_overlaps():
     plt.show()
 
 
-def difference_stats():
+def difference_stats(save_fig: bool = False):
 
     pliocene_glacial_difference = sample_data.loc[sample_data.pliocene & sample_data.glacial].difference_d18O.values
     pliocene_interglacial_difference = sample_data.loc[sample_data.pliocene & (sample_data.glacial == False)].difference_d18O.values
@@ -327,30 +327,33 @@ def difference_stats():
 
     fig, axs = plt.subplots(
         ncols = 2,
-        sharey='all',
-        sharex='all',
-        figsize=(10, 5)
+        nrows = 2,
+        sharey='row',
+        sharex='row',
+        figsize=(10, 8)
     )
 
-    axs[0].hist(pliocene_glacial_difference, alpha=0.2, label='Pliocene')
-    axs[0].axvline(pliocene_glacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
-    axs[0].hist(pleistocene_glacial_difference, alpha=0.2, label='Pleistocene')
-    axs[0].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
-    axs[0].legend(ncols=2)
-    axs[0].set(xlabel=r'$\Delta \delta^{18}$O', title='Glacials')
+    fig.subplots_adjust(hspace = 0.3, right=0.95, top=0.95, left=0.08, bottom=0.08)
 
-    axs[1].hist(pliocene_interglacial_difference, alpha=0.2, label='Pliocene')
-    axs[1].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
-    axs[1].hist(pleistocene_interglacial_difference, alpha=0.2, label='Pleistocene')
-    axs[1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
-    axs[1].legend(ncols=2)
-    axs[1].set(xlabel=r'$\Delta \delta^{18}$O', title='Interglacials')
+    axs[0, 0].hist(pliocene_glacial_difference, alpha=0.2, label='Pliocene')
+    axs[0, 0].axvline(pliocene_glacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
+    axs[0, 0].hist(pleistocene_glacial_difference, alpha=0.2, label='Pleistocene')
+    axs[0, 0].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
+    axs[0, 0].legend(ncols=2)
+    axs[0, 0].set(xlabel=r'$\Delta \delta^{18}$O', title='Glacials')
+
+    axs[0, 1].hist(pliocene_interglacial_difference, alpha=0.2, label='Pliocene')
+    axs[0, 1].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
+    axs[0, 1].hist(pleistocene_interglacial_difference, alpha=0.2, label='Pleistocene')
+    axs[0, 1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
+    axs[0, 1].legend(ncols=2)
+    axs[0, 1].set(xlabel=r'$\Delta \delta^{18}$O', title='Interglacials')
 
     fig, axs = plt.subplots(
         ncols = 2,
         sharey='all',
         sharex='all',
-        figsize=(10, 5)
+        figsize = (10, 4)
     )
 
     axs[0].hist(pliocene_glacial_difference, alpha=0.2, label='Glacials')
@@ -358,16 +361,19 @@ def difference_stats():
     axs[0].hist(pliocene_interglacial_difference, alpha=0.2, label='Interglacials')
     axs[0].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Interglacial Mean', color='tab:orange')
     axs[0].legend(ncols=2)
-    axs[0].set(xlabel=r'$\Delta \delta^{18}$O', title='Pliocene')
+    axs[0].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pliocene')
 
     axs[1].hist(pleistocene_glacial_difference, alpha=0.2, label='Glacials')
     axs[1].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='tab:blue')
     axs[1].hist(pleistocene_interglacial_difference, alpha=0.2, label='Interglacials')
     axs[1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Integlacial Mean', color='tab:orange')
     axs[1].legend(ncols=2)
-    axs[1].set(xlabel=r'$\Delta \delta^{18}$O', title='Pleistocene')
+    axs[1].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pleistocene')
 
-    plt.show()
+    if save_fig:
+        plt.savefig('figures/paper/Figure_5.png', dpi=300)
+    else:
+        plt.show()
 
 
 def visualise_differences():
@@ -427,4 +433,4 @@ def visualise_differences():
 
 
 if __name__ == "__main__":
-    isotope_stats()
+    difference_stats(True)

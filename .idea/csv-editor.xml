@@ -1690,6 +1690,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/misc/rohling_SL_WH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/methods/psu_comparison/optimum_data.csv">
           <value>
             <Attribute>

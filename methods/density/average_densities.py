@@ -9,26 +9,32 @@ from objects.core_data.psu import psu_1208, psu_1209, psu_core_tops_1209, psu_co
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208 = 1.805, 1.525
-mod_sal_1209, mod_sal_1208 = 34.61, 34.65
+mod_sal_1209, mod_sal_1208 = 34.580, 34.628
+
+mod_d18O_sw_1209, mod_d18O_sw_1208 = -0.078, -0.075
 
 ep_glacial_interval = [2510, 2540, "100"]
 ep_interglacial_interval = [2575, 2595, "103"]
 late_pliocene_interval = [2777 , 2798 , 'G9']
 
+whole_late_pliocene = [2700, 3000, "Late Pliocene"]
 
-def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int) -> tuple[float, float]:
+
+def average_cdt(dataframe: pd.DataFrame, age_lower: int, age_upper: int, salinity: float, d18O_sw: float) -> tuple[float, float]:
     """
     Return the temperature and salinity properties for a frame between the lower and upper age limits
     :param dataframe: dataset
     :param age_lower: lower limit of the age (in ka)
     :param age_upper: upper limit of the age (in ka)
+    :param salinity: the modern salinity measurement of the site
+    :param d18O_sw: the modern d18O_sw measurement of the site
     :return: the mean bottom water temperature and salinity for the site over the time interval.
     """
     selected = dataframe[dataframe.age_ka.between(age_lower, age_upper)]
     age_avg = (age_lower + age_upper) / 2
     avg_bwt = selected.temp.mean()
     avg_d18_sw = selected.d18O_sw.mean()
-    avg_sal = full_inverse_salinity(avg_d18_sw, age_avg)
+    avg_sal = full_inverse_salinity(avg_d18_sw, age_avg, d18O_sw, salinity)
     return avg_sal, avg_bwt
 
 
@@ -56,14 +62,6 @@ def add_modern_fill(ax: plt.axes, nadw: bool = True, aabw: bool = True, cdw: boo
     return ax
 
 
-def plot_density_diff(ax: plt.axes, age_lower: int, age_higher: int, name: str = None, marker: str = None) -> plt.axes:
-    ax.scatter(*average_cdt(psu_1208, age_lower, age_higher), marker=marker, label='1208 ({})'.format(name),
-               color=colour[0])
-    ax.scatter(*average_cdt(psu_1209, age_lower, age_higher), marker=marker, label='1209 ({})'.format(name),
-               color=colour[1])
-    return ax
-
-
 def plot_palaeo_densities(save_fig: bool = False):
     # Generate the density plot
     ax = density_plot(min_sal=32, max_sal=35.5, min_temp=-2, max_temp=6, lv=15)
@@ -79,23 +77,23 @@ def plot_palaeo_densities(save_fig: bool = False):
                            name=late_pliocene_interval[2], marker="*")
     '''
     # -- Add modern densities
-    ax.scatter(*average_cdt(psu_1208, ep_glacial_interval[0], ep_glacial_interval[1]), marker='o',
+    ax.scatter(*average_cdt(psu_1208, ep_glacial_interval[0], ep_glacial_interval[1], mod_sal_1208, mod_d18O_sw_1208), marker='o',
                label=f'1208 (MIS {ep_glacial_interval[2]})', color=colour[0])
-    ax.scatter(*average_cdt(psu_1208, ep_interglacial_interval[0], ep_interglacial_interval[1]), marker='^',
+    ax.scatter(*average_cdt(psu_1208, ep_interglacial_interval[0], ep_interglacial_interval[1], mod_sal_1208, mod_d18O_sw_1208), marker='^',
                label=f'1208 (MIS {ep_interglacial_interval[2]})', color=colour[0])
-    ax.scatter(*average_cdt(psu_1208, late_pliocene_interval[0], late_pliocene_interval[1]), marker='*',
+    ax.scatter(*average_cdt(psu_1208, late_pliocene_interval[0], late_pliocene_interval[1], mod_sal_1208, mod_d18O_sw_1208), marker='*',
                label=f'1208 (MIS {late_pliocene_interval[2]})', color=colour[0])
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0])
-    ax.scatter(*average_cdt(psu_core_tops_1208, 0, 12), marker='s', color=colour[0], label='1208 (Holocene)')
+    ax.scatter(*average_cdt(psu_core_tops_1208, 0, 12, mod_sal_1208, mod_d18O_sw_1208), marker='s', color=colour[0], label='1208 (Holocene)')
 
-    ax.scatter(*average_cdt(psu_1209, ep_glacial_interval[0], ep_glacial_interval[1]), marker='o',
+    ax.scatter(*average_cdt(psu_1209, ep_glacial_interval[0], ep_glacial_interval[1], mod_sal_1209, mod_d18O_sw_1209), marker='o',
                label=f'1209 (MIS {ep_glacial_interval[2]})', color=colour[1])
-    ax.scatter(*average_cdt(psu_1209, ep_interglacial_interval[0], ep_interglacial_interval[1]), marker='^',
+    ax.scatter(*average_cdt(psu_1209, ep_interglacial_interval[0], ep_interglacial_interval[1], mod_sal_1209, mod_d18O_sw_1209), marker='^',
                label=f'1209 (MIS {ep_interglacial_interval[2]})', color=colour[1])
-    ax.scatter(*average_cdt(psu_1209, late_pliocene_interval[0], late_pliocene_interval[1]), marker='*',
+    ax.scatter(*average_cdt(psu_1209, late_pliocene_interval[0], late_pliocene_interval[1], mod_sal_1209, mod_d18O_sw_1209), marker='*',
                label=f'1209 (MIS {late_pliocene_interval[2]})', color=colour[1])
     ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1])
-    ax.scatter(*average_cdt(psu_core_tops_1209, 0, 12), marker='s', color=colour[1], label='1209 (Holocene)')
+    ax.scatter(*average_cdt(psu_core_tops_1209, 0, 12, mod_sal_1209, mod_d18O_sw_1209), marker='s', color=colour[1], label='1209 (Holocene)')
 
 
     ax.legend(frameon=True, ncol=2)

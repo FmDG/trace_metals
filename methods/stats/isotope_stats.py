@@ -1,9 +1,11 @@
 from methods.stats.overlaps import generate_differences
 from objects.core_data.isotopes import iso_1208, iso_1209
+from objects.arguments.args_Nature import colours
+from objects.core_data.psu import psu_1208, psu_1209
 from objects.misc.mis_boundaries import mis_boundaries
 from methods.figures.highlight_mis import highlight_all_mis_greyscale
 
-from scipy.stats import kstest, ttest_ind
+from scipy.stats import kstest, ttest_ind, shapiro
 import matplotlib.pyplot as plt
 
 
@@ -361,7 +363,7 @@ def difference_stats(save_fig: bool = False):
     axs[0].hist(pliocene_interglacial_difference, alpha=0.2, label='Interglacials')
     axs[0].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Interglacial Mean', color='tab:orange')
     axs[0].legend(ncols=2)
-    axs[0].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pliocene')
+    axs[0].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pliocene', ylabel="Counts")
 
     axs[1].hist(pleistocene_glacial_difference, alpha=0.2, label='Glacials')
     axs[1].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='tab:blue')
@@ -432,5 +434,22 @@ def visualise_differences():
     plt.show()
 
 
+def non_normal_distribution_tests():
+
+    datasets = [
+        ['1208 d18O', iso_1208.d18O_unadj.values],
+        ['1209 d18O', iso_1209.d18O_unadj.values],
+        ['1208 psu', psu_1208.temp.values],
+        ['1209 psu', psu_1209.dropna(subset='temp').temp.values],
+    ]
+
+    for data_set in datasets:
+        ks_result = kstest(data_set[1], 'norm')
+        sw_result = shapiro(data_set[1])
+        print('{} KS statistic = {:.3g}, KS p-value = {}, SW statistic {:.3g}, SW p-value {:.6g}, n={}'.format(
+            data_set[0], ks_result.statistic, ks_result.pvalue, sw_result.statistic, sw_result.pvalue, len(data_set[1])))
+
+    print(f'Difference Data, n={len(sample_data.difference_d18O.values)}')
+
 if __name__ == "__main__":
-    difference_stats(True)
+    non_normal_distribution_tests()

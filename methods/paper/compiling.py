@@ -1,12 +1,15 @@
 import matplotlib.pyplot as plt
 
+from methods.compilations.ceara_rise import colours
 from methods.figures.tick_dirs import tick_dirs, tick_dirs_single
 from methods.figures.highlight_mis import highlight_mis, highlight_all_mis_greyscale
 from methods.paper.plotting import (isotope_plot, iso_607_plot, psu_bwt_plot, psu_d18sw_plot, psu_607_plot, opal_plot,
                                     alkenone_plot, alkenone_gradient_plot, sea_level_plot, filtered_difference_plot,
                                     pearson_significance_plot_sea_level, pearson_correlation_plot_sea_level,
                                     difference_plot_glacials, average_difference_plot, difference_plot,
-                                    planktic_difference_plot, isotope_plot_1207, alkenone_gradient_plot_glacial_interglacials)
+                                    planktic_difference_plot, isotope_plot_1207,
+                                    alkenone_gradient_plot_glacial_interglacials, difference_temperature_plot,
+                                    difference_d18Osw_plot, probStack_plot)
 
 
 def figure_1(save_fig: bool = False) -> None:
@@ -366,6 +369,38 @@ def figure_planktics(save_fig: bool = False) -> None:
         plt.savefig("figures/paper/Figure PLANKTICS PSU.pdf", transparent=False)
     else:
         plt.show()
+
+
+def figure_s8(save_fig: bool = False) -> None:
+    # ------------- INIT FIGURE ----------------
+    n_plots = 4
+    fig, axs = plt.subplots(
+        nrows=n_plots,
+        ncols=1,
+        sharex="all",
+        figsize=(10, 8)
+    )
+    # Reduce the space between axes to 0
+    fig.subplots_adjust(hspace=0)
+
+    # ------------- HIGHLIGHT MIS ---------------
+    for ax in axs:
+        highlight_all_mis_greyscale(ax)
+
+    # ------------- PLOT FIGURES -------------
+    axs[0] = psu_bwt_plot(axs[0])
+    axs[1] = difference_temperature_plot(axs[1], colour=colours[1])
+    axs[2] = psu_d18sw_plot(axs[2])
+    axs[3] = difference_d18Osw_plot(axs[3], colour=colours[0])
+    tick_dirs(axs, n_plots, min_age=2400, max_age=2900, legend=True)
+
+    # ------------- EXPORT FIGURES -------------
+    # Save the figure or show it
+    if save_fig:
+        plt.savefig("figures/paper/Figure BWT Gradient.pdf", transparent=False)
+    else:
+        plt.show()
+
 
 
 if __name__ == "__main__":

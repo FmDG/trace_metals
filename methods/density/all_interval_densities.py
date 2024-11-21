@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from methods.density.calculations import bespoke_inverse_salinity
+from methods.density.calculations import bespoke_inverse_salinity, full_inverse_salinity
 from methods.density.density_plots import density_plot
 from objects.arguments.args_Nature import colours as colour
 from average_densities import average_cdt
@@ -17,7 +17,7 @@ mod_sal_1209, mod_sal_1208 = 34.580, 34.628
 mod_d18O_sw_1209, mod_d18O_sw_1208 = -0.078, -0.075
 
 
-def find_interval_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame, interval: str = 'glacial') -> tuple[float, float]:
+def find_interval_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame, interval: str = 'glacial') -> tuple[float, float, float, float]:
     if interval not in ['glacial', 'interglacial']:
         raise ValueError("Must input glacial or interglacial to this function")
 
@@ -25,7 +25,7 @@ def find_interval_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame
     selected_intervals = selected_intervals.loc[selected_intervals.age_end.between(lower_age - 10000, upper_age)]
     selected_intervals = selected_intervals.loc[selected_intervals.glacial == interval]
     if selected_intervals.empty:
-        return 0, 0
+        return 0, 0, 0, 0
     all_bwt = []
     all_d18Osw = []
     for _, row in selected_intervals.iterrows():
@@ -36,8 +36,10 @@ def find_interval_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame
         all_d18Osw.append(selected.d18O_sw.values)
 
     average_bwt = np.mean(np.concatenate(all_bwt))
+    sigma_bwt = np.std(np.concatenate(all_bwt))
     average_d18Osw = np.mean(np.concatenate(all_d18Osw))
-    return average_bwt, average_d18Osw
+    sigma_d18Osw = np.std(np.concatenate(all_d18Osw))
+    return average_bwt, average_d18Osw, sigma_bwt, sigma_d18Osw
 
 
 def find_interval_correction(lower_age: int, upper_age:int, interval: str = 'glacial') -> tuple[float, float]:
@@ -64,11 +66,13 @@ def find_interval_correction(lower_age: int, upper_age:int, interval: str = 'gla
     return average_rsl, average_d18O_ivc
 
 
-def find_total_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame) -> tuple[float, float]:
+def find_total_average(lower_age: int, upper_age:int, dataframe: pd.DataFrame) -> tuple[float, float, float, float]:
     selected = dataframe[dataframe.age_ka.between(lower_age, upper_age)]
     avg_bwt = selected.temp.mean()
+    std_bwt = selected.temp.std()
     avg_d18_sw = selected.d18O_sw.mean()
-    return avg_bwt, avg_d18_sw
+    std_d18O_sw = selected.d18O_sw.std()
+    return avg_bwt, avg_d18_sw, std_bwt, std_d18O_sw
 
 
 def find_total_correction(lower_age: int, upper_age: int) -> tuple[float, float]:
@@ -79,12 +83,12 @@ def find_total_correction(lower_age: int, upper_age: int) -> tuple[float, float]
 
 def plot_densities(save_fig: bool = False):
     # Generate the density plot
-    ax = density_plot(min_sal=32, max_sal=35.5, min_temp=-2, max_temp=6, lv=10)
+    ax = density_plot(min_sal=31, max_sal=36, min_temp=-2, max_temp=6, lv=10)
 
-    bwt_g_1208, d18Osw_g_1208 = find_interval_average(2300, 2700, psu_1208, 'glacial')
-    bwt_g_1209, d18Osw_g_1209 = find_interval_average(2300, 2700, psu_1209, 'glacial')
-    bwt_ig_1208, d18Osw_ig_1208 = find_interval_average(2300, 2700, psu_1208, 'interglacial')
-    bwt_ig_1209, d18Osw_ig_1209 = find_interval_average(2300, 2700, psu_1209, 'interglacial')
+    bwt_g_1208, d18Osw_g_1208, bwt_std_g_1208, d18Osw_std_g_1208 = find_interval_average(2300, 2700, psu_1208, 'glacial')
+    bwt_g_1209, d18Osw_g_1209, bwt_std_g_1209, d18Osw_std_g_1209 = find_interval_average(2300, 2700, psu_1209, 'glacial')
+    bwt_ig_1208, d18Osw_ig_1208, bwt_std_ig_1208, d18Osw_std_ig_1208 = find_interval_average(2300, 2700, psu_1208, 'interglacial')
+    bwt_ig_1209, d18Osw_ig_1209, bwt_std_ig_1209, d18Osw_std_ig_1209 = find_interval_average(2300, 2700, psu_1209, 'interglacial')
 
     glacial_rsl, glacial_ivc = find_interval_correction(2400, 2700, 'glacial')
     interglacial_rsl, interglacial_ivc = find_interval_correction(2400, 2700, 'interglacial')
@@ -95,8 +99,10 @@ def plot_densities(save_fig: bool = False):
     sal_ig_1208 = bespoke_inverse_salinity(d18Osw_ig_1208, interglacial_ivc, mod_d18O_sw_1208, mod_sal_1208, interglacial_rsl)
     sal_ig_1209 = bespoke_inverse_salinity(d18Osw_ig_1209, interglacial_ivc, mod_d18O_sw_1209, mod_sal_1209, interglacial_rsl)
 
-    bwt_lp_1208, d18Osw_lp_1208 = find_total_average(2700, 3000, psu_1208)
-    bwt_lp_1209, d18Osw_lp_1209 = find_total_average(2700, 3000, psu_1209)
+    sal_std_g_1208 = bespoke_inverse_salinity((d18Osw_g_1208 + d18Osw_std_g_1208), glacial_ivc, mod_d18O_sw_1208, mod_sal_1208, glacial_rsl) - sal_g_1208
+
+    bwt_lp_1208, d18Osw_lp_1208, bwt_std_lp_1208, d18Osw_std_lp_1208 = find_total_average(2700, 3000, psu_1208)
+    bwt_lp_1209, d18Osw_lp_1209, bwt_std_lp_1209, d18Osw_std_lp_1209 = find_total_average(2700, 3000, psu_1209)
 
     sal_lp_1208 = bespoke_inverse_salinity(d18Osw_lp_1208, pliocene_ivc, mod_d18O_sw_1208, mod_sal_1208, pliocene_rsl)
     sal_lp_1209 = bespoke_inverse_salinity(d18Osw_lp_1209, pliocene_ivc, mod_d18O_sw_1209, mod_sal_1209, pliocene_rsl)
@@ -113,17 +119,29 @@ def plot_densities(save_fig: bool = False):
 
     marker_size = 70
 
-    ax.scatter(sal_g_1208, bwt_g_1208, marker='o', label=f'1208 (Pleistocene Glacials)', color=colour[0], s=marker_size)
-    ax.scatter(sal_ig_1208, bwt_ig_1208, marker='^', label=f'1208 (Pleistocene Interlacials)', color=colour[0], s=marker_size)
-    ax.scatter(sal_lp_1208, bwt_lp_1208, marker='*', label=f'1208 (Late Pliocene)', color=colour[0], s=marker_size*1.5)
+    ax.scatter(sal_g_1208, bwt_g_1208 ,marker='o', label=f'1208 (Pleistocene Glacials)', color=colour[0], s=marker_size, facecolor= "white", linewidths=2.0)
+    ax.scatter(sal_ig_1208, bwt_ig_1208, marker='^', label=f'1208 (Pleistocene Interlacials)', color=colour[0], s=marker_size, facecolor= "white", linewidths=2.0)
+    ax.scatter(sal_lp_1208, bwt_lp_1208, marker='*', label=f'1208 (Late Pliocene)', color=colour[0], s=marker_size*1.5, facecolor= "white", linewidths=1.7)
     ax.scatter(mod_sal_1208, mod_temp_1208, marker='D', label='1208 (Modern)', color=colour[0], s=marker_size)
     ax.scatter(sal_ct_1208, bwt_ct_1208, marker='s', color=colour[0], label='1208 (Holocene)', s=marker_size)
 
-    ax.scatter(sal_g_1209, bwt_g_1209, marker='o', label=f'1209 (Pleistocene Glacials)', color=colour[1], s=marker_size)
-    ax.scatter(sal_ig_1209, bwt_ig_1209, marker='^', label=f'1209 (Pleistocene Interlacials)', color=colour[1], s=marker_size)
-    ax.scatter(sal_lp_1209, bwt_lp_1209, marker='*', label=f'1209 (Late Pliocene)', color=colour[1], s=marker_size*1.5)
+    ax.scatter(sal_g_1209, bwt_g_1209, marker='o', label=f'1209 (Pleistocene Glacials)', color=colour[1], s=marker_size, facecolor= "white", linewidths=2.0)
+    ax.scatter(sal_ig_1209, bwt_ig_1209, marker='^', label=f'1209 (Pleistocene Interlacials)', color=colour[1], s=marker_size, facecolor= "white", linewidths=2.0)
+    ax.scatter(sal_lp_1209, bwt_lp_1209, marker='*', label=f'1209 (Late Pliocene)', color=colour[1], s=marker_size*1.5, facecolor= "white", linewidths=1.7)
     ax.scatter(mod_sal_1209, mod_temp_1209, marker='D', label='1209 (Modern)', color=colour[1], s=marker_size)
     ax.scatter(sal_ct_1209, bwt_ct_1209, marker='s', color=colour[1], label='1209 (Holocene)', s=marker_size)
+
+    sal_1209 = []
+    for i in range(len(psu_1209.d18O_sw.values)):
+        sal_1209.append(full_inverse_salinity(psu_1209.d18O_sw.values[i], psu_1209.age_ka.values[i], mod_d18O_sw_1209, mod_sal_1209))
+
+    sal_1208 = []
+    for i in range(len(psu_1208.d18O_sw.values)):
+        sal_1208.append(full_inverse_salinity(psu_1208.d18O_sw.values[i], psu_1208.age_ka.values[i], mod_d18O_sw_1208, mod_sal_1208))
+
+
+    # ax.scatter(sal_1208, psu_1208.temp.values, c=colour[0], marker='+', alpha=0.25)
+    # ax.scatter(sal_1209, psu_1209.temp.values, c=colour[1], marker='+', alpha=0.25)
 
     ax.legend(frameon=True, ncol=2)
 

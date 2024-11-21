@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 
 
 from objects.misc.sea_level import sea_level
-from objects.misc.mis_boundaries import mis_boundaries
 from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607, colours, args_1207
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607, iso_1207
@@ -10,7 +9,8 @@ from objects.core_data.lr04 import iso_probstack
 from objects.core_data.misc_proxies import opal_882
 from objects.core_data.alkenones import sst_846, sst_1208
 from objects.core_data.planktics import planktics_1208, planktics_1209, planktics_1207
-from analysis import resampled_data, resampled_SST, rolling_corr_spear, rolling_corr_pears, sst_gradients, glacial_means, interglacial_means
+from analysis import (resampled_data, resampled_SST, rolling_corr_spear, rolling_corr_pears, sst_gradients,
+                      glacial_means, interglacial_means, resampled_temp, resampled_sw)
 from methods.figures.arrows import draw_arrows
 
 
@@ -224,4 +224,19 @@ def probStack_plot(ax: plt.axis, colour=colours[2]) -> plt.axis:
     ax.plot(iso_probstack.age_ka, iso_probstack.d18O_unadj, c=colour)
     ax.invert_yaxis()
     ax.set(ylabel='Probabilistic {} stack ({}, VPDB)'.format(r'$\delta^{18}$O', u"\u2030"))
+    return ax
+
+
+def difference_temperature_plot(ax: plt.axis, colour=colours[1]) -> plt.axis:
+    ax.plot(resampled_temp.age_ka, resampled_temp.difference_temp, marker='+', c=colour)
+    ax.set(ylabel='Difference in BWT ({})'.format(u'\N{DEGREE SIGN}C'))
+    ax.fill_between(resampled_temp.age_ka, resampled_temp.difference_temp, fc=colour, alpha=0.2)
+    return ax
+
+
+def difference_d18Osw_plot(ax: plt.axis, colour=colours[1]) -> plt.axis:
+    ax.plot(resampled_sw.age_ka, resampled_sw.difference_d18Osw, marker='+', c=colour)
+    ax.set(ylabel='Difference in {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
+    ax.fill_between(resampled_sw.age_ka, resampled_sw.difference_d18Osw, fc=colour, alpha=0.2)
+    ax.invert_yaxis()
     return ax

@@ -2,6 +2,7 @@ from methods.interpolations.binning_records import binning_multiple_series
 from methods.interpolations.filter_data import filter_difference
 from objects.core_data.isotopes import iso_1209, iso_1208
 from objects.core_data.alkenones import sst_846, sst_1208
+from objects.core_data.psu import psu_1208, psu_1209
 from objects.misc.sea_level import sea_level
 from objects.misc.mis_boundaries import mis_boundaries
 from methods.interpolations.rolling_pearson import rolling_spearman, rolling_pearson
@@ -115,3 +116,27 @@ resampled_SST_d18O = binning_multiple_series(
 
 rolling_corr_SST_d18O = rolling_pearson(resampled_SST_d18O, "values_mean_Dd18O", "values_mean_SST",
                                      window=100, start=2500, end=3300)
+
+## ------------- GENERATE DIFFERENCES IN PSU  -------------
+resampling_freq = 3  # Resampling frequency in ka
+age_min, age_max = 2300, 3000  # Minimum and maximum ages in ka
+resampled_temp = binning_multiple_series(
+    psu_1208, psu_1209,
+    names=["1208", "1209"],
+    fs=resampling_freq,
+    start=age_min,
+    end=age_max,
+    value='temp'
+).dropna()
+
+resampled_sw = binning_multiple_series(
+    psu_1208, psu_1209,
+    names=["1208", "1209"],
+    fs=resampling_freq,
+    start=age_min,
+    end=age_max,
+    value='d18O_sw'
+).dropna()
+
+resampled_temp["difference_temp"] = resampled_temp.temp_mean_1208 - resampled_temp.temp_mean_1209
+resampled_sw['difference_d18Osw'] = resampled_sw.d18O_sw_mean_1208 - resampled_sw.d18O_sw_mean_1209

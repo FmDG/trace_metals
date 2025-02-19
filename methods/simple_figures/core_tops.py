@@ -60,8 +60,8 @@ def core_tops(save_fig: bool = False) -> None:
     ax.hist(uvis_1208.d18O, label='1208', alpha=0.2)
     ax.hist(uvis_data.d18O, label='1209', alpha=0.2)
 
-    print(kstest(uvis_1208.d18O, uvis_data.d18O))
     print(ttest_ind(uvis_1208.d18O, uvis_data.d18O, equal_var=False))
+    print(f'Core Top Similarity, p value = {ttest_ind(uvis_1208.d18O, uvis_data.d18O, equal_var=False).pvalue:.3f}, N = {len(uvis_1208.d18O) + len(uvis_data.d18O)}')
 
     print(f'Mean 1208 d18O = {uvis_1208.d18O.mean()}, Mean 1209 d18O = {uvis_data.d18O.mean()}')
 

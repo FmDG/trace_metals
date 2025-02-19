@@ -25,7 +25,7 @@ def figure_1(save_fig: bool = False) -> None:
     highlight_all_mis_greyscale(axs[0])
     highlight_all_mis_greyscale(axs[1])
     axs[0] = isotope_plot(axs[0])
-    axs[1] = filtered_difference_plot(axs[1], left=1)
+    axs[1] = filtered_difference_plot(axs[1])
     # axs[0].legend(frameon=False)
     tick_dirs(axs, num_plots=2, min_age=2400, max_age=3400, legend=True)
 
@@ -63,7 +63,7 @@ def figure_2(save_fig: bool = False) -> None:
         nrows=n_plots,
         ncols=1,
         sharex="all",
-        figsize=(6, 9)
+        figsize=(6, 9.5)
     )
     # Reduce the space between axes to 0
     fig.subplots_adjust(hspace=0)
@@ -100,33 +100,23 @@ def figure_2(save_fig: bool = False) -> None:
 def figure_4(save_fig: bool = False) -> None:
     """Fourth figure. Showing d18O_c and BWT for 1208, 1209 and 607 between 2400 - 2900 ka."""
     # ------------- INIT FIGURE ----------------
-    fig, axs = plt.subplots(
-        nrows=2,
-        ncols=1,
-        sharex="all",
-        figsize=(6, 7)
+    fig, ax = plt.subplots(
+        figsize=(7, 5)
     )
-    # Reduce the space between axes to 0
-    fig.subplots_adjust(hspace=0)
 
     # ------------- HIGHLIGHT MIS ---------------
-    for ax in axs:
-        highlight_all_mis_greyscale(ax)
+    highlight_all_mis_greyscale(ax)
 
     # ------------- PLOT DATA -------------------
-    # d18O original data
-    axs[0] = isotope_plot(axs[0])
-    axs[0] = iso_607_plot(axs[0])
-
     # PSU BWT estimates
-    axs[1] = psu_bwt_plot(axs[1])
-    axs[1] = psu_607_plot(axs[1])
+    ax = psu_bwt_plot(ax)
+    ax = psu_607_plot(ax)
 
     # ------------- FORMAT AXES ----------------
-    tick_dirs(axs=axs, num_plots=2, min_age=2450, max_age=2850, legend=False)
+    tick_dirs_single(ax=ax, min_age=2450, max_age=2850, legend=False)
 
     # Add a legend
-    axs[0].legend(shadow=False, frameon=False)
+    ax.legend(shadow=False, frameon=False)
 
     # Save the figure or show it
     if save_fig:
@@ -404,4 +394,4 @@ def figure_s8(save_fig: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    pass
+    figure_1(False)

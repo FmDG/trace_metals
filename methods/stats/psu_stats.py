@@ -123,7 +123,7 @@ def seawater_stats():
 
     print('Welch T-test')
     print("Is the d18O_sw during Pleistocene glacials significantly different at 1208 compared to 1209?")
-    print(f'No, p value = {ttest_ind(pleistocene_glacial_1208, pleistocene_glacial_1209, equal_var=False).pvalue:.4g}')
+    print(f'Yes, p value = {ttest_ind(pleistocene_glacial_1208, pleistocene_glacial_1209, equal_var=False).pvalue:.4g}')
     print(f'Pleistocene Glacial 1208 Mean: {pleistocene_glacial_1208.mean():.4f}, Pleistocene Glacial 1209 Mean: {pleistocene_glacial_1209.mean():.4f}')
     print(f'Difference in Pleistocene Glacial Means: {(pleistocene_glacial_1208.mean() - pleistocene_glacial_1209.mean()):.4f}')
     print("Is the d18O_sw during Pleistocene interglacials significantly different at 1208 compared to 1209?")
@@ -132,7 +132,7 @@ def seawater_stats():
     print(f'Difference in Pleistocene Interglacial Means: {(pleistocene_interglacial_1208.mean() - pleistocene_interglacial_1209.mean()):.4f}')
 
     print("Is the d18O_sw at 1208 during Late Pliocene different to 1209?")
-    print(f'Yes, p value = {ttest_ind(pliocene_1208, pliocene_1209, equal_var=False).pvalue:.4g}')
+    print(f'Yes, p value = {ttest_ind(pliocene_1208, pliocene_1209, equal_var=False).pvalue:.4g}, N = {len(pliocene_1208) + len(pliocene_1209)}')
     print(f'Late Pliocene 1208 Mean: {pliocene_1208.mean():.4f}, Late Pliocene 1209 Mean: {pliocene_1209.mean():.4f}')
     print(f'Difference in Pliocene Means: {(pliocene_1208.mean() - pliocene_1209.mean()):.4f}')
 
@@ -170,4 +170,4 @@ def seawater_stats():
     plt.show()
 
 if __name__ == "__main__":
-    bwt_stats()
+    seawater_stats()

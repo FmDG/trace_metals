@@ -139,18 +139,17 @@ def plot_densities(save_fig: bool = False):
     for i in range(len(psu_1208.d18O_sw.values)):
         sal_1208.append(full_inverse_salinity(psu_1208.d18O_sw.values[i], psu_1208.age_ka.values[i], mod_d18O_sw_1208, mod_sal_1208))
 
-
     # ax.scatter(sal_1208, psu_1208.temp.values, c=colour[0], marker='+', alpha=0.25)
     # ax.scatter(sal_1209, psu_1209.temp.values, c=colour[1], marker='+', alpha=0.25)
 
     ax.legend(frameon=True, ncol=2)
 
     if save_fig:
-        plt.savefig("figures/paper/Figure_2_density_new.png", format='png', dpi=300)
+        plt.savefig("figures/paper/Figure_2_density_new.pdf", format='pdf', dpi=300)
     else:
         plt.show()
 
 
 
 if __name__ == "__main__":
-    plot_densities(True)
+    plot_densities(False)

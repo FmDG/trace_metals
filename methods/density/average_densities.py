@@ -105,4 +105,4 @@ def plot_palaeo_densities(save_fig: bool = False):
 
 
 if __name__ == "__main__":
-    plot_palaeo_densities(save_fig=True)
+    plot_palaeo_densities(save_fig=False)

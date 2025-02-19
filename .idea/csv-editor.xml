@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/Filtered_Difference.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$USER_HOME$/Library/CloudStorage/OneDrive-UniversityCollegeLondon/Project/Chapter_1/trace_metals/data/cores/1208_core_tops_psu.csv">
           <value>
             <Attribute>

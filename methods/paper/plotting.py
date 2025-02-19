@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 
 from objects.misc.sea_level import sea_level
+from objects.misc.mis_boundaries import mis_boundaries
 from objects.arguments.args_Nature import args_1209, args_1208, fill_1208, fill_1209, args_607, fill_607, colours, args_1207
 from objects.core_data.psu import psu_1208, psu_1209, psu_607
 from objects.core_data.isotopes import iso_1208, iso_1209, iso_607, iso_1207
@@ -47,7 +48,7 @@ def psu_d18sw_plot(ax: plt.axis) -> plt.axis:
     ax.fill_between(psu_1208.age_ka, psu_1208.d18O_min1, psu_1208.d18O_plus1, **fill_1208)
     ax.plot(psu_1209.age_ka, psu_1209.d18O_sw, **args_1209)
     ax.fill_between(psu_1209.age_ka, psu_1209.d18O_min1, psu_1209.d18O_plus1, **fill_1209)
-    ax.set(ylabel='Derived {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"))
+    ax.set(ylabel='Derived {} ({})'.format(r'$\delta^{18}$O$_{sw}$', u"\u2030"), ylim=[-2, 1])
     ax.invert_yaxis()
     return ax
 
@@ -91,16 +92,19 @@ def difference_plot(ax: plt.axis, colour: str = None, centre_line: bool = False,
     return ax
 
 
-def filtered_difference_plot(ax: plt.axis, colour: str = None, left: int = 1) -> plt.axis:
-    if colour:
-        args = {"marker": None, "color": colour, "label": "10-ka filtered data"}
-    else:
-        args = {"marker": None, "label": "5-ka filtered data"}
+def filtered_difference_plot(ax: plt.axis) -> plt.axis:
     filter_diff = resampled_data[resampled_data.age_ka.between(2400, 3400)]
-    ax.plot(filter_diff.age_ka, filter_diff.difference_d18O, marker="+", color="tab:grey", label="Difference" , alpha=0.7)
+    filter_diff.insert(0, 'glacial', False)
+    for _, row in mis_boundaries.iterrows():
+        if row["glacial"] == "glacial":
+            filter_diff.loc[filter_diff.age_ka.between(row["age_start"], row["age_end"]), 'glacial'] = True
+
+    ax.scatter(filter_diff.loc[filter_diff.glacial].age_ka, filter_diff.loc[filter_diff.glacial].difference_d18O, marker="+", color="tab:brown", label="Difference (Glacials)" , alpha=0.6)
+    ax.scatter(filter_diff.loc[~filter_diff.glacial].age_ka, filter_diff.loc[~filter_diff.glacial].difference_d18O,
+               marker="x", color="tab:red", label="Difference (Interglacials)", alpha=0.6, s=20)
     ax.set(ylabel="{} ({})".format(r'$\Delta \delta^{18}$O (1208 - 1209)', u"\u2030"))
-    ax.plot(filter_diff.age_ka, filter_diff.filtered_difference, **args)
-    ax.fill_between(filter_diff.age_ka, filter_diff.filtered_difference, alpha=0.1)
+    ax.plot(filter_diff.age_ka, filter_diff.filtered_difference, marker=None, label='10-ka filtered difference', color="tab:blue")
+    ax.fill_between(filter_diff.age_ka, filter_diff.filtered_difference, alpha=0.1, color='tab:blue')
     ratio_arrows = (abs(filter_diff.filtered_difference.min())/(abs(filter_diff.filtered_difference.min()) + filter_diff.filtered_difference.max()) - 1)
     # ax = draw_arrows(ax, ratio_arrows, left=left)
     ax.invert_yaxis()

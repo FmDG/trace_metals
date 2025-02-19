@@ -33,7 +33,7 @@ def density_plot(min_temp: int = -4, max_temp=15, min_sal=33, max_sal=36, lv=9):
     # Generate contours in density space for each T and S point
     contours = ax.contour(sal, temp, densities, colors="grey", zorder=1, levels=lv)
     # Label the density contours
-    plt.clabel(contours, fontsize=10, inline=False, fmt="%.1f")
+    plt.clabel(contours, fontsize=10, inline=True, fmt="%.1f")
     # Label the axes
     ax.set(xlabel=r'Salinity (psu)', ylabel=r'Temperature ($^\circ$C)')
 

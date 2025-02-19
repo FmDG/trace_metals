@@ -1,3 +1,5 @@
+import numpy as np
+
 from methods.stats.overlaps import generate_differences
 from objects.core_data.isotopes import iso_1208, iso_1209
 from objects.arguments.args_Nature import colours
@@ -68,7 +70,7 @@ def isotope_stats():
 
 
     print("Is the d18O during the Pliocene significantly different at 1208 compared to 1209?")
-    print(f'Yes, p value = {kstest(pliocene_1208, pliocene_1209).pvalue:.4g}')
+    print(f'Yes, p value = {kstest(pliocene_1208, pliocene_1209).pvalue:.4g}, N = {len(pliocene_1208) + len(pliocene_1209)}')
     print(f'Pliocene 1208 Mean: {pliocene_1208.mean():.4f}, Pliocene 1209 Mean: {pliocene_1209.mean():.4f}')
     print(f'Difference in Pliocene Means: {(pliocene_1208.mean() - pliocene_1209.mean()):.4f}')
 
@@ -305,12 +307,12 @@ def difference_stats(save_fig: bool = False):
     print(f'Difference: {pliocene_interglacial_difference.mean() - pleistocene_interglacial_difference.mean():.4f}')
     print(
         "Is the difference in d18O in the Pliocene significantly different in glacials compared to interglacials?")
-    print(f'No, p value = {kstest(pliocene_glacial_difference, pliocene_interglacial_difference).pvalue:.4f}')
+    print(f'No, p value = {ttest_ind(pliocene_glacial_difference, pliocene_interglacial_difference, equal_var=False).pvalue:.4f}, N = {len(pliocene_glacial_difference) + len(pliocene_interglacial_difference)}')
     print(f'Pliocene Glacials: {pliocene_glacial_difference.mean():.4f}, Pliocene Interglacials: {pliocene_interglacial_difference.mean():.4f}')
     print(f'Difference: {pliocene_glacial_difference.mean() - pliocene_interglacial_difference.mean():.4f}')
     print(
         "Is the difference in d18O in the Pleistocene significantly different in glacials compared to interglacials?")
-    print(f'Yes, p value = {kstest(pleistocene_glacial_difference, pleistocene_interglacial_difference).pvalue:.4f}')
+    print(f'Yes, p value = {ttest_ind(pleistocene_glacial_difference, pleistocene_interglacial_difference, equal_var=False).pvalue:.4f}, N = {len(pleistocene_glacial_difference) + len(pleistocene_interglacial_difference)}')
     print(f'Pleistocene Glacials: {pleistocene_glacial_difference.mean():.4f}, Pleistocene Interglacials: {pleistocene_interglacial_difference.mean():.4f}')
     print(f'Difference: {pleistocene_glacial_difference.mean() - pleistocene_interglacial_difference.mean():.4f}')
 
@@ -326,54 +328,40 @@ def difference_stats(save_fig: bool = False):
     print(f'Pleistocene Glacials: {pleistocene_interglacial_difference.mean():.4f}, Pliocene: {pliocene_difference.mean():.4f}')
     print(f'Difference: {pleistocene_interglacial_difference.mean() - pliocene_difference.mean():.4f}')
 
-
-    fig, axs = plt.subplots(
-        ncols = 2,
-        nrows = 2,
-        sharey='row',
-        sharex='row',
-        figsize=(10, 8)
-    )
-
-    fig.subplots_adjust(hspace = 0.3, right=0.95, top=0.95, left=0.08, bottom=0.08)
-
-    axs[0, 0].hist(pliocene_glacial_difference, alpha=0.2, label='Pliocene')
-    axs[0, 0].axvline(pliocene_glacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
-    axs[0, 0].hist(pleistocene_glacial_difference, alpha=0.2, label='Pleistocene')
-    axs[0, 0].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
-    axs[0, 0].legend(ncols=2)
-    axs[0, 0].set(xlabel=r'$\Delta \delta^{18}$O', title='Glacials')
-
-    axs[0, 1].hist(pliocene_interglacial_difference, alpha=0.2, label='Pliocene')
-    axs[0, 1].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Pliocene Mean', color='tab:blue')
-    axs[0, 1].hist(pleistocene_interglacial_difference, alpha=0.2, label='Pleistocene')
-    axs[0, 1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Pleistocene Mean', color='tab:orange')
-    axs[0, 1].legend(ncols=2)
-    axs[0, 1].set(xlabel=r'$\Delta \delta^{18}$O', title='Interglacials')
-
     fig, axs = plt.subplots(
         ncols = 2,
         sharey='all',
         sharex='all',
-        figsize = (10, 4)
+        figsize = (9, 4)
     )
 
-    axs[0].hist(pliocene_glacial_difference, alpha=0.2, label='Glacials')
-    axs[0].axvline(pliocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='tab:blue')
-    axs[0].hist(pliocene_interglacial_difference, alpha=0.2, label='Interglacials')
-    axs[0].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Interglacial Mean', color='tab:orange')
-    axs[0].legend(ncols=2)
-    axs[0].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pliocene', ylabel="Counts")
+    bins = np.arange(-0.8, 0.8, 0.1)
+    pliocene_data = [pliocene_glacial_difference, pliocene_interglacial_difference]
+    pleistocene_data = [pleistocene_glacial_difference, pleistocene_interglacial_difference]
 
-    axs[1].hist(pleistocene_glacial_difference, alpha=0.2, label='Glacials')
-    axs[1].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='tab:blue')
-    axs[1].hist(pleistocene_interglacial_difference, alpha=0.2, label='Interglacials')
-    axs[1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Integlacial Mean', color='tab:orange')
+    axs[0].hist(pliocene_data, bins=bins, label=['Glacials', 'Interglacials'], histtype='bar', color=['#7570b3', '#d95f02'], alpha=0.6)
+    axs[0].axvline(pliocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='#7570b3')
+    axs[0].axvline(pliocene_interglacial_difference.mean(), ls='--', label='Interglacial Mean', color='#d95f02')
+    axs[0].legend(ncols=2)
+    axs[0].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pliocene', ylabel="Counts",
+               ylim=[0, 31], xlim = [-0.8, 0.8])
+    axs[0].legend(ncols=1)
+
+    axs[1].hist(pleistocene_data, bins=bins, label=['Glacials', 'Interglacials'], histtype='bar', color=['#7570b3', '#d95f02'], alpha=0.6)
+    axs[1].axvline(pleistocene_glacial_difference.mean(), ls='--', label='Glacial Mean', color='#7570b3')
+    axs[1].axvline(pleistocene_interglacial_difference.mean(), ls='--', label='Interglacial Mean', color='#d95f02')
     axs[1].legend(ncols=2)
     axs[1].set(xlabel="{} ({})".format(r'$\Delta \delta^{18}$O', u"\u2030"), title='Pleistocene')
+    axs[1].legend(ncols=1)
+
+    print("Figure Stats")
+    print('Pliocene')
+    print(f'Glacial Mean = {pliocene_glacial_difference.mean():.4f}\tInterglacial Mean = {pliocene_interglacial_difference.mean():.4f}')
+    print("Pleistocene")
+    print(f'Glacial Mean = {pleistocene_glacial_difference.mean():.4f}\tInterglacial Mean = {pleistocene_interglacial_difference.mean():.4f}')
 
     if save_fig:
-        plt.savefig('figures/paper/Figure_5.png', dpi=300)
+        plt.savefig('figures/paper/Figure_5.pdf', dpi=300)
     else:
         plt.show()
 
@@ -452,4 +440,4 @@ def non_normal_distribution_tests():
     print(f'Difference Data, n={len(sample_data.difference_d18O.values)}')
 
 if __name__ == "__main__":
-    non_normal_distribution_tests()
+    difference_stats(False)

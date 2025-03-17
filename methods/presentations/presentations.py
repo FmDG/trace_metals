@@ -52,11 +52,11 @@ def probstack_figure(save_fig: bool = False) -> None:
     fig, ax = plt.subplots(
         nrows=1,
         sharex="all",
-        figsize=(8, 4)
+        figsize=(15, 6)
     )
 
     ax = plotting.probStack_plot(ax)
-    tick_dirs_single(ax, 0, 4000, False)
+    tick_dirs_single(ax, 0, 2500, False)
 
     if save_fig:
         plt.savefig("figures/presentations/Figure_probstack_d18O.png", format="png", dpi=300)
@@ -65,6 +65,6 @@ def probstack_figure(save_fig: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    iso_1208_1209_figure(save_fig=False)
+    # iso_1208_1209_figure(save_fig=False)
     # psu_1208_1209_figure(save_fig=True)
-    # probstack_figure(save_fig=False)
+    probstack_figure(save_fig=True)

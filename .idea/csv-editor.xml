@@ -3,13 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/Filtered_Difference.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="$USER_HOME$/Library/CloudStorage/OneDrive-UniversityCollegeLondon/Project/Chapter_1/trace_metals/data/cores/1208_core_tops_psu.csv">
           <value>
             <Attribute>
@@ -1494,6 +1487,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/cores/1208_productivity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/cores/1208_psu.csv">
           <value>
             <Attribute>
@@ -1690,6 +1690,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/data/misc/Section_Data_01.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/misc/rohling_SL_LR04.csv">
           <value>
             <Attribute>
@@ -1698,6 +1705,27 @@
           </value>
         </entry>
         <entry key="/data/misc/rohling_SL_WH.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/modern/NPacific_modern.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/modern/NPacific_modern_02.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/data/modern/NPacific_modern_03.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

@@ -188,7 +188,7 @@ def figure_alkenone_SSTs(save_fig: bool = False) -> None:
         highlight_all_mis_greyscale(ax)
     axs[0] = alkenone_plot(axs[0])
     axs[1] = alkenone_gradient_plot(axs[1])
-    axs[2] = filtered_difference_plot(axs[2], left=2)
+    axs[2] = filtered_difference_plot(axs[2])
     axs[3] = alkenone_gradient_plot_glacial_interglacials(axs[3])
     axs[0].legend(frameon=False)
     tick_dirs(axs, num_plots=n_plots, min_age=2400, max_age=2900, legend=False)
@@ -216,7 +216,7 @@ def figure_sea_level_correlation(save_fig: bool = False) -> None:
         highlight_all_mis_greyscale(ax)
     # --------------- PLOT FIGURE ---------------
     axs[0] = sea_level_plot(axs[0], colour="k")  # Sea Level Plot
-    axs[1] = filtered_difference_plot(axs[1], left=1)  # Filtered difference plot
+    axs[1] = filtered_difference_plot(axs[1])  # Filtered difference plot
     axs[2] = pearson_correlation_plot_sea_level(axs[2])  # Correlation Plot
     axs[3] = pearson_significance_plot_sea_level(axs[3])  # Significance Plot
 
@@ -394,4 +394,4 @@ def figure_s8(save_fig: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    figure_1(False)
+    figure_s8(False)

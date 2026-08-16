@@ -392,6 +392,5 @@ def figure_s8(save_fig: bool = False) -> None:
         plt.show()
 
 
-
 if __name__ == "__main__":
-    figure_s8(False)
+    figure_s8(save_fig=False)

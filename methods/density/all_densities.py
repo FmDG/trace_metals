@@ -3,6 +3,7 @@ from density_plots import density_plot
 from calculations import full_inverse_salinity
 from objects.core_data.psu import psu_1208, psu_1209
 from objects.arguments.args_Nature import colours, args_1208, args_1209
+from objects.misc.sea_level import sea_level
 
 # Modern Measurements
 mod_temp_1209, mod_temp_1208 = 1.805, 1.525
@@ -34,4 +35,4 @@ def plot_all_densities(save_fig: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    plot_all_densities(False)
+    generate_salinity_estimates()
